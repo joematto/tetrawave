@@ -1,0 +1,7 @@
+.DS_Store
+__pycache__/
+*.pyc
+originals/
+images/_sizes.json
+Screenshot*
+/ index.html

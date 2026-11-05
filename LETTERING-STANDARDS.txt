@@ -1,0 +1,31 @@
+TETRAWAVE LETTERING STANDARDS
+=============================
+Sizes are on a laptop or desktop screen. On phones, headings shrink in proportion so lines still fit.
+(1 pt = 1.333 px; 12 pt = 16 px)
+
+SECTIONS            SIZE             TYPEFACE        WEIGHT    COLOUR
+Section heading     30 pt (40 px)    Cinzel          Medium    Gold       (#F5CA97)
+Sub-section         18 pt (24 px)    Cinzel          Regular   Pale gold  (#F9E2BA)
+
+PARAGRAPHS
+Paragraph heading   24 pt (32 px)    Cinzel          Regular   Pale gold  (#F9E2BA)
+Paragraph           12 pt (16 px)    Source Sans 3   Regular   Light grey (#DCDCDC)
+Small paragraph     10 pt (13.3 px)  Source Sans 3   Regular   Light grey (#DCDCDC)
+
+Links inside text keep their size and weight but show in gold.
+
+Where they're used
+  Section heading    the title at the top of each page
+  Sub-section        timeline entries on Tetrahedron Fascination, and "Discovery Time-line"
+  Paragraph heading  headings within a page's text
+  Paragraph          normal text
+  Small paragraph    picture captions and credits
+
+Where they're set: the top of css/site.css (--fs-section, --fs-sub, --fs-phead, --fs-para, --fs-small).
+Changing a number there changes it on every page.
+
+Agreed layout exceptions
+  Part II, Section 2 (Tetrahedron Fascination)
+    "Tetrahedral Geometry" on one line, "Discovery Time-line" under it.
+    "1966" on its own line; its title shrinks only if needed to stay on one line.
+  Splash page (index.html), header and Contents menu have their own settings.
