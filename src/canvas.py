@@ -5,7 +5,7 @@ Text keeps its Wix box and alignment but uses the lettering standard; when text 
 Wix box, js/site.js pushes everything below it down (as Wix does). Very large empty bands are shortened.
 On phones (under 700px wide) the elements stack in reading order instead.
 """
-import html, re
+import html, re, hashlib
 
 E = html.escape
 SITE_W = 980
@@ -96,7 +96,26 @@ PDF_ICON = ('<svg viewBox="0 0 40 52" aria-hidden="true"><path d="M2 2h26l10 10v
             '<text x="20" y="38" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#a3322a">PDF</text></svg>')
 
 
-def render(key, page, img_info, link, docs, hooks=None):
+def element_id(it, img_info, seen):
+    t = it['t']
+    if t == 'I':
+        c = canon(it['src']); k = img_info[c][0] if c in img_info else c
+    elif t == 'G':
+        c = canon(it['slides'][0]['src']); k = img_info[c][0] if c in img_info else c
+    elif t == 'T':
+        k = re.sub(r'[^A-Za-z0-9]+', '', ' '.join(p[3] for p in it.get('paras') or []) or it.get('html') or '')[:28]
+    elif t == 'D':
+        k = it.get('href', '')
+    elif t == 'B':
+        k = it.get('text', '')
+    else:
+        k = hashlib.md5(repr((it.get('svg'), it.get('bg'), it.get('col'), it['b'])).encode()).hexdigest()[:8]
+    k = f'{t}:{k}'
+    n = seen.get(k, 0); seen[k] = n + 1
+    return k if n == 0 else f'{k}#{n}'
+
+
+def render(key, page, img_info, link, docs, hooks=None, edits=None):
     """img_info: canonical id -> (web path, original width, original height). docs: pdf url -> local path."""
     # Wix slideshow galleries (items marked g): the slides sit side by side, mostly off the page; they become one
     # slideshow, centred, showing one slide at a time with arrows to step through them.
@@ -110,13 +129,19 @@ def render(key, page, img_info, link, docs, hooks=None):
              and it['b'][0] < SITE_W and it['b'][0] + it['b'][2] > 0]   # skip items parked off the page
     ymap = compress_gaps(items)
     out = []
+    seen = {}
     for z, it in enumerate(items):
         x, y, w, h = it['b']
         y2 = ymap(y)
+        # a stable id for the in-page Edit tool, and any position/size saved with it
+        eid = element_id(it, img_info, seen)
+        ed = (edits or {}).get(eid)
+        if ed:
+            x, y2, w, h = ed['x'], ed['y'], ed['w'], ed['h']
         extra = (hooks or {}).get('style', lambda it: '')(it)
         if it['t'] in 'SR' and w >= 1400:   # a full-width band on Wix: stretch it across the window
             extra += ';left:calc(490px - 50vw);width:100vw'
-        base = (f'class="el el-{it["t"]}" data-y="{y2}" data-h="{h}" '
+        base = (f'class="el el-{it["t"]}" data-eid="{E(eid)}" data-y="{y2}" data-h="{h}" '
                 f'style="left:{x}px;top:{y2}px;width:{w}px;height:{h}px;z-index:{z + 1};--ar:{w}/{max(h, 1)}{extra}"')
         a = anim_attr(it.get('a'))
         t = it['t']
@@ -131,6 +156,10 @@ def render(key, page, img_info, link, docs, hooks=None):
                 continue
             path, Ow, Oh = img_info[c]
             L, T, Wp, Hp = placement(it['src'], w, h, Ow, Oh)
+            if ed and ed.get('fit') == 'cover':   # re-proportioned in the Edit tool: the whole picture, cropped to fill
+                k = max(w / Ow, h / Oh)
+                Wp, Hp = Ow * k / w * 100, Oh * k / h * 100
+                L, T = (100 - Wp) / 2, (100 - Hp) / 2
             alt = re.sub(r'^[A-Z0-9]+-\d+_', '', path.rsplit('/', 1)[-1].rsplit('.', 1)[0]).replace('-', ' ')
             if alt == 'image':
                 alt = 'illustration'

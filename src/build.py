@@ -190,7 +190,7 @@ def toc(current):
     return '\n'.join(out)
 
 # Temporary working links in the header (set DEV_LINKS = '' to remove them from every page)
-DEV_LINKS = ('<span class="tl-dev"><a href="#guide" data-guide-toggle title="Vertical alignment guide">Guide</a><a href="#symmetry" data-sym-toggle title="Symmetry guides: a centre line and two lines equally either side">Symmetry</a><a href="#grid" data-grid-toggle title="Sorting grid: every picture on the site, by page and picture number">Grid</a><a href="#type" data-typepal-toggle title="Fonts: floating palette of every lettering style">Fonts</a><a href="#ruler" data-ruler-toggle>Ruler</a>'
+DEV_LINKS = ('<span class="tl-dev"><a href="#edit" data-edit-toggle title="Edit: drag pictures and text boxes, resize pictures by their handles, then Save">Edit</a><a href="#guide" data-guide-toggle title="Vertical alignment guide">Guide</a><a href="#symmetry" data-sym-toggle title="Symmetry guides: a centre line and two lines equally either side">Symmetry</a><a href="#grid" data-grid-toggle title="Sorting grid: every picture on the site, by page and picture number">Grid</a><a href="#type" data-typepal-toggle title="Fonts: floating palette of every lettering style">Fonts</a><a href="#ruler" data-ruler-toggle>Ruler</a>'
              '</span>')
 
 def address(key):
@@ -251,12 +251,15 @@ def shell(key, title, body, home=False, bgvideo='video/background.mp4', bgposter
             (f'<a class="next" href="{FILES[nxt]}" title="Next: {E(TITLES[nxt])}">{E(TITLES[nxt])}<span class="arw">›</span></a>' if nxt else '') + '</nav>'
         header += topnav
     foot = '' if home else f'<footer class="foot"><p>Joseph Matto Architect AIA · TetraWave</p><p class="hint">Tip: add <code>#files</code> to this page’s address to see every image’s file name.</p></footer>'
-    return head + header + toc(key) + f'\n<main class="page">\n{body}\n</main>\n{nav}\n{foot}\n<script src="js/site.js" defer></script>\n<script src="js/ruler.js" defer></script>\n<script src="js/typepal.js" defer></script>\n<script src="js/guide.js" defer></script>\n<script src="js/symmetry.js" defer></script>\n<script src="js/sortgrid.js" defer></script>\n</body>\n</html>\n'
+    return head + header + toc(key) + f'\n<main class="page">\n{body}\n</main>\n{nav}\n{foot}\n<script src="js/site.js" defer></script>\n<script src="js/ruler.js" defer></script>\n<script src="js/typepal.js" defer></script>\n<script src="js/guide.js" defer></script>\n<script src="js/symmetry.js" defer></script>\n<script src="js/sortgrid.js" defer></script>\n<script src="js/edit.js" defer></script>\n</body>\n</html>\n'
 
 # ---- Pages --------------------------------------------------------------
 os.makedirs(OUT, exist_ok=True)
 import canvas as CV
 LAYOUT = json.load(open('layout.json'))
+# positions and sizes saved with the in-page Edit tool (page key -> element id -> x, y, w, h[, fit])
+EDITS = json.load(open('edits.json')) if os.path.exists('edits.json') else {}
+EDITS = EDITS.get('pages', EDITS)
 # Picture moves between pages: (from page, file name part) -> to page. The picture keeps its size and crop;
 # on its new page it is centred under the title, below anything already there.
 # A text block is matched by the words it starts with; 'top' puts it first on the new page (above what is there).
@@ -554,7 +557,7 @@ for part, pages in OUTLINE[1:]:
             for it in page['items']:
                 it['b'][1] -= SUBHEAD_SHIFT[key]
         if page and any(it['t'] in 'TI' for it in page['items']):
-            body += CV.render(key, page, MEDIA, link, DOCS, HOOKS.get(key))
+            body += CV.render(key, page, MEDIA, link, DOCS, HOOKS.get(key), EDITS.get(key))
             if key in NO_FADE:   # everything on this page is there as it opens: no fades or delays
                 body = re.sub(r' data-(?:anim|seq)="[^"]*"', '', body)
         else:
@@ -695,4 +698,8 @@ for c, (path, ow, oh) in sorted(MEDIA.items(), key=lambda kv: kv[1][0]):
     on = ' '.join(dict.fromkeys(used.get(path, [])))
     rows.append(f'{path},{k},"{TITLES.get(k, k)}",{on},{ow},{oh},{c}')
 open(os.path.join(OUT, 'IMAGE-INDEX.csv'), 'w').write('\n'.join(rows) + '\n')
+import shutil
+for f in ('site.js', 'ruler.js', 'guide.js', 'symmetry.js', 'edit.js'):
+    shutil.copy(f, os.path.join(OUT, 'js', f))
+shutil.copy('site.css', os.path.join(OUT, 'css', 'site.css'))
 print('built', sorted(os.listdir(OUT)))

@@ -130,7 +130,7 @@ const layoutCanvas = () => {
   requestAnimationFrame(() => { if (typeof alignAxis === 'function') alignAxis(); if (typeof alignStar === 'function') alignStar(); });
   for (const c of canvases) {
     const wrap = c.parentElement, phone = innerWidth < 700;
-    const els = [...c.children];
+    const els = [...c.children].filter((e) => e.hasAttribute('data-y'));   // skip the Edit tool's overlays
     if (phone) { c.style.transform = ''; wrap.style.height = ''; continue; }
     const order = els.map((e) => ({ e, y: +e.dataset.y, h: +e.dataset.h })).sort((a, b) => a.y - b.y);
     const grow = [];   // [wix bottom, extra height]
