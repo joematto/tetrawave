@@ -7,6 +7,9 @@
 //    Side handles re-proportion it (the picture is cropped to fill its new frame). Text boxes have side
 //    handles only, to change their width.
 //  · Arrow keys nudge the selected item 1px (Shift = 10px). Cmd/Ctrl+Z undoes. Esc deselects.
+//  · Double-click a text box to type in it. A bar at the top sets the font, size, colour, bold / italic /
+//    underline, alignment and line spacing of the selected words (or of the paragraph the cursor is in).
+//    Click outside the box (or press Esc) to finish.
 //  · Changes are kept in this browser and shown on every visit until they are built into the site.
 //    "Save" downloads tetrawave-edits.json (to Downloads); hand that file to Claude to make them permanent.
 (() => {
@@ -24,16 +27,25 @@
   const isPic = (e) => e.matches('figure.el-I');
   const cur = (e) => ({ x: parseFloat(e.style.left) || 0, y: +e.dataset.y || 0, w: parseFloat(e.style.width) || e.offsetWidth, h: +e.dataset.h || e.offsetHeight });
   const orig = new Map(els.map((e) => {
-    const img = isPic(e) ? e.querySelector('img') : null;
-    return [e.dataset.eid, { ...cur(e), imgStyle: img ? img.getAttribute('style') : null }];
+    const img = isPic(e) ? e.querySelector('img') : null, txt = isText(e) ? e.querySelector('.txt') : null;
+    return [e.dataset.eid, { ...cur(e), imgStyle: img ? img.getAttribute('style') : null, html: txt ? txt.innerHTML : undefined }];
   }));
-  const same = (a, b) => ['x', 'y', 'w', 'h'].every((k) => Math.abs(a[k] - b[k]) < 0.6) && (a.fit || '') === (b.fit || '');
+  const same = (a, b) => ['x', 'y', 'w', 'h'].every((k) => Math.abs(a[k] - b[k]) < 0.6) && (a.fit || '') === (b.fit || '')
+    && (a.html === undefined || a.html === b.html);
+  const entry = (e, v) => {   // what is stored for an item: its position, plus crop / edited text when changed
+    const o = orig.get(e.dataset.eid), r = { x: v.x, y: v.y, w: v.w, h: v.h };
+    if (v.fit) r.fit = v.fit;
+    if (v.html !== undefined && v.html !== o.html) r.html = v.html;
+    return r;
+  };
 
   function apply(e, v) {
     e.style.left = v.x + 'px';
     e.dataset.y = v.y;
     e.style.width = v.w + 'px';
     if (!isText(e)) { e.style.height = v.h + 'px'; e.dataset.h = v.h; e.style.setProperty('--ar', v.w + '/' + Math.max(1, v.h)); }
+    const txt = isText(e) ? e.querySelector('.txt') : null, o = orig.get(e.dataset.eid);
+    if (txt && txt.innerHTML !== (v.html !== undefined ? v.html : o.html)) txt.innerHTML = v.html !== undefined ? v.html : o.html;
     const img = isPic(e) ? e.querySelector('img') : null;
     if (img) {
       if (v.fit === 'cover') img.setAttribute('style', 'left:0;top:0;width:100%;height:100%;object-fit:cover');
@@ -68,6 +80,19 @@
 #tw-sel i[data-h=se] { left: 100%; top: 100%; cursor: nwse-resize; } #tw-sel i[data-h=s] { left: 50%; top: 100%; cursor: ns-resize; }
 #tw-sel i[data-h=sw] { left: 0; top: 100%; cursor: nesw-resize; } #tw-sel i[data-h=w] { left: 0; top: 50%; cursor: ew-resize; }
 .tw-snap { position: absolute; z-index: 2147480001; pointer-events: none; background: #ff2fd0; }
+#tw-tbar { position: fixed; left: 50%; top: 86px; transform: translateX(-50%); z-index: 2147483300; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+  max-width: calc(100vw - 24px); padding: 7px 9px; border-radius: 6px; background: rgba(14,18,30,.96); box-shadow: 0 6px 24px rgba(0,0,0,.55); font: 500 12px/1 system-ui, sans-serif; color: #fff; }
+#tw-tbar .tb-g { display: inline-flex; gap: 3px; align-items: center; padding: 0 4px; border-left: 1px solid rgba(255,255,255,.15); }
+#tw-tbar button, #tw-tbar select, #tw-tbar input { font: 500 12px/1 system-ui, sans-serif; height: 26px; border-radius: 4px; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.07); color: #fff; cursor: pointer; }
+#tw-tbar button { min-width: 26px; padding: 0 6px; } #tw-tbar button:hover { background: rgba(255,255,255,.18); }
+#tw-tbar select { padding: 0 4px; } #tw-tbar select option { color: #000; }
+#tw-tbar input[type=number] { width: 52px; padding: 0 4px; cursor: text; }
+#tw-tbar input[type=color] { width: 30px; padding: 1px 2px; }
+#tw-tbar .sw { min-width: 18px !important; width: 18px; height: 18px !important; padding: 0 !important; border-radius: 50%; border: 1px solid rgba(255,255,255,.5); }
+#tw-tbar .tb-done { background: #2a86e0; border-color: #2a86e0; }
+.tw-editing .canvas > .el.tw-typing { cursor: text; outline: 1px solid #ffb43a !important; }
+.tw-editing .canvas > .el.tw-typing * { user-select: text; -webkit-user-select: text; cursor: text; }
+.tw-editing .canvas > .el.tw-typing .txt:focus { outline: none; }
 #tw-edit { position: fixed; right: 14px; bottom: 14px; z-index: 2147483200; width: 300px; padding: 10px 12px 11px; border-radius: 6px;
   background: rgba(14,18,30,.94); color: #e9eef7; box-shadow: 0 6px 24px rgba(0,0,0,.5); font: 400 12px/1.45 system-ui, -apple-system, sans-serif; }
 #tw-edit b { font-weight: 600; letter-spacing: .04em; }
@@ -98,7 +123,7 @@
     const v = cur(sel), kind = isPic(sel) ? 'picture' : isText(sel) ? 'text box' : 'item';
     const name = isPic(sel) ? (sel.dataset.file || '').split('/').pop() : '';
     t.textContent = `${kind}${name ? ' · ' + name : ''}\nx ${Math.round(v.x)}  y ${Math.round(v.y)}  w ${Math.round(v.w)}  h ${Math.round(isText(sel) ? sel.offsetHeight : v.h)}` +
-      (all[KEY] && all[KEY][sel.dataset.eid] ? '  · moved' : '');
+      (all[KEY] && all[KEY][sel.dataset.eid] ? '  · changed' : '');
     t.style.whiteSpace = 'pre-line';
   }
   function place() {
@@ -113,11 +138,15 @@
   function commit(e, v, prev) {
     const id = e.dataset.eid, o = orig.get(id);
     undo.push({ id, prev: prev ? { ...prev } : null });
-    if (same(v, o)) { if (all[KEY]) delete all[KEY][id]; } else page()[id] = { x: v.x, y: v.y, w: v.w, h: v.h, ...(v.fit ? { fit: v.fit } : {}) };
+    const r = entry(e, v);
+    if (same({ ...r, html: r.html !== undefined ? r.html : o.html }, o)) { if (all[KEY]) delete all[KEY][id]; } else page()[id] = r;
     if (all[KEY] && !Object.keys(all[KEY]).length) delete all[KEY];
     save(all); label();
   }
-  const stateOf = (e) => ({ ...cur(e), ...(all[KEY] && all[KEY][e.dataset.eid] && all[KEY][e.dataset.eid].fit ? { fit: all[KEY][e.dataset.eid].fit } : {}) });
+  const stateOf = (e) => {
+    const st = all[KEY] && all[KEY][e.dataset.eid], txt = isText(e) ? e.querySelector('.txt') : null;
+    return { ...cur(e), ...(st && st.fit ? { fit: st.fit } : {}), ...(txt ? { html: txt.innerHTML } : {}) };
+  };
 
   // ---- snapping ----
   let guides = [];
@@ -147,7 +176,9 @@
   // ---- dragging and resizing ----
   function onDown(ev) {
     if (!on || ev.button !== 0 || innerWidth < 700) return;
-    if (ev.target.closest('#tw-edit')) return;
+    if (ev.target.closest('#tw-edit,#tw-tbar')) return;
+    if (editing && inEdit(ev.target)) return;
+    if (editing) endText();
     const handle = ev.target.closest('#tw-sel i');
     const e = handle ? sel : ev.target.closest('.canvas > .el[data-eid]');
     if (!e || !byId.has(e.dataset.eid)) { if (ev.target.closest('.canvas')) select(null); return; }
@@ -199,6 +230,7 @@
   }
   function onKey(ev) {
     if (!on) return;
+    if (editing) { if (ev.key === 'Escape') { ev.preventDefault(); endText(); } return; }
     if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === 'z') { ev.preventDefault(); doUndo(); return; }
     if (ev.key === 'Escape') { select(null); return; }
     if (!sel || !/^Arrow/.test(ev.key) || /input|textarea/i.test(ev.target.tagName)) return;
@@ -212,7 +244,8 @@
     const u = undo.pop(); if (!u) return;
     const e = byId.get(u.id), o = orig.get(u.id), v = u.prev || o;
     apply(e, v);
-    if (same(v, o)) { if (all[KEY]) delete all[KEY][u.id]; } else page()[u.id] = { x: v.x, y: v.y, w: v.w, h: v.h, ...(v.fit ? { fit: v.fit } : {}) };
+    const r = entry(e, v);
+    if (same({ ...r, html: r.html !== undefined ? r.html : o.html }, o)) { if (all[KEY]) delete all[KEY][u.id]; } else page()[u.id] = r;
     if (all[KEY] && !Object.keys(all[KEY]).length) delete all[KEY];
     save(all); relayout(); place(); label();
   }
@@ -230,7 +263,134 @@
     setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
     panel.querySelector('.e-tip').textContent = 'Saved tetrawave-edits.json to your Downloads. Tell Claude to build it in.';
   }
-  const blockClick = (ev) => { if (on && ev.target.closest('.canvas') && !ev.target.closest('.sl-prev,.sl-next')) { ev.preventDefault(); ev.stopPropagation(); } };
+  const blockClick = (ev) => { if (on && ev.target.closest('.canvas') && !ev.target.closest('.sl-prev,.sl-next')) { ev.preventDefault(); if (!(editing && inEdit(ev.target))) ev.stopPropagation(); } };
+  const onDbl = (ev) => {
+    if (!on || innerWidth < 700) return;
+    const e = ev.target.closest('.canvas > .el[data-text][data-eid]');
+    if (e && byId.has(e.dataset.eid)) { ev.preventDefault(); startText(e); }
+  };
+  const TIP = 'Drag to move · corners resize (Shift = free shape) · sides re-proportion · arrows nudge · Alt = no snap · double-click text to edit it';
+
+
+  // ---- text editing ----
+  const FONTS = [['', 'Font…'], ['var(--display)', 'Cinzel (titles)'], ['var(--body)', 'Source Sans 3 (body)'],
+    ['Georgia, serif', 'Georgia'], ['"Times New Roman", Times, serif', 'Times New Roman'], ['Palatino, "Palatino Linotype", serif', 'Palatino'],
+    ['"Helvetica Neue", Helvetica, Arial, sans-serif', 'Helvetica / Arial'], ['"Courier New", Courier, monospace', 'Courier']];
+  const SWATCH = [['#f5ca97', 'gold'], ['#f9e2ba', 'pale gold'], ['#dcdcdc', 'body text'], ['#ffffff', 'white'], ['#8f8b98', 'grey'], ['#d2d2d2', 'light grey']];
+  const BLOCK = 'p,h1,h2,h3,h4,h5,h6,li,div.txt > div';
+  let editing = null, bar = null, saved = null, before = null;
+  const txtOf = (e) => e.querySelector('.txt');
+  const inEdit = (n) => editing && n && txtOf(editing).contains(n.nodeType === 1 ? n : n.parentNode);
+  document.addEventListener('selectionchange', () => {
+    const sl = getSelection();
+    if (editing && sl.rangeCount && inEdit(sl.getRangeAt(0).commonAncestorContainer)) { saved = sl.getRangeAt(0).cloneRange(); syncBar(); }
+  });
+  const restore = () => { if (!saved) return null; const sl = getSelection(); sl.removeAllRanges(); sl.addRange(saved); return saved; };
+  function blocksIn(r) {   // the paragraphs the range touches (or the one holding the cursor)
+    const root = txtOf(editing), all = [...root.querySelectorAll(BLOCK)].filter((b) => !b.querySelector(BLOCK));
+    const hit = all.filter((b) => r.intersectsNode(b));
+    if (hit.length) return hit;
+    const n = r.startContainer.nodeType === 1 ? r.startContainer : r.startContainer.parentNode;
+    return [n.closest(BLOCK) || root];
+  }
+  function styleText(prop, val) {
+    const r = restore(); if (!r) return;
+    const blocks = blocksIn(r), whole = r.collapsed || blocks.length > 1;
+    if (whole) {   // no words selected, or several paragraphs: style the paragraph(s) themselves
+      for (const b of blocks) { b.style[prop] = val; b.querySelectorAll('[style]').forEach((d) => { d.style[prop] = ''; if (!d.getAttribute('style')) d.removeAttribute('style'); }); }
+    } else {
+      // the selection is exactly an existing styled run: restyle it instead of nesting another one
+      let n = r.commonAncestorContainer; if (n.nodeType !== 1) n = n.parentNode;
+      const txt = r.toString(), root = txtOf(editing);
+      let run = null;
+      while (n && n !== root && /^(SPAN|B|I|U|STRONG|EM|FONT)$/.test(n.tagName) && n.textContent === txt) { if (n.tagName === 'SPAN') run = n; n = n.parentNode; }
+      if (run) {
+        run.style[prop] = val;
+        run.querySelectorAll('[style]').forEach((d) => { d.style[prop] = ''; if (!d.getAttribute('style')) d.removeAttribute('style'); });
+        changed(); return;
+      }
+      const span = document.createElement('span'); span.style[prop] = val;
+      span.appendChild(r.extractContents());
+      span.querySelectorAll('[style]').forEach((d) => { d.style[prop] = ''; if (!d.getAttribute('style')) d.removeAttribute('style'); });
+      r.insertNode(span);
+      const nr = document.createRange(); nr.selectNodeContents(span); saved = nr; restore();
+    }
+    changed();
+  }
+  function cmd(c) { restore(); document.execCommand(c, false, null); changed(); }
+  function alignText(v) { const r = restore(); if (!r) return; for (const b of blocksIn(r)) b.style.textAlign = v; changed(); }
+  function clearText() {
+    const r = restore(); if (!r) return;
+    for (const b of blocksIn(r)) {
+      b.querySelectorAll('span,font,b,i,u,strong,em').forEach((d) => { if (d.closest('a') === d) return; d.replaceWith(...d.childNodes); });
+      const keep = b.style.textAlign; b.removeAttribute('style'); if (keep) b.style.textAlign = keep;
+    }
+    changed();
+  }
+  const changed = () => { relayout(); place(); syncBar(); };
+  const rgbHex = (c) => { const m = c.match(/\d+(\.\d+)?/g); return m ? '#' + m.slice(0, 3).map((n) => (+n).toString(16).padStart(2, '0')).join('') : '#dcdcdc'; };
+  function syncBar() {   // show the size / colour / font at the cursor
+    if (!bar || !saved) return;
+    let n = saved.startContainer; if (n.nodeType !== 1) n = n.parentNode;
+    const cs = getComputedStyle(n);
+    const sz = bar.querySelector('[data-k=size]'); if (document.activeElement !== sz) sz.value = Math.round(parseFloat(cs.fontSize) * 10) / 10;
+    const col = bar.querySelector('[data-k=color]'); if (document.activeElement !== col) col.value = rgbHex(cs.color);
+    const lh = bar.querySelector('[data-k=lh]'); if (document.activeElement !== lh) lh.value = '';
+    const fam = cs.fontFamily.toLowerCase(), f = bar.querySelector('[data-k=font]');
+    if (document.activeElement !== f) f.value = fam.includes('cinzel') ? 'var(--display)' : fam.includes('source sans') ? 'var(--body)' : '';
+  }
+  function makeBar() {
+    bar = document.createElement('div'); bar.id = 'tw-tbar';
+    bar.innerHTML = `<select data-k="font" title="Font">${FONTS.map(([v, t]) => `<option value='${v}'>${t}</option>`).join('')}</select>
+      <span class="tb-g"><button data-c="smaller" title="Smaller">A−</button><input data-k="size" type="number" step="0.5" min="6" max="200" title="Size (px)"><button data-c="bigger" title="Larger">A+</button></span>
+      <span class="tb-g"><input data-k="color" type="color" title="Colour">${SWATCH.map(([c, t]) => `<button class="sw" data-sw="${c}" title="${t}" style="background:${c}"></button>`).join('')}</span>
+      <span class="tb-g"><button data-c="bold" title="Bold"><b>B</b></button><button data-c="italic" title="Italic"><i>I</i></button><button data-c="underline" title="Underline"><u>U</u></button></span>
+      <span class="tb-g"><button data-al="left" title="Align left">⟸</button><button data-al="center" title="Centre">≡</button><button data-al="right" title="Align right">⟹</button><button data-al="justify" title="Justify">☰</button></span>
+      <select data-k="lh" title="Line spacing"><option value="">Spacing…</option>${[1, 1.15, 1.3, 1.45, 1.6, 1.8, 2].map((v) => `<option>${v}</option>`).join('')}</select>
+      <button data-c="clear" title="Remove formatting from the selection">Clear</button><button data-c="done" class="tb-done">Done</button>`;
+    document.body.appendChild(bar);
+    bar.addEventListener('mousedown', (e) => { if (!e.target.closest('select,input')) e.preventDefault(); });   // keep the text selection
+    bar.addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.sw) return styleText('color', b.dataset.sw);
+      if (b.dataset.al) return alignText(b.dataset.al);
+      const c = b.dataset.c, sz = bar.querySelector('[data-k=size]');
+      if (c === 'bigger' || c === 'smaller') { const v = Math.max(6, (+sz.value || 16) + (c === 'bigger' ? 1 : -1)); sz.value = v; return styleText('fontSize', v + 'px'); }
+      if (c === 'clear') return clearText();
+      if (c === 'done') return endText();
+      cmd(c);
+    });
+    bar.querySelector('[data-k=font]').addEventListener('change', (e) => { if (e.target.value) styleText('fontFamily', e.target.value); });
+    bar.querySelector('[data-k=size]').addEventListener('change', (e) => { if (+e.target.value) styleText('fontSize', +e.target.value + 'px'); });
+    bar.querySelector('[data-k=color]').addEventListener('input', (e) => styleText('color', e.target.value));
+    bar.querySelector('[data-k=lh]').addEventListener('change', (e) => { if (e.target.value) { const r = restore(); if (r) { for (const b of blocksIn(r)) b.style.lineHeight = e.target.value; changed(); } } });
+  }
+  function startText(e) {
+    if (editing === e) return;
+    endText();
+    editing = e; select(e);
+    before = stateOf(e);
+    const t = txtOf(e);
+    t.contentEditable = 'true'; t.spellcheck = true; e.classList.add('tw-typing');
+    t.focus();
+    if (!bar) makeBar();
+    bar.style.display = '';
+    const sl = getSelection(); if (sl.rangeCount && inEdit(sl.getRangeAt(0).commonAncestorContainer)) saved = sl.getRangeAt(0).cloneRange();
+    syncBar();
+    panel.querySelector('.e-tip').textContent = 'Typing in a text box. Select words to style them, or put the cursor in a paragraph. Click outside or press Esc to finish.';
+  }
+  function endText() {
+    if (!editing) return;
+    const e = editing, t = txtOf(e);
+    t.removeAttribute('contenteditable'); t.removeAttribute('spellcheck'); e.classList.remove('tw-typing');
+    t.querySelectorAll('span:not([class]):not([style])').forEach((d) => d.replaceWith(...d.childNodes));   // tidy empty wrappers
+    editing = null; saved = null;
+    if (bar) bar.style.display = 'none';
+    const v = stateOf(e);
+    if (v.html !== before.html) commit(e, v, before);
+    relayout(); place(); label();
+    if (panel) panel.querySelector('.e-tip').textContent = TIP;
+  }
 
   function open() {
     if (on || !canvas) { if (!canvas) alert('This page has no movable layout.'); return; }
@@ -242,7 +402,7 @@
     canvas.appendChild(box);
     panel = document.createElement('div'); panel.id = 'tw-edit';
     panel.innerHTML = `<b>EDIT</b> · ${KEY}<div class="e-sel"></div>
-      <p class="e-tip">Drag to move · corners resize (Shift = free shape) · sides re-proportion · arrows nudge · Alt = no snap</p>
+      <p class="e-tip">${TIP}</p>
       <div class="e-row"><button type="button" data-a="undo">Undo</button><button type="button" data-a="reset">Reset page</button>
       <button type="button" data-a="save">Save</button><button type="button" data-a="close">Done</button></div>`;
     document.body.appendChild(panel);
@@ -251,16 +411,17 @@
       ({ undo: doUndo, reset: resetPage, save: download, close: hide })[a.dataset.a]();
     });
     if (innerWidth < 700) panel.querySelector('.e-tip').textContent = 'Widen the window to edit (the page stacks on phones).';
-    addEventListener('pointerdown', onDown, true); addEventListener('keydown', onKey); addEventListener('click', blockClick, true);
+    addEventListener('pointerdown', onDown, true); addEventListener('keydown', onKey); addEventListener('click', blockClick, true); addEventListener('dblclick', onDbl, true);
     addEventListener('resize', place); addEventListener('scroll', place, { passive: true });
     select(null);
   }
   function hide() {
     if (!on) return;
+    endText(); if (bar) { bar.remove(); bar = null; }
     on = false; sel = null; clearGuides();
     document.body.classList.remove('tw-editing');
     box && box.remove(); panel && panel.remove(); box = panel = null;
-    removeEventListener('pointerdown', onDown, true); removeEventListener('keydown', onKey); removeEventListener('click', blockClick, true);
+    removeEventListener('pointerdown', onDown, true); removeEventListener('keydown', onKey); removeEventListener('click', blockClick, true); removeEventListener('dblclick', onDbl, true);
     removeEventListener('resize', place); removeEventListener('scroll', place);
     if (location.hash === '#edit') history.replaceState(null, '', location.pathname + location.search);
   }

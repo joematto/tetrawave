@@ -96,6 +96,15 @@ PDF_ICON = ('<svg viewBox="0 0 40 52" aria-hidden="true"><path d="M2 2h26l10 10v
             '<text x="20" y="38" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#a3322a">PDF</text></svg>')
 
 
+def clean_html(h):
+    """Text saved from the Edit tool: keep the markup and inline styles, drop anything that could run."""
+    h = re.sub(r'(?is)<(script|style|iframe|object|embed)\b.*?</\1\s*>', '', h)
+    h = re.sub(r'(?i)\s+on[a-z]+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)', '', h)
+    h = re.sub(r'(?i)\s+contenteditable(="[^"]*")?', '', h)
+    h = re.sub(r'(?i)(href|src)\s*=\s*"\s*javascript:[^"]*"', r'\1="#"', h)
+    return h
+
+
 def element_id(it, img_info, seen):
     t = it['t']
     if t == 'I':
@@ -149,6 +158,8 @@ def render(key, page, img_info, link, docs, hooks=None, edits=None):
             inner = text_html(it, link)
             if hooks and 'text' in hooks:
                 inner, a = hooks['text'](it, inner, a)
+            if ed and ed.get('html') is not None:   # text typed / styled in the Edit tool
+                inner = clean_html(ed['html'])
             out.append(((y2, x), f'<div {base.replace("height:" + str(h) + "px;", "")} data-text{a}><div class="txt">{inner}</div></div>'))
         elif t == 'I':
             c = canon(it['src'])
