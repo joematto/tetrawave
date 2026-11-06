@@ -260,6 +260,8 @@ LAYOUT = json.load(open('layout.json'))
 # positions and sizes saved with the in-page Edit tool (page key -> element id -> x, y, w, h[, fit])
 EDITS = json.load(open('edits.json')) if os.path.exists('edits.json') else {}
 EDITS = EDITS.get('pages', EDITS)
+# P2 picture 2 flipped left-right (Nov 2026) so the square is on the left; its labels were kept readable
+CV.MIRRORED.add('images/P2/P2-02_circle-square-triangle-to-rt.png')
 # Picture moves between pages: (from page, file name part) -> to page. The picture keeps its size and crop;
 # on its new page it is centred under the title, below anything already there.
 # A text block is matched by the words it starts with; 'top' puts it first on the new page (above what is there).

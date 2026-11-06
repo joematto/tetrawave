@@ -96,6 +96,10 @@ PDF_ICON = ('<svg viewBox="0 0 40 52" aria-hidden="true"><path d="M2 2h26l10 10v
             '<text x="20" y="38" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#a3322a">PDF</text></svg>')
 
 
+# pictures whose files have been flipped left-right since the Wix layout was made
+MIRRORED = set()
+
+
 def clean_html(h):
     """Text saved from the Edit tool: keep the markup and inline styles, drop anything that could run."""
     h = re.sub(r'(?is)<(script|style|iframe|object|embed)\b.*?</\1\s*>', '', h)
@@ -167,6 +171,8 @@ def render(key, page, img_info, link, docs, hooks=None, edits=None):
                 continue
             path, Ow, Oh = img_info[c]
             L, T, Wp, Hp = placement(it['src'], w, h, Ow, Oh)
+            if path in MIRRORED:   # the picture file was flipped left-right: show the mirror of the same crop
+                L = 100 - L - Wp
             if ed and ed.get('fit') == 'cover':   # re-proportioned in the Edit tool: the whole picture, cropped to fill
                 k = max(w / Ow, h / Oh)
                 Wp, Hp = Ow * k / w * 100, Oh * k / h * 100
