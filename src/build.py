@@ -336,6 +336,8 @@ def model_text(it, inner, a):
 def p2_text(it, inner, a):
     if it.get('paper'):
         return open('paper_p2.html').read(), a
+    if it.get('excerpt'):
+        return open('excerpt_p2.html').read(), a
     return inner.replace('Ancient Scroll of 2D Symbols that when superimposed provide all the information for a Tetrahedron in 3D Space/Time',
                          'Ancient Scroll of 2D Symbols which when superimposed so that they have a common center provide all the information to construct a Tetrahedron in 3D Space.'), a
 
@@ -453,6 +455,11 @@ def p2_adjust(page):
     # everything from "A Bridge across Dimensions" down raised 38px (half the old gap under the page title)
     for it in page['items']:
         it['b'][1] -= 38
+    # a copy of the paper's closing passage ("It is intriguing ..." to the end, with its source line) as its own
+    # text block under the circle / triangle / square diagram, the width of the scroll picture (text in excerpt_p2.html)
+    dia = next(it for it in page['items'] if it['t'] == 'I' and 'P2-02' in MEDIA.get(CV.canon(it['src']), [''])[0])
+    x, y, w, h = dia['b']
+    page['items'].append({'t': 'T', 'b': [19, y + h + 22, 440, 600], 'excerpt': True, 'paras': [['', 12, '', 'excerpt', []]]})
     return page
 
 def model_adjust(page):

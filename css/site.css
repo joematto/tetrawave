@@ -314,6 +314,7 @@ a.wbtn:hover { color: var(--gold); }
 .txt .paper p.pt1 { font: 700 18px/1.3 var(--body); color: #f0e4d4; margin-bottom: .35em; }   /* title, bold, as in the editing document */
 .txt .paper p.pt2 { font: 700 13.5px/1.4 var(--body); color: #e6d8c6; }                       /* subtitle, bold */
 .txt .paper p.wch { font: 700 15px/1.3 var(--body); color: #f0e4d4; margin-top: 1.6em; }       /* "Works Cited" heading */
+.txt .paper p.src { margin-top: 1.4em; font-style: italic; color: #b9ab9a; }                     /* source line under the P2 excerpt */
 
 /* StarCoil poem, revealed line by line (js/site.js) */
 .js .poem-line { opacity: 0; }
