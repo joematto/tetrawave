@@ -118,3 +118,4 @@ images/TETRA/TETRA-17_buckys-tetrahelix-oage-edited.jpg
 images/TORUS/TORUS-01_human-toroidal-energy-field.jpg
 images/TORUS/TORUS-02_screen-shot-2010-08-27-at-10-05-edited.jpg
 images/TORUS/TORUS-03_tetra-ring-black-hole-toroid4.jpg
+images/TETRA/TETRA-18_on-growth-and-form-book-cover.jpg

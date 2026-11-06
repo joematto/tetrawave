@@ -1,1 +1,15 @@
-{}
+{
+ "TETRA": {
+  "N:on-growth-and-form-cover": {
+   "x": 514,
+   "y": 696,
+   "w": 123,
+   "h": 190,
+   "new": true,
+   "name": "On Growth and Form (book cover).jpg",
+   "pw": 654,
+   "ph": 1011,
+   "path": "images/TETRA/TETRA-18_on-growth-and-form-book-cover.jpg"
+  }
+ }
+}

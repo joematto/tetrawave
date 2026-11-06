@@ -149,6 +149,8 @@ def render(key, page, img_info, link, docs, hooks=None, edits=None):
         # a stable id for the in-page Edit tool, and any position/size saved with it
         eid = element_id(it, img_info, seen)
         ed = (edits or {}).get(eid)
+        if ed and ed.get('hide'):   # removed in the Edit tool
+            continue
         if ed:
             x, y2, w, h = ed['x'], ed['y'], ed['w'], ed['h']
         extra = (hooks or {}).get('style', lambda it: '')(it)
@@ -246,6 +248,16 @@ def render(key, page, img_info, link, docs, hooks=None, edits=None):
             if a and '--d:' not in base:   # Wix fades document buttons in slowly: 2.25 s, starting 1.1 s after they come into view
                 base = base[:-1] + ';--d:1100ms;--dur:2250ms"'
             out.append(((y2, x), f'<div {base}{a}>{body}</div>'))
+    # pictures added with the Edit tool (dropped onto the page), now saved in the page's image folder
+    for n, (eid, ed) in enumerate(sorted((edits or {}).items())):
+        if not (ed.get('new') and ed.get('path')) or ed.get('hide'):
+            continue
+        x, y2, w, h = ed['x'], ed['y'], ed['w'], ed['h']
+        alt = re.sub(r'^[A-Z0-9]+-\d+_', '', ed['path'].rsplit('/', 1)[-1].rsplit('.', 1)[0]).replace('-', ' ')
+        out.append(((y2, x), f'<figure class="el el-I" data-eid="{E(eid)}" data-y="{y2}" data-h="{h}" '
+                             f'style="left:{x}px;top:{y2}px;width:{w}px;height:{h}px;z-index:{900 + n};--ar:{w}/{max(h, 1)}" data-file="{ed["path"]}">'
+                             f'<img src="{ed["path"]}" alt="{E(alt)}" loading="lazy" decoding="async" '
+                             f'style="left:0;top:0;width:100%;height:100%;object-fit:cover"></figure>'))
     out.sort(key=lambda p: p[0])   # reading order for phones; z-index keeps Wix layering on screens
     height = max([ymap(it['b'][1]) + it['b'][3] for it in items] + [200])
     return f'<div class="canvas-wrap"><div class="canvas" style="height:{height}px">\n' + '\n'.join(h for _, h in out) + '\n</div></div>'

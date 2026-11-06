@@ -10,6 +10,9 @@
 //  · Double-click a text box to type in it. A bar at the top sets the font, size, colour, bold / italic /
 //    underline, alignment and line spacing of the selected words (or of the paragraph the cursor is in).
 //    Click outside the box (or press Esc) to finish.
+//  · Drag a picture (JPG, PNG, GIF, WebP) or a PDF from the desktop onto the page to add it there (a PDF
+//    shows its first page). It can then be moved and resized like any other picture. Delete (or Backspace)
+//    removes the selected item from the page.
 //  · Changes are kept in this browser and shown on every visit until they are built into the site.
 //    "Save" downloads tetrawave-edits.json (to Downloads); hand that file to Claude to make them permanent.
 (() => {
@@ -30,16 +33,19 @@
     const img = isPic(e) ? e.querySelector('img') : null, txt = isText(e) ? e.querySelector('.txt') : null;
     return [e.dataset.eid, { ...cur(e), imgStyle: img ? img.getAttribute('style') : null, html: txt ? txt.innerHTML : undefined }];
   }));
-  const same = (a, b) => ['x', 'y', 'w', 'h'].every((k) => Math.abs(a[k] - b[k]) < 0.6) && (a.fit || '') === (b.fit || '')
-    && (a.html === undefined || a.html === b.html);
+  const same = (a, b) => !b.isNew && ['x', 'y', 'w', 'h'].every((k) => Math.abs(a[k] - b[k]) < 0.6) && (a.fit || '') === (b.fit || '')
+    && (a.html === undefined || a.html === b.html) && !a.hide === !b.hide;
   const entry = (e, v) => {   // what is stored for an item: its position, plus crop / edited text when changed
     const o = orig.get(e.dataset.eid), r = { x: v.x, y: v.y, w: v.w, h: v.h };
     if (v.fit) r.fit = v.fit;
     if (v.html !== undefined && v.html !== o.html) r.html = v.html;
+    if (v.hide) r.hide = true;
+    if (o.isNew) Object.assign(r, { new: true, name: o.name, pw: o.pw, ph: o.ph });
     return r;
   };
 
   function apply(e, v) {
+    e.style.display = v.hide ? 'none' : '';
     e.style.left = v.x + 'px';
     e.dataset.y = v.y;
     e.style.width = v.w + 'px';
@@ -53,13 +59,93 @@
     }
   }
 
+  // ---- pictures dropped onto the page: kept in the browser (IndexedDB) until they are built in ----
+  const mem = new Map();
+  let dbp = null;
+  const db = () => dbp || (dbp = new Promise((res, rej) => {
+    try { const r = indexedDB.open('tw-edit-media', 1); r.onupgradeneeded = () => r.result.createObjectStore('files'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }
+    catch (err) { rej(err); }
+  }));
+  const tx = (mode, fn) => db().then((d) => new Promise((res, rej) => { const t = d.transaction('files', mode), q = fn(t.objectStore('files')); t.oncomplete = () => res(q && q.result); t.onerror = () => rej(t.error); }));
+  const mediaPut = (id, m) => { mem.set(id, m); return tx('readwrite', (st) => st.put(m, id)).catch(() => { panelTip('Note: this browser cannot keep dropped pictures after a reload. Save before leaving the page.'); }); };
+  const mediaGet = (id) => mem.has(id) ? Promise.resolve(mem.get(id)) : tx('readonly', (st) => st.get(id)).catch(() => null);
+  const mediaDel = (id) => { mem.delete(id); tx('readwrite', (st) => st.delete(id)).catch(() => {}); };
+  const COVER = 'left:0;top:0;width:100%;height:100%;object-fit:cover';
+  function makeNew(id, v, m) {
+    const f = document.createElement('figure');
+    f.className = 'el el-I'; f.dataset.eid = id; f.dataset.file = '(new) ' + m.name;
+    const img = document.createElement('img'); img.alt = ''; img.setAttribute('style', COVER); img.src = m.data;
+    f.appendChild(img); f.style.zIndex = 900; canvas.appendChild(f);
+    orig.set(id, { x: NaN, y: NaN, w: NaN, h: NaN, isNew: true, name: m.name, pw: m.w, ph: m.h, imgStyle: COVER });
+    els.push(f); byId.set(id, f); apply(f, v);
+    return f;
+  }
+  function restoreNew(id, v) {
+    mediaGet(id).then((m) => {
+      if (m) { makeNew(id, v, m); relayout(); return; }
+      delete all[KEY][id]; if (!Object.keys(all[KEY]).length) delete all[KEY]; save(all);
+    });
+  }
+  const panelTip = (t) => { const p = document.querySelector('#tw-edit .e-tip'); if (p) p.textContent = t; };
+  const readURL = (file) => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(r.error); r.readAsDataURL(file); });
+  const imgSize = (url) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res([i.naturalWidth, i.naturalHeight, i]); i.onerror = rej; i.src = url; });
+  let pdfjs = null;
+  const loadPdfjs = () => pdfjs || (pdfjs = new Promise((res, rej) => {
+    const sc = document.createElement('script');
+    sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    sc.onload = () => { window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; res(window.pdfjsLib); };
+    sc.onerror = () => rej(new Error('pdf.js unavailable')); document.head.appendChild(sc);
+  }));
+  async function pdfPreview(url) {   // the first page as a picture (the build makes a sharper one from the PDF itself)
+    try {
+      const lib = await loadPdfjs();
+      const doc = await lib.getDocument({ data: atob(url.split(',')[1]) }).promise, pg = await doc.getPage(1);
+      const vp0 = pg.getViewport({ scale: 1 }), vp = pg.getViewport({ scale: Math.min(3, 1600 / vp0.width) });
+      const c = document.createElement('canvas'); c.width = vp.width; c.height = vp.height;
+      await pg.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+      return c.toDataURL('image/jpeg', 0.9);
+    } catch (err) {   // offline: a plain stand-in, still built from the real PDF later
+      const c = document.createElement('canvas'); c.width = 850; c.height = 1100; const g = c.getContext('2d');
+      g.fillStyle = '#f4f1ea'; g.fillRect(0, 0, 850, 1100); g.fillStyle = '#a3322a'; g.font = 'bold 120px sans-serif'; g.textAlign = 'center'; g.fillText('PDF', 425, 560);
+      return c.toDataURL('image/jpeg', 0.9);
+    }
+  }
+  async function addFiles(files, clientX, clientY) {
+    const ok = [...files].filter((f) => /^image\/(jpeg|png|gif|webp)$/.test(f.type) || f.type === 'application/pdf' || /\.pdf$/i.test(f.name));
+    if (!ok.length) { panelTip('Only pictures (JPG, PNG, GIF, WebP) and PDFs can be added.'); return; }
+    const c = canvas.getBoundingClientRect(), s = scale();
+    let k = 0;
+    for (const file of ok) {
+      panelTip('Adding ' + file.name + ' …');
+      const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+      let url = await readURL(file), pdf = null;
+      if (isPdf) { pdf = url; url = await pdfPreview(pdf); }
+      let [w, h, im] = await imgSize(url);
+      if (!isPdf && Math.max(w, h) > 3000) {   // very large photos are scaled to 3000px on their long side
+        const r = 3000 / Math.max(w, h), cv = document.createElement('canvas'); cv.width = Math.round(w * r); cv.height = Math.round(h * r);
+        cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height); url = cv.toDataURL(file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.92); w = cv.width; h = cv.height;
+      }
+      const id = 'N:' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      const m = { name: file.name, w, h, data: url, pdf };
+      const W = Math.min(300, w), H = Math.round(W * h / w);
+      const cx = (clientX - c.left) / s + k * 24, cy = (clientY - c.top) / s + k * 24;
+      const v = { x: Math.round(cx - W / 2), y: Math.round(cy - H / 2), w: W, h: H };
+      await mediaPut(id, m);
+      const f = makeNew(id, v, m);
+      commit(f, v, null);
+      relayout(); select(f); k++;
+    }
+    panelTip(TIP);
+  }
+
   // pending edits for this page: drop those already built in, apply the rest
   let all = load();
   const page = () => (all[KEY] = all[KEY] || {});
   if (canvas && all[KEY]) {
     for (const [id, v] of Object.entries(all[KEY])) {
       const e = byId.get(id), o = orig.get(id);
-      if (!e || same(v, o)) delete all[KEY][id]; else apply(e, v);
+      if (!e && v.new) { restoreNew(id, v); continue; }       // a dropped picture not yet built in
+      if (!e || same(v, o)) { delete all[KEY][id]; if (v.new) mediaDel(id); } else apply(e, v);
     }
     if (!Object.keys(all[KEY]).length) delete all[KEY];
     save(all); relayout();
@@ -93,6 +179,8 @@
 .tw-editing .canvas > .el.tw-typing { cursor: text; outline: 1px solid #ffb43a !important; }
 .tw-editing .canvas > .el.tw-typing * { user-select: text; -webkit-user-select: text; cursor: text; }
 .tw-editing .canvas > .el.tw-typing .txt:focus { outline: none; }
+#tw-drop { position: fixed; inset: 10px; z-index: 2147483400; pointer-events: none; border: 3px dashed #3aa0ff; border-radius: 10px;
+  background: rgba(40,120,220,.12); display: flex; align-items: center; justify-content: center; font: 600 22px/1 system-ui, sans-serif; color: #cfe6ff; text-shadow: 0 1px 3px #000; }
 #tw-edit { position: fixed; right: 14px; bottom: 14px; z-index: 2147483200; width: 300px; padding: 10px 12px 11px; border-radius: 6px;
   background: rgba(14,18,30,.94); color: #e9eef7; box-shadow: 0 6px 24px rgba(0,0,0,.5); font: 400 12px/1.45 system-ui, -apple-system, sans-serif; }
 #tw-edit b { font-weight: 600; letter-spacing: .04em; }
@@ -120,8 +208,9 @@
     panel.querySelector('[data-a=reset]').disabled = !(all[KEY] && Object.keys(all[KEY]).length);
     const t = panel.querySelector('.e-sel');
     if (!sel) { t.textContent = 'Click an item to select it.'; return; }
-    const v = cur(sel), kind = isPic(sel) ? 'picture' : isText(sel) ? 'text box' : 'item';
+    const v = cur(sel); let kind = isPic(sel) ? 'picture' : isText(sel) ? 'text box' : 'item';
     const name = isPic(sel) ? (sel.dataset.file || '').split('/').pop() : '';
+    if (orig.get(sel.dataset.eid) && orig.get(sel.dataset.eid).isNew) kind = 'new picture';
     t.textContent = `${kind}${name ? ' · ' + name : ''}\nx ${Math.round(v.x)}  y ${Math.round(v.y)}  w ${Math.round(v.w)}  h ${Math.round(isText(sel) ? sel.offsetHeight : v.h)}` +
       (all[KEY] && all[KEY][sel.dataset.eid] ? '  · changed' : '');
     t.style.whiteSpace = 'pre-line';
@@ -145,7 +234,7 @@
   }
   const stateOf = (e) => {
     const st = all[KEY] && all[KEY][e.dataset.eid], txt = isText(e) ? e.querySelector('.txt') : null;
-    return { ...cur(e), ...(st && st.fit ? { fit: st.fit } : {}), ...(txt ? { html: txt.innerHTML } : {}) };
+    return { ...cur(e), ...(st && st.fit ? { fit: st.fit } : {}), ...(st && st.hide ? { hide: true } : {}), ...(txt ? { html: txt.innerHTML } : {}) };
   };
 
   // ---- snapping ----
@@ -233,6 +322,11 @@
     if (editing) { if (ev.key === 'Escape') { ev.preventDefault(); endText(); } return; }
     if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === 'z') { ev.preventDefault(); doUndo(); return; }
     if (ev.key === 'Escape') { select(null); return; }
+    if (sel && (ev.key === 'Delete' || ev.key === 'Backspace') && !/input|textarea|select/i.test(ev.target.tagName)) {
+      ev.preventDefault();
+      const start = stateOf(sel), v = { ...start, hide: true }, e = sel;
+      select(null); apply(e, v); relayout(); commit(e, v, start); return;
+    }
     if (!sel || !/^Arrow/.test(ev.key) || /input|textarea/i.test(ev.target.tagName)) return;
     ev.preventDefault();
     const d = ev.shiftKey ? 10 : 1, start = stateOf(sel), v = { ...start };
@@ -242,7 +336,7 @@
   }
   function doUndo() {
     const u = undo.pop(); if (!u) return;
-    const e = byId.get(u.id), o = orig.get(u.id), v = u.prev || o;
+    const e = byId.get(u.id), o = orig.get(u.id), v = u.prev || (o.isNew ? { ...cur(e), hide: true } : o);
     apply(e, v);
     const r = entry(e, v);
     if (same({ ...r, html: r.html !== undefined ? r.html : o.html }, o)) { if (all[KEY]) delete all[KEY][u.id]; } else page()[u.id] = r;
@@ -251,12 +345,23 @@
   }
   function resetPage() {
     if (!all[KEY]) return;
-    for (const id of Object.keys(all[KEY])) { const e = byId.get(id); if (e) apply(e, orig.get(id)); }
+    for (const [id, v] of Object.entries(all[KEY])) {
+      const e = byId.get(id), o = orig.get(id);
+      if (e && o && o.isNew) { e.remove(); byId.delete(id); els.splice(els.indexOf(e), 1); orig.delete(id); mediaDel(id); }
+      else if (e) apply(e, o);
+    }
+    if (sel && !sel.isConnected) sel = null;
     delete all[KEY]; save(all); undo.length = 0; relayout(); place(); label();
   }
-  function download() {
+  async function download() {
     all = load();
-    const data = { saved: new Date().toISOString(), note: 'TetraWave page edits: page key -> element id -> x, y, w, h on the 980px page', pages: all };
+    const pages = JSON.parse(JSON.stringify(all));
+    for (const p of Object.values(pages)) for (const [id, v] of Object.entries(p)) {
+      if (!v.new || v.hide) continue;
+      const m = await mediaGet(id);
+      if (m) { if (m.pdf) v.pdf = m.pdf; else v.data = m.data; }
+    }
+    const data = { saved: new Date().toISOString(), note: 'TetraWave page edits: page key -> element id -> x, y, w, h on the 980px page', pages };
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }));
     a.download = 'tetrawave-edits.json'; document.body.appendChild(a); a.click();
@@ -269,7 +374,7 @@
     const e = ev.target.closest('.canvas > .el[data-text][data-eid]');
     if (e && byId.has(e.dataset.eid)) { ev.preventDefault(); startText(e); }
   };
-  const TIP = 'Drag to move · corners resize (Shift = free shape) · sides re-proportion · arrows nudge · Alt = no snap · double-click text to edit it';
+  const TIP = 'Drag to move · corners resize (Shift = free shape) · sides re-proportion · arrows nudge · Alt = no snap · double-click text to edit it · drop pictures or PDFs from the desktop to add them · Delete removes';
 
 
   // ---- text editing ----
@@ -425,6 +530,21 @@
     removeEventListener('resize', place); removeEventListener('scroll', place);
     if (location.hash === '#edit') history.replaceState(null, '', location.pathname + location.search);
   }
+  const hasFiles = (e) => e.dataTransfer && [...e.dataTransfer.types].includes('Files');
+  let dropHint = null;
+  addEventListener('dragover', (e) => {
+    if (!canvas || !hasFiles(e) || innerWidth < 700) return;
+    e.preventDefault(); e.dataTransfer.dropEffect = 'copy';
+    if (!dropHint) { dropHint = document.createElement('div'); dropHint.id = 'tw-drop'; dropHint.textContent = 'Drop to add to this page'; document.body.appendChild(dropHint); }
+  });
+  const unhint = () => { if (dropHint) { dropHint.remove(); dropHint = null; } };
+  addEventListener('dragleave', (e) => { if (!e.relatedTarget) unhint(); });
+  addEventListener('drop', (e) => {
+    if (!canvas || !hasFiles(e) || innerWidth < 700) return;
+    e.preventDefault(); unhint();
+    if (!on) open();
+    addFiles(e.dataTransfer.files, e.clientX, e.clientY);
+  });
   document.addEventListener('click', (e) => {
     const t = e.target.closest('[data-edit-toggle]');
     if (t) { e.preventDefault(); on ? hide() : open(); }

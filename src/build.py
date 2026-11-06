@@ -657,7 +657,7 @@ for part in re.split(r'(<h2 class="cat-group">.*?</h2>)', cat):
 def page_pictures(fname):
     h = open(os.path.join(OUT, fname)).read()
     units = []
-    for m in re.finditer(r'<(figure|div) class="el el-([IYG])" data-y="(-?[\d.]+)"[^>]*?style="left:(-?[\d.]+)px[^>]*>(.*?)</(?:figure|div)>(?=\n)', h):
+    for m in re.finditer(r'<(figure|div) class="el el-([IYG])"(?: data-eid="[^"]*")? data-y="(-?[\d.]+)"[^>]*?style="left:(-?[\d.]+)px[^>]*>(.*?)</(?:figure|div)>(?=\n)', h):
         kind, y, x, inner = m.group(2), float(m.group(3)), float(m.group(4)), m.group(5)
         srcs = re.findall(r'<img src="([^"]+)"', inner)
         units.append((y, x, srcs if kind in 'YG' else srcs[:1]))
@@ -671,6 +671,9 @@ def page_pictures(fname):
             out.extend(u[2])
     return out
 DIMS = {v[0]: (v[1], v[2]) for v in MEDIA.values()}
+for _k, _p in EDITS.items():          # pictures added with the Edit tool
+    for _e in _p.values():
+        if _e.get('new') and _e.get('path'): DIMS[_e['path']] = (_e.get('pw', 0), _e.get('ph', 0))
 GRID_ALWAYS = {'PRE'}   # pages shown as a column in the Sorting Grid even while they have no pictures
 grid = []
 for part, pages in OUTLINE[1:]:
@@ -706,6 +709,10 @@ for c, (path, ow, oh) in sorted(MEDIA.items(), key=lambda kv: kv[1][0]):
     k = path.split('/')[1]
     on = ' '.join(dict.fromkeys(used.get(path, [])))
     rows.append(f'{path},{k},"{TITLES.get(k, k)}",{on},{ow},{oh},{c}')
+for _k, _p in sorted(EDITS.items()):
+    for _e in _p.values():
+        if _e.get('new') and _e.get('path') and not _e.get('hide'):
+            rows.append(f"{_e['path']},{_k},\"{TITLES.get(_k, _k)}\",{_k},{_e.get('pw', '')},{_e.get('ph', '')},added in the Edit tool: {_e.get('name', '')}")
 open(os.path.join(OUT, 'IMAGE-INDEX.csv'), 'w').write('\n'.join(rows) + '\n')
 import shutil
 for f in ('site.js', 'ruler.js', 'guide.js', 'symmetry.js', 'edit.js'):
