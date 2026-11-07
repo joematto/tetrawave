@@ -11,5 +11,63 @@
    "ph": 1011,
    "path": "images/TETRA/TETRA-18_on-growth-and-form-book-cover.jpg"
   }
+ },
+ "SKETCH": {
+  "I:images/SKETCH/SKETCH-12_image.jpg": {
+   "x": 473.5,
+   "y": 46,
+   "w": 410,
+   "h": 513.5
+  },
+  "I:images/SKETCH/SKETCH-01_knapkin-sketch-magnetic-pulse.jpg": {
+   "x": 110.5,
+   "y": 46,
+   "w": 354,
+   "h": 509.5
+  },
+  "I:images/SKETCH/SKETCH-02_exploratory-sketch-helices-tetras.jpg": {
+   "x": 108,
+   "y": 569,
+   "w": 775.5,
+   "h": 580.5
+  },
+  "I:images/SKETCH/SKETCH-03_tetra-brane-collages.jpg": {
+   "x": 119.5,
+   "y": 1245,
+   "w": 775.5,
+   "h": 990.5
+  }
+ },
+ "P2": {
+  "T:paper": {
+   "x": 45,
+   "y": 37,
+   "w": 445,
+   "h": 1513
+  },
+  "I:images/P2/P2-01_the-symbols-of-the-1st-temple.jpg": {
+   "x": 513.5,
+   "y": 37,
+   "w": 440,
+   "h": 255
+  },
+  "T:JapansFirstZenTemple": {
+   "x": 608,
+   "y": 292,
+   "w": 250.5,
+   "h": 27
+  },
+  "I:images/P2/P2-02_circle-square-triangle-to-rt.png": {
+   "x": 550.5,
+   "y": 380.5,
+   "w": 460,
+   "h": 705
+  },
+  "T:excerpt": {
+   "x": 513.5,
+   "y": 1108,
+   "w": 440,
+   "h": 600
+  }
  }
 }
