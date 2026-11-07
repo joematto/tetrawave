@@ -250,9 +250,17 @@ def render(key, page, img_info, link, docs, hooks=None, edits=None):
             out.append(((y2, x), f'<div {base}{a}>{body}</div>'))
     # pictures added with the Edit tool (dropped onto the page), now saved in the page's image folder
     for n, (eid, ed) in enumerate(sorted((edits or {}).items())):
-        if not (ed.get('new') and ed.get('path')) or ed.get('hide'):
+        if not ed.get('new') or ed.get('hide'):
             continue
         x, y2, w, h = ed['x'], ed['y'], ed['w'], ed['h']
+        if ed['new'] == 'text':   # a text box added by pasting in the Edit tool
+            if ed.get('html'):
+                out.append(((y2, x), f'<div class="el el-T" data-eid="{E(eid)}" data-y="{y2}" data-h="{h}" '
+                                     f'style="left:{x}px;top:{y2}px;width:{w}px;z-index:{950 + n};--ar:{w}/{max(h, 1)}" data-text>'
+                                     f'<div class="txt">{clean_html(ed["html"])}</div></div>'))
+            continue
+        if not ed.get('path'):
+            continue
         alt = re.sub(r'^[A-Z0-9]+-\d+_', '', ed['path'].rsplit('/', 1)[-1].rsplit('.', 1)[0]).replace('-', ' ')
         out.append(((y2, x), f'<figure class="el el-I" data-eid="{E(eid)}" data-y="{y2}" data-h="{h}" '
                              f'style="left:{x}px;top:{y2}px;width:{w}px;height:{h}px;z-index:{900 + n};--ar:{w}/{max(h, 1)}" data-file="{ed["path"]}">'

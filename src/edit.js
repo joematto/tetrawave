@@ -13,6 +13,9 @@
 //  · Drag a picture (JPG, PNG, GIF, WebP) or a PDF from the desktop onto the page to add it there (a PDF
 //    shows its first page). It can then be moved and resized like any other picture. Delete (or Backspace)
 //    removes the selected item from the page.
+//  · Copy and paste: click a text box, then Cmd+C copies it and Cmd+V pastes a copy (on this page or any
+//    other), which can be moved and edited like the rest; Cmd+X cuts. Text copied from anywhere else pastes as
+//    a new text box. While typing in a box, pasted text takes the style of the paragraph it goes into.
 //  · Changes are kept in this browser and shown on every visit until they are built into the site.
 //    "Save" downloads tetrawave-edits.json (to Downloads); hand that file to Claude to make them permanent.
 (() => {
@@ -40,7 +43,8 @@
     if (v.fit) r.fit = v.fit;
     if (v.html !== undefined && v.html !== o.html) r.html = v.html;
     if (v.hide) r.hide = true;
-    if (o.isNew) Object.assign(r, { new: true, name: o.name, pw: o.pw, ph: o.ph });
+    if (o.isNew && o.isText) Object.assign(r, { new: 'text', html: v.html !== undefined ? v.html : o.html });
+    else if (o.isNew) Object.assign(r, { new: true, name: o.name, pw: o.pw, ph: o.ph });
     r.t = Date.now();   // when it was made: once a saved file containing it has been built in, the browser forgets it
     return r;
   };
@@ -81,7 +85,17 @@
     els.push(f); byId.set(id, f); apply(f, v);
     return f;
   }
+  function makeNewText(id, v) {   // a text box added by pasting
+    const d = document.createElement('div');
+    d.className = 'el el-T'; d.dataset.eid = id; d.setAttribute('data-text', '');
+    const t = document.createElement('div'); t.className = 'txt'; t.innerHTML = v.html || '<p></p>';
+    d.appendChild(t); d.style.zIndex = 950; canvas.appendChild(d);
+    orig.set(id, { x: NaN, y: NaN, w: NaN, h: NaN, isNew: true, isText: true, html: '' });
+    els.push(d); byId.set(id, d); apply(d, v);
+    return d;
+  }
   function restoreNew(id, v) {
+    if (v.new === 'text') { makeNewText(id, v); relayout(); return; }
     mediaGet(id).then((m) => {
       if (m) { makeNew(id, v, m); relayout(); return; }
       delete all[KEY][id]; if (!Object.keys(all[KEY]).length) delete all[KEY]; save(all);
@@ -226,7 +240,7 @@
     if (!sel) { t.textContent = 'Click an item to select it.'; return; }
     const v = cur(sel); let kind = isPic(sel) ? 'picture' : isText(sel) ? 'text box' : 'item';
     const name = isPic(sel) ? (sel.dataset.file || '').split('/').pop() : '';
-    if (orig.get(sel.dataset.eid) && orig.get(sel.dataset.eid).isNew) kind = 'new picture';
+    if (orig.get(sel.dataset.eid) && orig.get(sel.dataset.eid).isNew) kind = isText(sel) ? 'new text box' : 'new picture';
     t.textContent = `${kind}${name ? ' · ' + name : ''}\nx ${Math.round(v.x)}  y ${Math.round(v.y)}  w ${Math.round(v.w)}  h ${Math.round(isText(sel) ? sel.offsetHeight : v.h)}` +
       (all[KEY] && all[KEY][sel.dataset.eid] ? '  · changed' : '');
     t.style.whiteSpace = 'pre-line';
@@ -337,6 +351,57 @@
     };
     addEventListener('pointermove', mv); addEventListener('pointerup', up);
   }
+  // ---- copy, cut and paste ----
+  const CLIP = 'tw-clip-v1', MARK = 'application/x-tetrawave';
+  const plainOf = (html) => { const d = document.createElement('div'); d.innerHTML = html; d.querySelectorAll('p,div,h1,h2,h3,h4,h5,h6,li,br,.yr').forEach((n) => n.after('\n')); return d.textContent.replace(/\n{3,}/g, '\n\n').trim(); };
+  const paras = (text) => text.replace(/\r/g, '').split(/\n\s*\n|\n/).map((l) => l.trim()).filter(Boolean)
+    .map((l) => '<p>' + l.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</p>').join('');
+  function onCopy(ev, cut) {
+    if (!on || editing || !sel || !isText(sel) || /input|textarea|select/i.test((document.activeElement || {}).tagName)) return;
+    const html = txtOf(sel).innerHTML, v = cur(sel);
+    const clip = { kind: 'text', html, w: v.w, x: v.x, y: v.y, page: KEY, t: Date.now() };
+    ev.preventDefault();
+    ev.clipboardData.setData('text/plain', plainOf(html));
+    ev.clipboardData.setData('text/html', html);
+    try { ev.clipboardData.setData(MARK, JSON.stringify(clip)); } catch (err) { /* custom types not allowed here */ }
+    try { localStorage.setItem(CLIP, JSON.stringify(clip)); } catch (err) { /* storage unavailable */ }
+    panelTip(cut ? 'Cut. Cmd+V pastes it back, here or on another page.' : 'Copied. Cmd+V pastes a copy, here or on another page.');
+    if (cut) { const start = stateOf(sel), nv = { ...start, hide: true }, e = sel; select(null); apply(e, nv); relayout(); commit(e, nv, start); }
+  }
+  function onPaste(ev) {
+    if (!on || !canvas || innerWidth < 700) return;
+    const dt = ev.clipboardData;
+    if (editing) {   // typing: plain text in the style of the paragraph, or a copied TetraWave box as it was
+      ev.preventDefault();
+      let mark = null; try { mark = JSON.parse(dt.getData(MARK) || 'null'); } catch (err) { /* none */ }
+      if (mark && mark.html) document.execCommand('insertHTML', false, mark.html);
+      else document.execCommand('insertText', false, dt.getData('text/plain'));
+      changed(); return;
+    }
+    if (/input|textarea|select/i.test((document.activeElement || {}).tagName)) return;
+    ev.preventDefault();
+    let clip = null; try { clip = JSON.parse(dt.getData(MARK) || 'null'); } catch (err) { /* none */ }
+    const text = dt.getData('text/plain');
+    if (!clip) {   // the browser may drop our own type: use the remembered copy if it matches what is being pasted
+      try { const c = JSON.parse(localStorage.getItem(CLIP) || 'null'); if (c && plainOf(c.html) === text.trim()) clip = c; } catch (err) { /* none */ }
+    }
+    if (dt.files && dt.files.length) { const r = canvas.getBoundingClientRect(); addFiles(dt.files, r.left + r.width / 2, innerHeight / 2); return; }
+    if (!clip && !text.trim()) return;
+    const html = clip ? clip.html : paras(text), w = clip ? clip.w : 445;
+    const c = canvas.getBoundingClientRect(), s = scale();
+    let x, y;
+    if (clip && clip.page === KEY && byId.size) { x = clip.x + 20; y = clip.y + 20; }   // a copy just below and right of the original
+    else { x = Math.round(((innerWidth / 2) - c.left) / s - w / 2); y = Math.round((innerHeight / 2 - c.top) / s - 40); }   // middle of the view
+    const id = 'NT:' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    const v = { x, y, w, h: 60, html };
+    const d = makeNewText(id, v);
+    commit(d, { ...v, html: txtOf(d).innerHTML }, null);
+    if (clip) { clip.x = x; clip.y = y; clip.page = KEY; try { localStorage.setItem(CLIP, JSON.stringify(clip)); } catch (err) { /* none */ } }
+    relayout(); select(d);
+    panelTip('Pasted as a new text box. Drag it into place; double-click to edit it.');
+  }
+  const onCopyEv = (e) => onCopy(e, false), onCutEv = (e) => onCopy(e, true);
+
   function onKey(ev) {
     if (!on) return;
     if (editing) { if (ev.key === 'Escape') { ev.preventDefault(); endText(); } return; }
@@ -508,7 +573,7 @@
     if (!editing) return;
     const e = editing, t = txtOf(e);
     t.removeAttribute('contenteditable'); t.removeAttribute('spellcheck'); e.classList.remove('tw-typing'); if (box) box.classList.remove('typing');
-    t.querySelectorAll('span:not([class]):not([style])').forEach((d) => d.replaceWith(...d.childNodes));   // tidy empty wrappers
+    t.querySelectorAll('span[style=""]').forEach((d) => d.replaceWith(...d.childNodes));   // tidy wrappers left empty by restyling
     editing = null; saved = null;
     if (bar) bar.style.display = 'none';
     const v = stateOf(e);
@@ -538,6 +603,7 @@
     if (innerWidth < 700) panel.querySelector('.e-tip').textContent = 'Widen the window to edit (the page stacks on phones).';
     addEventListener('pointerdown', onDown, true); addEventListener('keydown', onKey); addEventListener('click', blockClick, true); addEventListener('dblclick', onDbl, true);
     addEventListener('resize', place); addEventListener('scroll', place, { passive: true });
+    document.addEventListener('copy', onCopyEv); document.addEventListener('cut', onCutEv); document.addEventListener('paste', onPaste);
     select(null);
   }
   function hide() {
@@ -548,6 +614,7 @@
     document.body.classList.remove('tw-editing');
     box && box.remove(); panel && panel.remove(); box = panel = null;
     removeEventListener('pointerdown', onDown, true); removeEventListener('keydown', onKey); removeEventListener('click', blockClick, true); removeEventListener('dblclick', onDbl, true);
+    document.removeEventListener('copy', onCopyEv); document.removeEventListener('cut', onCutEv); document.removeEventListener('paste', onPaste);
     removeEventListener('resize', place); removeEventListener('scroll', place);
     if (location.hash === '#edit') history.replaceState(null, '', location.pathname + location.search);
   }
