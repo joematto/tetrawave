@@ -117,7 +117,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 
 /* Inner-page header: TetraWave block top-left, level with the Contents box; Part/Section address under Contents */
 .bar-inner { display: block; padding: 0; }
-.bar-inner .topline { background: none; min-height: 72px; }
+.bar-inner .topline { background: none; min-height: 0; padding-bottom: 4px; }   /* header line just under the Sound caption */
 .topline .brand { position: absolute; left: max(16px, env(safe-area-inset-left)); top: 14px; }
 .toc-box { position: absolute; right: max(16px, env(safe-area-inset-right)); top: 14px; display: grid; gap: 5px; }
 .toc-box .toc-open { position: static; }
