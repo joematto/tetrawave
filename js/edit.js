@@ -145,7 +145,8 @@
   // edits made before the last saved file that has been built into the site are already part of the page
   const builtUpTo = Date.parse(document.body.dataset.editsSaved || '') || 0;
   if (builtUpTo) for (const [k, p] of Object.entries(all)) {
-    for (const [id, v] of Object.entries(p)) if ((v.t || 0) <= builtUpTo) { delete p[id]; if (v.new) mediaDel(id); }
+    // only edits stamped with a time no later than that save (so certainly in the file) are dropped; never anything else
+    for (const [id, v] of Object.entries(p)) if (v.t && v.t <= builtUpTo) { delete p[id]; if (v.new) mediaDel(id); }
     if (!Object.keys(p).length) delete all[k];
   }
   if (builtUpTo) save(all);
