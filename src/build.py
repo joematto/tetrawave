@@ -530,7 +530,7 @@ HOOKS = {
                                else ';--d:3075ms;--dur:775ms' if it['t'] == 'D'
                                else ';--d:250ms;--dur:2325ms' if 330 <= it['b'][0] < 480 else ''},
     # StarCoil: the right-hand column is dimmed so the poem on the left reads as primary
-    'COIL': {'text': coil_text, 'style': lambda it: ';--d:6000ms;--dur:2250ms' if it['t'] == 'D'   # PDF button: waits 6 s (was 12 s), then fades in over 2.25 s (only its icon is dimmed, in site.css)
+    'COIL': {'text': coil_text, 'style': lambda it: ';--d:6000ms;--dur:1500ms' if it['t'] == 'D'   # PDF button: waits 6 s, then fades in over 1.5 s (only its icon is dimmed, in site.css)
              else ';filter:opacity(.55);--align-star:1' if it['t'] == 'I' and it['b'][0] == 813   # Egyptian adept (see js/site.js)
              else ';filter:opacity(.55)' if it['b'][0] >= 480
              else ';--text:#ffffff;--axis:202.1' if it.get('poem') == 'L'   # poem, left column: bright white
