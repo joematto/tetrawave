@@ -41,6 +41,7 @@
     if (v.html !== undefined && v.html !== o.html) r.html = v.html;
     if (v.hide) r.hide = true;
     if (o.isNew) Object.assign(r, { new: true, name: o.name, pw: o.pw, ph: o.ph });
+    r.t = Date.now();   // when it was made: once a saved file containing it has been built in, the browser forgets it
     return r;
   };
 
@@ -141,6 +142,13 @@
   // pending edits for this page: drop those already built in, apply the rest
   let all = load();
   const page = () => (all[KEY] = all[KEY] || {});
+  // edits made before the last saved file that has been built into the site are already part of the page
+  const builtUpTo = Date.parse(document.body.dataset.editsSaved || '') || 0;
+  if (builtUpTo) for (const [k, p] of Object.entries(all)) {
+    for (const [id, v] of Object.entries(p)) if ((v.t || 0) <= builtUpTo) { delete p[id]; if (v.new) mediaDel(id); }
+    if (!Object.keys(p).length) delete all[k];
+  }
+  if (builtUpTo) save(all);
   if (canvas && all[KEY]) {
     for (const [id, v] of Object.entries(all[KEY])) {
       const e = byId.get(id), o = orig.get(id);
@@ -165,6 +173,11 @@
 #tw-sel i[data-h=ne] { left: 100%; top: 0; cursor: nesw-resize; } #tw-sel i[data-h=e] { left: 100%; top: 50%; cursor: ew-resize; }
 #tw-sel i[data-h=se] { left: 100%; top: 100%; cursor: nwse-resize; } #tw-sel i[data-h=s] { left: 50%; top: 100%; cursor: ns-resize; }
 #tw-sel i[data-h=sw] { left: 0; top: 100%; cursor: nesw-resize; } #tw-sel i[data-h=w] { left: 0; top: 50%; cursor: ew-resize; }
+/* the side handles run the whole length of each edge, so a tall box can be stretched from anywhere along its side */
+#tw-sel i[data-h=e], #tw-sel i[data-h=w] { top: 0; height: 100%; margin-top: 0; width: var(--hs); background: rgba(58,160,255,.28); border-color: rgba(42,134,224,.8); }
+#tw-sel i[data-h=n], #tw-sel i[data-h=s] { left: 0; width: 100%; margin-left: 0; height: var(--hs); background: rgba(58,160,255,.28); border-color: rgba(42,134,224,.8); }
+#tw-sel i[data-h=e]:hover, #tw-sel i[data-h=w]:hover, #tw-sel i[data-h=n]:hover, #tw-sel i[data-h=s]:hover { background: rgba(58,160,255,.6); }
+#tw-sel i[data-h=nw], #tw-sel i[data-h=ne], #tw-sel i[data-h=se], #tw-sel i[data-h=sw] { z-index: 1; }
 .tw-snap { position: absolute; z-index: 2147480001; pointer-events: none; background: #ff2fd0; }
 #tw-tbar { position: fixed; left: 50%; top: 86px; transform: translateX(-50%); z-index: 2147483300; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
   max-width: calc(100vw - 24px); padding: 7px 9px; border-radius: 6px; background: rgba(14,18,30,.96); box-shadow: 0 6px 24px rgba(0,0,0,.55); font: 500 12px/1 system-ui, sans-serif; color: #fff; }

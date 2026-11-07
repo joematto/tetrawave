@@ -76,6 +76,12 @@ def main(src):
         if not page:
             edits.pop(key)
     json.dump(edits, open(EDITS, 'w'), indent=1)
+    meta_f = os.path.join(HERE, 'edits_meta.json')
+    meta = json.load(open(meta_f)) if os.path.exists(meta_f) else {}
+    saved = json.load(open(src)).get('saved')
+    if saved and saved > meta.get('saved', ''):
+        meta['saved'] = saved
+    json.dump(meta, open(meta_f, 'w'), indent=1)
     open(DISK, 'w').write('\n'.join(disk) + '\n')
     print('pages:', ', '.join(f'{k} ({len(v)})' for k, v in edits.items()))
     for p in added:

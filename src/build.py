@@ -217,7 +217,7 @@ def shell(key, title, body, home=False, bgvideo='video/background.mp4', bgposter
 {FONTS}
 <link rel="stylesheet" href="css/site.css">
 </head>
-<body class="{'home' if home else 'inner'}" data-key="{key}"{' data-image-numbers' if IMAGE_NUMBERS == 'ALL' or key in IMAGE_NUMBERS else ''}>
+<body class="{'home' if home else 'inner'}" data-key="{key}" data-edits-saved="{EDITS_SAVED}"{' data-image-numbers' if IMAGE_NUMBERS == 'ALL' or key in IMAGE_NUMBERS else ''}>
 <video class="bg" autoplay muted loop playsinline poster="{bgposter}" aria-hidden="true"><source src="{bgvideo}" type="video/mp4"></video>
 <div class="veil" aria-hidden="true"></div>
 '''
@@ -260,6 +260,8 @@ LAYOUT = json.load(open('layout.json'))
 # positions and sizes saved with the in-page Edit tool (page key -> element id -> x, y, w, h[, fit])
 EDITS = json.load(open('edits.json')) if os.path.exists('edits.json') else {}
 EDITS = EDITS.get('pages', EDITS)
+# when the last saved edits file (now built in) was made: the Edit tool then forgets edits up to that time
+EDITS_SAVED = json.load(open('edits_meta.json')).get('saved', '') if os.path.exists('edits_meta.json') else ''
 # P2 picture 2 flipped left-right (Nov 2026) so the square is on the left; its labels were kept readable
 CV.MIRRORED.add('images/P2/P2-02_circle-square-triangle-to-rt.png')
 # Picture moves between pages: (from page, file name part) -> to page. The picture keeps its size and crop;

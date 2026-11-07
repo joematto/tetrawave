@@ -306,7 +306,7 @@ a.wbtn:hover { color: var(--gold); }
 @media (max-width: 699px) { .canvas > .el[data-slides] { aspect-ratio: var(--ar); width: 100% !important; position: relative !important; } }
 
 /* Text set in the Sound-label lettering (9 pt Source Sans 3 Light, warm grey): e.g. the 1994 paper on Part II, Section 1 */
-.txt .paper p { font: 300 12px/1.5 var(--body); color: rgb(220,205,190); text-align: justify; text-indent: 2em; margin: 0 0 1.1em; hyphens: auto; }
+.txt .paper p { font: 300 12px/1.5 var(--body); color: rgb(220,205,190); text-align: justify; text-indent: 0; margin: 0 0 1.1em; hyphens: auto; }
 .txt .paper p.pt, .txt .paper p.pa, .txt .paper p.wc { text-indent: 0; text-align: left; }
 .txt .paper p.pt { margin-bottom: .15em; letter-spacing: .02em; hyphens: manual; }
 .txt .paper p.pt + p.pa { margin-top: 1.1em; }
