@@ -26,7 +26,7 @@ OUTLINE = [
         ('TETRA', 'Tetrahedron Fascination', 'tetrahedron-fascination.html'),
         ('MODEL', '3D Exploration Models', '3d-exploration-models.html'),
         ('TILT', 'Tilt Angle Analysis', 'tilt-angle-analysis.html'),
-        ('GRID', '11:11 Grid', '11-11-grid.html'),
+        ('GRID', '11:11', '11-11-grid.html'),
         ('BUILD', 'Tetrawave Build Sequence', 'tetrawave-build-sequence.html'),
         ('CAD', '3D Exploration CAD Models', '3d-exploration-cad-models.html'),
         ('HELIX', 'Tetra-Helix 2D Drawing Methods', 'tetra-helix-2d-drawing-methods.html')]),
