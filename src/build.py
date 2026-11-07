@@ -190,7 +190,7 @@ def toc(current):
     return '\n'.join(out)
 
 # Temporary working links in the header (set DEV_LINKS = '' to remove them from every page)
-DEV_LINKS = ('<span class="tl-dev"><a href="#edit" data-edit-toggle title="Edit: drag pictures and text boxes, resize pictures by their handles, then Save">Edit</a><a href="#guide" data-guide-toggle title="Vertical alignment guide">Guide</a><a href="#symmetry" data-sym-toggle title="Symmetry guides: a centre line and two lines equally either side">Symmetry</a><a href="#margins" data-margins-toggle title="Margins: a centre line on the galaxy centre and light-blue dotted lines 450px either side">Margins</a><a href="#grid" data-grid-toggle title="Sorting grid: every picture on the site, by page and picture number">Grid</a><a href="#type" data-typepal-toggle title="Fonts: floating palette of every lettering style">Fonts</a><a href="#ruler" data-ruler-toggle>Ruler</a>'
+DEV_LINKS = ('<span class="tl-dev"><a href="#edit" data-edit-toggle title="Edit: drag pictures and text boxes, resize pictures by their handles, then Save">Edit</a><a href="#guide" data-guide-toggle title="Vertical alignment guide">Guide</a><a href="#symmetry" data-sym-toggle title="Symmetry guides: a centre line and two lines equally either side">Symmetry</a><a href="#margins" data-margins-toggle title="Margins: a centre line at 840px and light-blue dotted lines 450px either side">Margins</a><a href="#grid" data-grid-toggle title="Sorting grid: every picture on the site, by page and picture number">Grid</a><a href="#type" data-typepal-toggle title="Fonts: floating palette of every lettering style">Fonts</a><a href="#ruler" data-ruler-toggle>Ruler</a>'
              '</span>')
 
 def address(key):
