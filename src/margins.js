@@ -10,7 +10,7 @@
 #tw-mar .m-line { position: absolute; top: 0; bottom: 0; width: 15px; margin-left: -7px; }
 #tw-mar .m-line::before { content: ""; position: absolute; top: 0; bottom: 0; left: 7px; width: 1px; }
 #tw-mar .m-mid { pointer-events: auto; cursor: ew-resize; touch-action: none; }
-#tw-mar .m-mid::before { background: #bfe6ff; box-shadow: 0 0 0 .5px rgba(0,0,0,.35); }
+#tw-mar .m-mid::before { background: repeating-linear-gradient(rgba(205,236,255,.55) 0 2px, transparent 2px 6px); }   /* dotted, lighter than the margins */
 #tw-mar .m-mid:focus { outline: none; }
 #tw-mar .m-side { pointer-events: auto; cursor: ew-resize; touch-action: none; }
 #tw-mar .m-side::before { width: 2px; left: 6.5px; background: repeating-linear-gradient(#8fd0ff 0 2px, transparent 2px 6px); }
