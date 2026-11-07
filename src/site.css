@@ -134,16 +134,26 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 .txt .ss { font: 400 clamp(20px, 3.2vw, var(--fs-sub))/1.3 var(--display); color: var(--pale); margin: 0 0 .5em; text-wrap: balance; }   /* Sub-section */
 .txt p.small { font: 400 var(--fs-small)/1.55 var(--body); color: var(--text); }                                                          /* Small paragraph */
 
-/* Temporary working links in the header */
-.tl-dev { position: absolute; right: calc(max(16px, env(safe-area-inset-right)) + 136px); top: 24px; display: flex; gap: 13px; }
+/* ToolBox: the working tools in one header menu, hidden unless switched on in this browser (js/toolbox.js) */
+html:not(.tools-on) .tl-dev, html:not(.tools-on) .img-no, html:not(.tools-on) .foot .hint { display: none !important; }
+html:not(.tools-on) .page-title .k { visibility: hidden; }                        /* page code tag: hidden, its space kept so nothing moves */
+html:not(.tools-on) .toc .k, html:not(.tools-on) .toc li.todo { display: none; }   /* page codes and unfinished pages in Contents */
+.tl-dev { position: absolute; right: calc(max(16px, env(safe-area-inset-right)) + 136px); top: 21px; }
+.tb-btn { font: 400 11px/1 var(--body); letter-spacing: .06em; color: var(--muted); background: none; border: 1px dashed rgba(143,139,152,.55);
+  border-radius: 3px; padding: 6px 9px; cursor: pointer; }
+.tb-btn:hover, .tl-dev.open .tb-btn { color: var(--pale); border-color: var(--line); }
+.tb-menu { display: none; position: absolute; right: 0; top: calc(100% + 6px); z-index: 30; min-width: 150px; padding: 6px 0;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 4px; box-shadow: 0 8px 24px rgba(0,0,0,.5); }
+.tl-dev.open .tb-menu { display: grid; }
+.tb-menu a { font: 400 12px/1 var(--body); letter-spacing: .05em; color: var(--text); text-decoration: none; padding: 8px 14px; white-space: nowrap; }
+.tb-menu a:hover { color: var(--gold); background: rgba(245,202,151,.07); }
+.tb-menu .tb-off { margin-top: 4px; padding-top: 10px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
 @media (max-width: 1359px) {
-  .topline { flex-wrap: wrap; }
-  .tl-dev { position: static; flex-basis: 100%; justify-content: center; }
+  .tl-dev { right: calc(max(16px, env(safe-area-inset-right)) + 136px); }
 }
-.tl-dev a { font: 400 11px/1 var(--body); letter-spacing: .06em; color: var(--muted); text-decoration: underline dashed; text-underline-offset: 3px; padding: 6px 0; }
-.tl-dev a:hover { color: var(--pale); }
 
-.tl-dev.toc-dev { position: static; margin: -14px 0 20px; justify-content: flex-start; }
+.tl-dev.toc-dev { position: relative; right: auto; top: auto; display: inline-block; margin: -14px 0 20px; }
+.tl-dev.toc-dev .tb-menu { left: 0; right: auto; }
 
 /* Font Catalogue page */
 .catalogue { display: grid; gap: 6px; max-width: 900px; margin: 0 auto; }

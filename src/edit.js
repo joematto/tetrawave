@@ -620,15 +620,16 @@
   }
   const hasFiles = (e) => e.dataTransfer && [...e.dataTransfer.types].includes('Files');
   let dropHint = null;
+  const toolsOn = () => typeof window.twTools !== 'function' || window.twTools();
   addEventListener('dragover', (e) => {
-    if (!canvas || !hasFiles(e) || innerWidth < 700) return;
+    if (!canvas || !hasFiles(e) || innerWidth < 700 || !toolsOn()) return;
     e.preventDefault(); e.dataTransfer.dropEffect = 'copy';
     if (!dropHint) { dropHint = document.createElement('div'); dropHint.id = 'tw-drop'; dropHint.textContent = 'Drop to add to this page'; document.body.appendChild(dropHint); }
   });
   const unhint = () => { if (dropHint) { dropHint.remove(); dropHint = null; } };
   addEventListener('dragleave', (e) => { if (!e.relatedTarget) unhint(); });
   addEventListener('drop', (e) => {
-    if (!canvas || !hasFiles(e) || innerWidth < 700) return;
+    if (!canvas || !hasFiles(e) || innerWidth < 700 || !toolsOn()) return;
     e.preventDefault(); unhint();
     if (!on) open();
     addFiles(e.dataTransfer.files, e.clientX, e.clientY);

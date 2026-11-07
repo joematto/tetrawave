@@ -190,8 +190,10 @@ def toc(current):
     return '\n'.join(out)
 
 # Temporary working links in the header (set DEV_LINKS = '' to remove them from every page)
-DEV_LINKS = ('<span class="tl-dev"><a href="#edit" data-edit-toggle title="Edit: drag pictures and text boxes, resize pictures by their handles, then Save">Edit</a><a href="#guide" data-guide-toggle title="Vertical alignment guide">Guide</a><a href="#symmetry" data-sym-toggle title="Symmetry guides: a centre line and two lines equally either side">Symmetry</a><a href="#margins" data-margins-toggle title="Margins: a centre line at 840px and light-blue dotted lines 450px either side">Margins</a><a href="#grid" data-grid-toggle title="Sorting grid: every picture on the site, by page and picture number">Grid</a><a href="#type" data-typepal-toggle title="Fonts: floating palette of every lettering style">Fonts</a><a href="#ruler" data-ruler-toggle>Ruler</a>'
-             '</span>')
+DEV_LINKS = ('<span class="tl-dev"><button type="button" class="tb-btn" aria-expanded="false" title="ToolBox (Ctrl+Option+T turns it on and off)">ToolBox ▾</button><span class="tb-menu"><a href="#edit" data-edit-toggle title="Edit: drag pictures and text boxes, resize pictures by their handles, then Save">Edit</a><a href="#guide" data-guide-toggle title="Vertical alignment guide">Guide</a><a href="#symmetry" data-sym-toggle title="Symmetry guides: a centre line and two lines equally either side">Symmetry</a><a href="#margins" data-margins-toggle title="Margins: a centre line at 840px and light-blue dotted lines 450px either side">Margins</a><a href="#grid" data-grid-toggle title="Sorting grid: every picture on the site, by page and picture number">Grid</a><a href="#type" data-typepal-toggle title="Fonts: floating palette of every lettering style">Fonts</a><a href="#ruler" data-ruler-toggle>Ruler</a>'
+             '<a href="#" data-tools-off class="tb-off" title="Hide the ToolBox in this browser (Ctrl+Option+T brings it back)">Turn ToolBox off</a></span></span>')
+# Before the page draws: show the ToolBox only if it was turned on in this browser (see js/toolbox.js)
+TOOLS_FLAG = "<script>try{if(localStorage.getItem('tw-tools')==='on')document.documentElement.classList.add('tools-on')}catch(e){}</script>"
 
 def address(key):
     """Part / Section label for a page, e.g. 'Part II · Section 5'."""
@@ -216,6 +218,7 @@ def shell(key, title, body, home=False, bgvideo='video/background.mp4', bgposter
 <title>{E(title)} · TetraWave</title>
 {FONTS}
 <link rel="stylesheet" href="css/site.css">
+{TOOLS_FLAG}
 </head>
 <body class="{'home' if home else 'inner'}" data-key="{key}" data-edits-saved="{EDITS_SAVED}"{' data-image-numbers' if IMAGE_NUMBERS == 'ALL' or key in IMAGE_NUMBERS else ''}>
 <video class="bg" autoplay muted loop playsinline poster="{bgposter}" aria-hidden="true"><source src="{bgvideo}" type="video/mp4"></video>
@@ -251,7 +254,7 @@ def shell(key, title, body, home=False, bgvideo='video/background.mp4', bgposter
             (f'<a class="next" href="{FILES[nxt]}" title="Next: {E(TITLES[nxt])}">{E(TITLES[nxt])}<span class="arw">›</span></a>' if nxt else '') + '</nav>'
         header += topnav
     foot = '' if home else f'<footer class="foot"><p>Joseph Matto Architect AIA · TetraWave</p><p class="hint">Tip: add <code>#files</code> to this page’s address to see every image’s file name.</p></footer>'
-    return head + header + toc(key) + f'\n<main class="page">\n{body}\n</main>\n{nav}\n{foot}\n<script src="js/site.js" defer></script>\n<script src="js/ruler.js" defer></script>\n<script src="js/typepal.js" defer></script>\n<script src="js/guide.js" defer></script>\n<script src="js/symmetry.js" defer></script>\n<script src="js/margins.js" defer></script>\n<script src="js/sortgrid.js" defer></script>\n<script src="js/edit.js" defer></script>\n</body>\n</html>\n'
+    return head + header + toc(key) + f'\n<main class="page">\n{body}\n</main>\n{nav}\n{foot}\n<script src="js/toolbox.js" defer></script>\n<script src="js/site.js" defer></script>\n<script src="js/ruler.js" defer></script>\n<script src="js/typepal.js" defer></script>\n<script src="js/guide.js" defer></script>\n<script src="js/symmetry.js" defer></script>\n<script src="js/margins.js" defer></script>\n<script src="js/sortgrid.js" defer></script>\n<script src="js/edit.js" defer></script>\n</body>\n</html>\n'
 
 # ---- Pages --------------------------------------------------------------
 os.makedirs(OUT, exist_ok=True)
@@ -717,7 +720,7 @@ for _k, _p in sorted(EDITS.items()):
             rows.append(f"{_e['path']},{_k},\"{TITLES.get(_k, _k)}\",{_k},{_e.get('pw', '')},{_e.get('ph', '')},added in the Edit tool: {_e.get('name', '')}")
 open(os.path.join(OUT, 'IMAGE-INDEX.csv'), 'w').write('\n'.join(rows) + '\n')
 import shutil
-for f in ('site.js', 'ruler.js', 'guide.js', 'symmetry.js', 'margins.js', 'edit.js'):
+for f in ('toolbox.js', 'site.js', 'ruler.js', 'guide.js', 'symmetry.js', 'margins.js', 'edit.js'):
     shutil.copy(f, os.path.join(OUT, 'js', f))
 shutil.copy('site.css', os.path.join(OUT, 'css', 'site.css'))
 print('built', sorted(os.listdir(OUT)))
