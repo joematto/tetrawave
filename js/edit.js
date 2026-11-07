@@ -166,18 +166,19 @@
 .tw-editing .canvas [data-anim] { opacity: 1 !important; transition: none !important; animation: none !important; }
 .tw-editing .canvas > .el[data-eid] { cursor: move; }
 .tw-editing .canvas > .el[data-eid]:hover { outline: 1px dashed rgba(90,170,255,.75); outline-offset: 0; }
+.tw-editing .canvas > .el.tw-selected:hover, .tw-editing .canvas > .el.tw-selected { outline: none; }
 .tw-editing .canvas > .el[data-eid] * { user-select: none; -webkit-user-select: none; }
 .tw-editing .canvas img { -webkit-user-drag: none; }
-#tw-sel { position: absolute; z-index: 2147480000; pointer-events: none; outline: 1.5px solid #3aa0ff; box-shadow: 0 0 0 .5px rgba(0,0,0,.5); }
+#tw-sel { position: absolute; z-index: 2147480000; pointer-events: none; outline: var(--px, 1px) solid #3aa0ff; }   /* a hairline at any page scale */
 #tw-sel i { position: absolute; width: var(--hs); height: var(--hs); margin: calc(var(--hs) / -2) 0 0 calc(var(--hs) / -2); background: #fff; border: 1px solid #2a86e0; pointer-events: auto; box-sizing: border-box; }
 #tw-sel i[data-h=nw] { left: 0; top: 0; cursor: nwse-resize; } #tw-sel i[data-h=n] { left: 50%; top: 0; cursor: ns-resize; }
 #tw-sel i[data-h=ne] { left: 100%; top: 0; cursor: nesw-resize; } #tw-sel i[data-h=e] { left: 100%; top: 50%; cursor: ew-resize; }
 #tw-sel i[data-h=se] { left: 100%; top: 100%; cursor: nwse-resize; } #tw-sel i[data-h=s] { left: 50%; top: 100%; cursor: ns-resize; }
 #tw-sel i[data-h=sw] { left: 0; top: 100%; cursor: nesw-resize; } #tw-sel i[data-h=w] { left: 0; top: 50%; cursor: ew-resize; }
 /* the side handles run the whole length of each edge, so a tall box can be stretched from anywhere along its side */
-#tw-sel i[data-h=e], #tw-sel i[data-h=w] { top: 0; height: 100%; margin-top: 0; width: var(--hs); background: rgba(58,160,255,.28); border-color: rgba(42,134,224,.8); }
-#tw-sel i[data-h=n], #tw-sel i[data-h=s] { left: 0; width: 100%; margin-left: 0; height: var(--hs); background: rgba(58,160,255,.28); border-color: rgba(42,134,224,.8); }
-#tw-sel i[data-h=e]:hover, #tw-sel i[data-h=w]:hover, #tw-sel i[data-h=n]:hover, #tw-sel i[data-h=s]:hover { background: rgba(58,160,255,.6); }
+/* the side handles are invisible grab strips along the whole edge (the edge itself stays a hairline) */
+#tw-sel i[data-h=e], #tw-sel i[data-h=w] { top: 0; height: 100%; margin-top: 0; width: var(--hs); background: transparent; border: 0; }
+#tw-sel i[data-h=n], #tw-sel i[data-h=s] { left: 0; width: 100%; margin-left: 0; height: var(--hs); background: transparent; border: 0; }
 #tw-sel i[data-h=nw], #tw-sel i[data-h=ne], #tw-sel i[data-h=se], #tw-sel i[data-h=sw] { z-index: 1; }
 .tw-snap { position: absolute; z-index: 2147480001; pointer-events: none; background: #ff2fd0; }
 #tw-tbar { position: fixed; left: 50%; top: 86px; transform: translateX(-50%); z-index: 2147483300; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
@@ -191,6 +192,7 @@
 #tw-tbar .sw { min-width: 18px !important; width: 18px; height: 18px !important; padding: 0 !important; border-radius: 50%; border: 1px solid rgba(255,255,255,.5); }
 #tw-tbar .tb-done { background: #2a86e0; border-color: #2a86e0; }
 .tw-editing .canvas > .el.tw-typing { cursor: text; outline: 1px solid #ffb43a !important; }
+#tw-sel.typing { outline: none; }   /* only the orange line while typing */
 .tw-editing .canvas > .el.tw-typing * { user-select: text; -webkit-user-select: text; cursor: text; }
 .tw-editing .canvas > .el.tw-typing .txt:focus { outline: none; }
 #tw-drop { position: fixed; inset: 10px; z-index: 2147483400; pointer-events: none; border: 3px dashed #3aa0ff; border-radius: 10px;
@@ -234,10 +236,14 @@
     if (!sel) { box.style.display = 'none'; return; }
     const r = rectOf(sel), s = scale();
     Object.assign(box.style, { display: '', left: r.x + 'px', top: r.y + 'px', width: r.w + 'px', height: r.h + 'px' });
-    box.style.setProperty('--hs', (9 / s) + 'px');
+    box.style.setProperty('--hs', (9 / s) + 'px'); box.style.setProperty('--px', (1 / s) + 'px');
     box.querySelectorAll('i').forEach((h) => { h.style.display = isText(sel) && !/^[ew]$/.test(h.dataset.h) ? 'none' : ''; });
   }
-  function select(e) { sel = e; place(); label(); }
+  function select(e) {
+    if (sel && sel !== e) sel.classList.remove('tw-selected');
+    sel = e; if (e) e.classList.add('tw-selected');
+    place(); label();
+  }
   function commit(e, v, prev) {
     const id = e.dataset.eid, o = orig.get(id);
     undo.push({ id, prev: prev ? { ...prev } : null });
@@ -490,7 +496,7 @@
     editing = e; select(e);
     before = stateOf(e);
     const t = txtOf(e);
-    t.contentEditable = 'true'; t.spellcheck = true; e.classList.add('tw-typing');
+    t.contentEditable = 'true'; t.spellcheck = true; e.classList.add('tw-typing'); if (box) box.classList.add('typing');
     t.focus();
     if (!bar) makeBar();
     bar.style.display = '';
@@ -501,7 +507,7 @@
   function endText() {
     if (!editing) return;
     const e = editing, t = txtOf(e);
-    t.removeAttribute('contenteditable'); t.removeAttribute('spellcheck'); e.classList.remove('tw-typing');
+    t.removeAttribute('contenteditable'); t.removeAttribute('spellcheck'); e.classList.remove('tw-typing'); if (box) box.classList.remove('typing');
     t.querySelectorAll('span:not([class]):not([style])').forEach((d) => d.replaceWith(...d.childNodes));   // tidy empty wrappers
     editing = null; saved = null;
     if (bar) bar.style.display = 'none';
@@ -537,6 +543,7 @@
   function hide() {
     if (!on) return;
     endText(); if (bar) { bar.remove(); bar = null; }
+    if (sel) sel.classList.remove('tw-selected');
     on = false; sel = null; clearGuides();
     document.body.classList.remove('tw-editing');
     box && box.remove(); panel && panel.remove(); box = panel = null;
