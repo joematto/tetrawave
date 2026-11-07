@@ -40,32 +40,32 @@
  },
  "P2": {
   "T:paper": {
-   "x": 45,
+   "x": 497,
    "y": 37,
    "w": 445,
    "h": 1513
   },
   "I:images/P2/P2-01_the-symbols-of-the-1st-temple.jpg": {
-   "x": 513.5,
+   "x": 50,
    "y": 37,
    "w": 440,
    "h": 255
   },
   "T:JapansFirstZenTemple": {
-   "x": 608,
+   "x": 50,
    "y": 292,
-   "w": 250.5,
+   "w": 433.5,
    "h": 27
   },
   "I:images/P2/P2-02_circle-square-triangle-to-rt.png": {
-   "x": 550.5,
-   "y": 380.5,
+   "x": 30,
+   "y": 332.5,
    "w": 460,
    "h": 705
   },
   "T:excerpt": {
-   "x": 513.5,
-   "y": 1108,
+   "x": 50,
+   "y": 1059.5,
    "w": 440,
    "h": 600
   }
