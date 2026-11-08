@@ -335,7 +335,7 @@ def tetra_text(it, inner, a):
 
 def model_text(it, inner, a):
     if it['paras'] and it['paras'][0][3].startswith('MODELS'):
-        return inner, ' data-anim="fade"'
+        return inner, ''   # "MODELS !!" is there as the page opens (was a fade after a delay)
     return inner, a
 
 def p2_text(it, inner, a):
