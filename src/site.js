@@ -260,17 +260,22 @@ function wordBurst(IN, HOLD, OUT) {
   const layer = document.createElement('div');
   layer.className = 'word-burst'; layer.setAttribute('aria-hidden', 'true');
   document.body.appendChild(layer);
-  BURST_WORDS.forEach(([t, x, y, size], i) => {
+  // Random and chaotic: every visit each word gets its own size (on average 20% smaller than the picture, from
+  // about half to one and a third of that), a tilt, a nudge off its place and its own moment of leaving the core.
+  // At their brightest the words are 60% transparent.
+  const PEAK = 0.4, rnd = (a, b) => a + Math.random() * (b - a);
+  BURST_WORDS.forEach(([t, x, y, size]) => {
     const e = document.createElement('span');
     e.innerHTML = t;
-    const px = at[0] + (x - cx) * s, py = at[1] + (y - cy) * s;
-    Object.assign(e.style, { left: px + 'px', top: py + 'px', fontSize: (size * s) + 'px' });
+    const px = at[0] + (x - cx) * s + rnd(-28, 28) * s, py = at[1] + (y - cy) * s + rnd(-16, 16) * s;
+    Object.assign(e.style, { left: px + 'px', top: py + 'px', fontSize: (size * s * 0.8 * rnd(0.55, 1.35)) + 'px' });
     layer.appendChild(e);
-    const dx = core[0] - px, dy = core[1] - py, lag = (i * 137) % 500;   // each word leaves the core a moment apart
-    const start = `translate(-50%, -50%) translate(${dx}px, ${dy}px) scale(.25)`, home = 'translate(-50%, -50%)';
-    const away = `translate(-50%, -50%) translate(${-dx * 0.08}px, ${-dy * 0.08}px) scale(1.04)`;
-    e.animate([{ opacity: 0, transform: start }, { opacity: 1, transform: home }], { duration: IN - lag, delay: lag, easing: 'cubic-bezier(.25,.55,.45,1)', fill: 'both' });   // still moving until it lands at 2 s
-    e.animate([{ opacity: 1, transform: home }, { opacity: 0, transform: away }], { duration: OUT, delay: IN + HOLD, easing: 'cubic-bezier(.35,.15,.6,1)', fill: 'forwards' });   // a slow, gentle start
+    const dx = core[0] - px, dy = core[1] - py, lag = rnd(0, 600), tilt = rnd(-14, 14);
+    const start = `translate(-50%, -50%) translate(${dx}px, ${dy}px) rotate(${rnd(-90, 90)}deg) scale(.2)`;
+    const home = `translate(-50%, -50%) rotate(${tilt}deg)`;
+    const away = `translate(-50%, -50%) translate(${-dx * rnd(0.05, 0.14)}px, ${-dy * rnd(0.05, 0.14)}px) rotate(${tilt + rnd(-6, 6)}deg) scale(${rnd(1, 1.08)})`;
+    e.animate([{ opacity: 0, transform: start }, { opacity: PEAK, transform: home }], { duration: IN - lag, delay: lag, easing: 'cubic-bezier(.25,.55,.45,1)', fill: 'both' });   // still moving until it lands at 2 s
+    e.animate([{ opacity: PEAK, transform: home }, { opacity: 0, transform: away }], { duration: OUT, delay: IN + HOLD, easing: 'cubic-bezier(.35,.15,.6,1)', fill: 'forwards' });   // a slow, gentle start
   });
   setTimeout(() => layer.remove(), IN + HOLD + OUT + 200);
 }
