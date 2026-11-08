@@ -190,7 +190,7 @@ def toc(current):
     return '\n'.join(out)
 
 # Temporary working links in the header (set DEV_LINKS = '' to remove them from every page)
-DEV_LINKS = ('<span class="tl-dev"><button type="button" class="tb-btn" aria-expanded="false" title="ToolBox (Ctrl+Option+T turns it on and off)">ToolBox ▾</button><span class="tb-menu"><a href="#edit" data-edit-toggle title="Edit: drag pictures and text boxes, resize pictures by their handles, then Save">Edit</a><a href="#guide" data-guide-toggle title="Vertical alignment guide">Guide</a><a href="#symmetry" data-sym-toggle title="Symmetry guides: a centre line and two lines equally either side">Symmetry</a><a href="#margins" data-margins-toggle title="Margins: fixed lines on the page, centre at 493 and dotted margins 400 either side (span 800)">Margins</a><a href="#grid" data-grid-toggle title="Sorting grid: every picture on the site, by page and picture number">Grid</a><a href="#type" data-typepal-toggle title="Fonts: floating palette of every lettering style">Fonts</a><a href="#ruler" data-ruler-toggle>Ruler</a>'
+DEV_LINKS = ('<span class="tl-dev"><button type="button" class="tb-btn" aria-expanded="false" title="ToolBox (Ctrl+Option+T turns it on and off)">ToolBox ▾</button><span class="tb-menu"><a href="#edit" data-edit-toggle title="Edit: drag pictures and text boxes, resize pictures by their handles, then Save">Edit</a><a href="#upload" data-upload-toggle title="Upload: a tray to drop pictures and PDFs onto, then drag them onto the page">Upload</a><a href="#guide" data-guide-toggle title="Vertical alignment guide">Guide</a><a href="#symmetry" data-sym-toggle title="Symmetry guides: a centre line and two lines equally either side">Symmetry</a><a href="#margins" data-margins-toggle title="Margins: fixed lines on the page, centre at 493 and dotted margins 400 either side (span 800)">Margins</a><a href="#grid" data-grid-toggle title="Sorting grid: every picture on the site, by page and picture number">Grid</a><a href="#type" data-typepal-toggle title="Fonts: floating palette of every lettering style">Fonts</a><a href="#ruler" data-ruler-toggle>Ruler</a>'
              '<a href="#" data-tools-off class="tb-off" title="Hide the ToolBox in this browser (Ctrl+Option+T brings it back)">Turn ToolBox off</a></span></span>')
 # Before the page draws: show the ToolBox only if it was turned on in this browser (see js/toolbox.js)
 TOOLS_FLAG = "<script>try{if(localStorage.getItem('tw-tools')==='on')document.documentElement.classList.add('tools-on')}catch(e){}</script>"
@@ -717,6 +717,7 @@ for c, (path, ow, oh) in sorted(MEDIA.items(), key=lambda kv: kv[1][0]):
     on = ' '.join(dict.fromkeys(used.get(path, [])))
     rows.append(f'{path},{k},"{TITLES.get(k, k)}",{on},{ow},{oh},{c}')
 for _k, _p in sorted(EDITS.items()):
+    if _k.startswith('_'): continue   # the Upload tray's pictures are listed as pending (images/PENDING)
     for _e in _p.values():
         if _e.get('new') and _e.get('path') and not _e.get('hide'):
             rows.append(f"{_e['path']},{_k},\"{TITLES.get(_k, _k)}\",{_k},{_e.get('pw', '')},{_e.get('ph', '')},added in the Edit tool: {_e.get('name', '')}")

@@ -58,8 +58,14 @@ def main(src):
                         raw = decode(e['data'])
                         im = Image.open(io.BytesIO(raw))
                         ext = 'png' if im.format == 'PNG' else 'jpg'
-                    n = next_number(key, disk)
-                    path = f'images/{key}/{key}-{n:02d}_{slug(e.get("name"))}.{ext}'
+                    if key == '_TRAY':   # left in the Upload tray: a pending picture (Sorting Grid, Unassigned column)
+                        base, i = slug(e.get('name')), 1
+                        path = f'images/PENDING/{base}.{ext}'
+                        while path in disk:
+                            i += 1; path = f'images/PENDING/{base}-{i}.{ext}'
+                    else:
+                        n = next_number(key, disk)
+                        path = f'images/{key}/{key}-{n:02d}_{slug(e.get("name"))}.{ext}'
                     out = os.path.join(NEW, path)
                     os.makedirs(os.path.dirname(out), exist_ok=True)
                     if raw is not None and im.format in ('JPEG', 'PNG'):

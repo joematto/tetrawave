@@ -1,4 +1,4 @@
-// TetraWave ToolBox: all the working tools (Edit, Guide, Symmetry, Margins, Grid, Fonts, Ruler) sit in one
+// TetraWave ToolBox: all the working tools (Edit, Upload, Guide, Symmetry, Margins, Grid, Fonts, Ruler) sit in one
 // "ToolBox" menu in the header, which is switched OFF unless turned on in this browser, so visitors never see
 // the tools or change anything by accident.
 //
@@ -9,7 +9,7 @@
 // ignored, and files dropped on a page are not added. (The page sets html.tools-on before it draws; see build.py.)
 (() => {
   const KEY = 'tw-tools';
-  const TOOL_HASHES = ['#edit', '#guide', '#symmetry', '#margins', '#grid', '#type', '#ruler', '#files'];
+  const TOOL_HASHES = ['#edit', '#upload', '#guide', '#symmetry', '#margins', '#grid', '#type', '#ruler', '#files'];
   const root = document.documentElement;
   const isOn = () => root.classList.contains('tools-on');
   const remember = (v) => { try { localStorage.setItem(KEY, v ? 'on' : 'off'); } catch (e) { /* storage unavailable */ } };

@@ -16,6 +16,9 @@
 //  · Copy and paste: click a text box, then Cmd+C copies it and Cmd+V pastes a copy (on this page or any
 //    other), which can be moved and edited like the rest; Cmd+X cuts. Text copied from anywhere else pastes as
 //    a new text box. While typing in a box, pasted text takes the style of the paragraph it goes into.
+//  · Upload (in the ToolBox): a see-through tray to drop pictures and PDFs onto. Drag a picture from the tray
+//    onto the page to place it there. Pictures left in the tray are saved too, and are built into
+//    images/PENDING, so they appear in the Sorting Grid's Unassigned column.
 //  · Changes are kept in this browser and shown on every visit until they are built into the site.
 //    "Save" downloads tetrawave-edits.json (to Downloads); hand that file to Claude to make them permanent.
 (() => {
@@ -125,33 +128,124 @@
       return c.toDataURL('image/jpeg', 0.9);
     }
   }
-  async function addFiles(files, clientX, clientY) {
-    const ok = [...files].filter((f) => /^image\/(jpeg|png|gif|webp)$/.test(f.type) || f.type === 'application/pdf' || /\.pdf$/i.test(f.name));
-    if (!ok.length) { panelTip('Only pictures (JPG, PNG, GIF, WebP) and PDFs can be added.'); return; }
+  const okFiles = (files) => [...files].filter((f) => /^image\/(jpeg|png|gif|webp)$/.test(f.type) || f.type === 'application/pdf' || /\.pdf$/i.test(f.name));
+  async function prepare(file) {   // a dropped file as { name, w, h, data (picture), pdf (the PDF itself, if it was one) }
+    const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+    let url = await readURL(file), pdf = null;
+    if (isPdf) { pdf = url; url = await pdfPreview(pdf); }
+    let [w, h, im] = await imgSize(url);
+    if (!isPdf && Math.max(w, h) > 3000) {   // very large photos are scaled to 3000px on their long side
+      const r = 3000 / Math.max(w, h), cv = document.createElement('canvas'); cv.width = Math.round(w * r); cv.height = Math.round(h * r);
+      cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height); url = cv.toDataURL(file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.92); w = cv.width; h = cv.height;
+    }
+    return { name: file.name, w, h, data: url, pdf };
+  }
+  const newId = () => 'N:' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  function placeOnPage(id, m, clientX, clientY, k) {   // put a picture on the page, centred where it was dropped
     const c = canvas.getBoundingClientRect(), s = scale();
+    const W = Math.min(300, m.w), H = Math.round(W * m.h / m.w);
+    const cx = (clientX - c.left) / s + k * 24, cy = (clientY - c.top) / s + k * 24;
+    const v = { x: Math.round(cx - W / 2), y: Math.round(cy - H / 2), w: W, h: H };
+    const f = makeNew(id, v, m);
+    commit(f, v, null);
+    relayout(); select(f);
+  }
+  async function addFiles(files, clientX, clientY) {
+    const ok = okFiles(files);
+    if (!ok.length) { panelTip('Only pictures (JPG, PNG, GIF, WebP) and PDFs can be added.'); return; }
     let k = 0;
     for (const file of ok) {
       panelTip('Adding ' + file.name + ' …');
-      const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
-      let url = await readURL(file), pdf = null;
-      if (isPdf) { pdf = url; url = await pdfPreview(pdf); }
-      let [w, h, im] = await imgSize(url);
-      if (!isPdf && Math.max(w, h) > 3000) {   // very large photos are scaled to 3000px on their long side
-        const r = 3000 / Math.max(w, h), cv = document.createElement('canvas'); cv.width = Math.round(w * r); cv.height = Math.round(h * r);
-        cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height); url = cv.toDataURL(file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.92); w = cv.width; h = cv.height;
-      }
-      const id = 'N:' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-      const m = { name: file.name, w, h, data: url, pdf };
-      const W = Math.min(300, w), H = Math.round(W * h / w);
-      const cx = (clientX - c.left) / s + k * 24, cy = (clientY - c.top) / s + k * 24;
-      const v = { x: Math.round(cx - W / 2), y: Math.round(cy - H / 2), w: W, h: H };
+      const m = await prepare(file), id = newId();
       await mediaPut(id, m);
-      const f = makeNew(id, v, m);
-      commit(f, v, null);
-      relayout(); select(f); k++;
+      placeOnPage(id, m, clientX, clientY, k++);
     }
     panelTip(TIP);
   }
+
+  // ---- Upload tray: pictures waiting to be placed (kept under the '_TRAY' key with the other edits) ----
+  const TRAY = '_TRAY';
+  let tray = null;
+  const trayCss = `
+#tw-tray { position: fixed; left: 24px; top: 96px; width: 33vw; height: 33vh; min-width: 260px; min-height: 180px; z-index: 2147483250;
+  display: flex; flex-direction: column; resize: both; overflow: hidden; border-radius: 8px; border: 2px dashed rgba(143,208,255,.7);
+  background: rgba(16,26,44,.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); box-shadow: 0 8px 30px rgba(0,0,0,.45);
+  color: #e6eef8; font: 400 12px/1.4 system-ui, -apple-system, sans-serif; }
+#tw-tray.over { background: rgba(40,110,190,.45); border-color: #bfe6ff; }
+#tw-tray .tr-head { display: flex; align-items: center; gap: 8px; padding: 7px 10px; cursor: move; background: rgba(10,16,28,.55); user-select: none; }
+#tw-tray .tr-head b { font-weight: 600; letter-spacing: .05em; flex: 1; }
+#tw-tray .tr-head button { font: 500 11px/1 system-ui, sans-serif; padding: 5px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,.3); background: rgba(255,255,255,.08); color: #fff; cursor: pointer; }
+#tw-tray .tr-head button[data-a=save] { background: #2a86e0; border-color: #2a86e0; }
+#tw-tray .tr-body { flex: 1; overflow: auto; padding: 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; align-content: start; }
+#tw-tray .tr-empty { grid-column: 1 / -1; align-self: center; text-align: center; padding: 30px 10px; color: #bfd6ee; font-size: 14px; }
+#tw-tray .tr-item { position: relative; background: rgba(0,0,0,.35); border-radius: 4px; padding: 4px; cursor: grab; }
+#tw-tray .tr-item img { display: block; width: 100%; height: 80px; object-fit: contain; pointer-events: none; }
+#tw-tray .tr-item span { display: block; margin-top: 3px; font-size: 10px; color: #c9d6e6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#tw-tray .tr-item button { position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; padding: 0; border-radius: 50%; border: 0; background: rgba(0,0,0,.7); color: #fff; cursor: pointer; font: 600 11px/18px system-ui; }
+#tw-tray .tr-foot { padding: 5px 10px 7px; font-size: 11px; color: #a9bdd4; background: rgba(10,16,28,.35); }`;
+  const trayItems = () => Object.entries(all[TRAY] || {});
+  async function trayRender() {
+    if (!tray) return;
+    const body = tray.querySelector('.tr-body'), items = trayItems();
+    tray.querySelector('.tr-n').textContent = items.length ? '(' + items.length + ')' : '';
+    if (!items.length) { body.innerHTML = '<div class="tr-empty">Drop pictures or PDFs here</div>'; return; }
+    body.innerHTML = '';
+    for (const [id, v] of items) {
+      const m = await mediaGet(id);
+      const d = document.createElement('div'); d.className = 'tr-item'; d.draggable = true; d.dataset.id = id; d.title = v.name + ' — drag onto the page to place it';
+      d.innerHTML = '<img alt=""><span></span><button type="button" title="Remove from the tray">×</button>';
+      if (m) d.querySelector('img').src = m.data;
+      d.querySelector('span').textContent = v.name;
+      d.addEventListener('dragstart', (e) => { e.dataTransfer.setData(TRAY_TYPE, id); e.dataTransfer.effectAllowed = 'copy'; });
+      d.querySelector('button').addEventListener('click', () => { delete all[TRAY][id]; if (!Object.keys(all[TRAY]).length) delete all[TRAY]; save(all); mediaDel(id); trayRender(); label(); });
+      body.appendChild(d);
+    }
+  }
+  async function trayAdd(files) {
+    const ok = okFiles(files);
+    if (!ok.length) return;
+    tray.querySelector('.tr-foot').textContent = 'Adding ' + ok.length + ' file' + (ok.length > 1 ? 's' : '') + ' …';
+    for (const file of ok) {
+      const m = await prepare(file), id = newId();
+      await mediaPut(id, m);
+      (all[TRAY] = all[TRAY] || {})[id] = { new: true, tray: true, name: m.name, pw: m.w, ph: m.h, t: Date.now() };
+      save(all);
+    }
+    tray.querySelector('.tr-foot').textContent = TRAY_TIP;
+    trayRender(); label();
+  }
+  async function placeFromTray(id, clientX, clientY) {
+    if (!canvas) return;
+    const m = await mediaGet(id); if (!m) return;
+    if (!on) open();
+    delete all[TRAY][id]; if (!Object.keys(all[TRAY]).length) delete all[TRAY]; save(all);
+    placeOnPage(id, m, clientX, clientY, 0);
+    trayRender();
+  }
+  const TRAY_TYPE = 'application/x-tetrawave-tray';
+  const TRAY_TIP = 'Drag a picture onto the page to place it. Pictures left here go to the Unassigned column when saved and built in.';
+  function trayOpen() {
+    if (tray) return;
+    if (!document.getElementById('tw-tray-css')) { const st = document.createElement('style'); st.id = 'tw-tray-css'; st.textContent = trayCss; document.head.appendChild(st); }
+    tray = document.createElement('div'); tray.id = 'tw-tray';
+    tray.innerHTML = '<div class="tr-head"><b>UPLOAD <span class="tr-n"></span></b><button type="button" data-a="save">Save</button><button type="button" data-a="close">Close</button></div>' +
+      '<div class="tr-body"></div><div class="tr-foot"></div>';
+    tray.querySelector('.tr-foot').textContent = TRAY_TIP;
+    document.body.appendChild(tray);
+    tray.addEventListener('click', (e) => { const a = e.target.closest('[data-a]'); if (!a) return; if (a.dataset.a === 'close') trayClose(); else download(); });
+    tray.addEventListener('dragover', (e) => { if (!hasFiles(e)) return; e.preventDefault(); e.stopPropagation(); e.dataTransfer.dropEffect = 'copy'; tray.classList.add('over'); });
+    tray.addEventListener('dragleave', (e) => { if (!tray.contains(e.relatedTarget)) tray.classList.remove('over'); });
+    tray.addEventListener('drop', (e) => { if (!hasFiles(e)) return; e.preventDefault(); e.stopPropagation(); tray.classList.remove('over'); trayAdd(e.dataTransfer.files); });
+    tray.querySelector('.tr-head').addEventListener('pointerdown', (e) => {   // move the tray by its title bar
+      if (e.target.closest('button')) return;
+      const r = tray.getBoundingClientRect(), ox = e.clientX - r.left, oy = e.clientY - r.top;
+      const mv = (m) => { tray.style.left = Math.max(0, m.clientX - ox) + 'px'; tray.style.top = Math.max(0, m.clientY - oy) + 'px'; };
+      const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); };
+      addEventListener('pointermove', mv); addEventListener('pointerup', up);
+    });
+    trayRender();
+  }
+  function trayClose() { if (tray) { tray.remove(); tray = null; } if (location.hash === '#upload') history.replaceState(null, '', location.pathname + location.search); }
 
   // pending edits for this page: drop those already built in, apply the rest
   let all = load();
@@ -451,7 +545,9 @@
     a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }));
     a.download = 'tetrawave-edits.json'; document.body.appendChild(a); a.click();
     setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
-    panel.querySelector('.e-tip').textContent = 'Saved tetrawave-edits.json to your Downloads. Tell Claude to build it in.';
+    const done = 'Saved tetrawave-edits.json to your Downloads. Tell Claude to build it in.';
+    if (panel) panel.querySelector('.e-tip').textContent = done;
+    if (tray) tray.querySelector('.tr-foot').textContent = done;
   }
   const blockClick = (ev) => { if (on && ev.target.closest('.canvas') && !ev.target.closest('.sl-prev,.sl-next')) { ev.preventDefault(); if (!(editing && inEdit(ev.target))) ev.stopPropagation(); } };
   const onDbl = (ev) => {
@@ -621,7 +717,9 @@
   const hasFiles = (e) => e.dataTransfer && [...e.dataTransfer.types].includes('Files');
   let dropHint = null;
   const toolsOn = () => typeof window.twTools !== 'function' || window.twTools();
+  const hasTray = (e) => e.dataTransfer && [...e.dataTransfer.types].includes(TRAY_TYPE);
   addEventListener('dragover', (e) => {
+    if (canvas && hasTray(e) && innerWidth >= 700) { e.preventDefault(); e.dataTransfer.dropEffect = 'copy'; return; }
     if (!canvas || !hasFiles(e) || innerWidth < 700 || !toolsOn()) return;
     e.preventDefault(); e.dataTransfer.dropEffect = 'copy';
     if (!dropHint) { dropHint = document.createElement('div'); dropHint.id = 'tw-drop'; dropHint.textContent = 'Drop to add to this page'; document.body.appendChild(dropHint); }
@@ -629,14 +727,19 @@
   const unhint = () => { if (dropHint) { dropHint.remove(); dropHint = null; } };
   addEventListener('dragleave', (e) => { if (!e.relatedTarget) unhint(); });
   addEventListener('drop', (e) => {
+    if (canvas && hasTray(e) && innerWidth >= 700) { e.preventDefault(); placeFromTray(e.dataTransfer.getData(TRAY_TYPE), e.clientX, e.clientY); return; }
     if (!canvas || !hasFiles(e) || innerWidth < 700 || !toolsOn()) return;
     e.preventDefault(); unhint();
     if (!on) open();
     addFiles(e.dataTransfer.files, e.clientX, e.clientY);
   });
   document.addEventListener('click', (e) => {
+    const u = e.target.closest('[data-upload-toggle]');
+    if (u) { e.preventDefault(); tray ? trayClose() : trayOpen(); return; }
     const t = e.target.closest('[data-edit-toggle]');
     if (t) { e.preventDefault(); on ? hide() : open(); }
   });
   if (location.hash === '#edit') open();
+  if (location.hash === '#upload') trayOpen();
+  addEventListener('hashchange', () => { if (location.hash === '#upload') trayOpen(); });
 })();
