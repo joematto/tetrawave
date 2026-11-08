@@ -323,8 +323,9 @@
 #tw-edit button { font: 500 11px/1 system-ui, sans-serif; padding: 6px 9px; border-radius: 4px; border: 1px solid rgba(255,255,255,.28); background: rgba(255,255,255,.06); color: #fff; cursor: pointer; }
 #tw-edit button:hover { background: rgba(255,255,255,.16); }
 #tw-edit button[data-a=save] { background: #2a86e0; border-color: #2a86e0; }
+#tw-edit button.on { background: #f0a020; border-color: #f0a020; color: #111; }
 #tw-edit button:disabled { opacity: .4; cursor: default; }`;
-  let on = false, panel = null, sel = null, box = null, sels = [];   // sel: the item clicked; sels: everything selected
+  let on = false, panel = null, sel = null, box = null, sels = [], several = false;   // several: 'Select several' button is on   // sel: the item clicked; sels: everything selected
   const undo = [];
   const groupOf = (e) => e.dataset.group ? els.filter((x) => x.dataset.group === e.dataset.group && x.style.display !== 'none') : [e];
 
@@ -462,7 +463,7 @@
     const e = handle ? sel : ev.target.closest('.canvas > .el[data-eid]');
     if (!e || !byId.has(e.dataset.eid)) { if (ev.target.closest('.canvas')) marquee(ev); return; }
     ev.preventDefault(); ev.stopPropagation();
-    const add = ev.shiftKey || ev.metaKey || ev.ctrlKey;
+    const add = ev.shiftKey || ev.metaKey || ev.ctrlKey || several;
     if (add) { select(e, true); if (!sels.includes(e)) return; }
     else if (!sels.includes(e)) select(e);
     if (!handle && sels.length > 1) { dragMany(ev); return; }
@@ -535,7 +536,7 @@
     addEventListener('pointermove', mv); addEventListener('pointerup', up);
   }
   function marquee(ev) {   // drag a box from an empty part of the page to select everything it touches
-    const add = ev.shiftKey || ev.metaKey || ev.ctrlKey, s = scale(), c0 = canvas.getBoundingClientRect();
+    const add = ev.shiftKey || ev.metaKey || ev.ctrlKey || several, s = scale(), c0 = canvas.getBoundingClientRect();
     const a = { x: (ev.clientX - c0.left) / s, y: (ev.clientY - c0.top) / s };
     let band = null;
     const mv = (m) => {
@@ -807,13 +808,13 @@
     panel = document.createElement('div'); panel.id = 'tw-edit';
     panel.innerHTML = `<b>EDIT</b> · ${KEY}<div class="e-sel"></div>
       <p class="e-tip">${TIP}</p>
-      <div class="e-row"><button type="button" data-a="group" title="Group the selected items (Cmd+G)">Group</button><button type="button" data-a="ungroup" title="Ungroup (Cmd+Shift+G)">Ungroup</button>
+      <div class="e-row"><button type="button" data-a="several" title="While on, each click adds or removes an item (same as Shift-click)">Select several</button><button type="button" data-a="group" title="Group the selected items (Cmd+G)">Group</button><button type="button" data-a="ungroup" title="Ungroup (Cmd+Shift+G)">Ungroup</button>
       <button type="button" data-a="undo">Undo</button><button type="button" data-a="reset">Reset page</button>
       <button type="button" data-a="save">Save</button><button type="button" data-a="close">Done</button></div>`;
     document.body.appendChild(panel);
     panel.addEventListener('click', (e) => {
       const a = e.target.closest('button'); if (!a) return;
-      ({ group: groupSel, ungroup: ungroupSel, undo: doUndo, reset: resetPage, save: download, close: hide })[a.dataset.a]();
+      ({ several: () => { several = !several; a.classList.toggle('on', several); a.textContent = several ? 'Select several: ON' : 'Select several'; panelTip(several ? 'Click items to add or remove them from the selection. Click the button again to finish.' : TIP); }, group: groupSel, ungroup: ungroupSel, undo: doUndo, reset: resetPage, save: download, close: hide })[a.dataset.a]();
     });
     if (innerWidth < 700) panel.querySelector('.e-tip').textContent = 'Widen the window to edit (the page stacks on phones).';
     addEventListener('pointerdown', onDown, true); addEventListener('keydown', onKey); addEventListener('click', blockClick, true); addEventListener('dblclick', onDbl, true);
@@ -824,6 +825,7 @@
   function hide() {
     if (!on) return;
     endText(); if (bar) { bar.remove(); bar = null; }
+    several = false;
     if (sel) sel.classList.remove('tw-selected');
     on = false; sel = null; clearGuides();
     document.body.classList.remove('tw-editing');
