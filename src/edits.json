@@ -1,73 +1,347 @@
 {
  "TETRA": {
   "N:on-growth-and-form-cover": {
-   "x": 514,
-   "y": 696,
-   "w": 123,
-   "h": 190,
    "new": true,
-   "name": "On Growth and Form (book cover).jpg",
+   "path": "images/TETRA/TETRA-18_on-growth-and-form-book-cover.jpg",
    "pw": 654,
    "ph": 1011,
-   "path": "images/TETRA/TETRA-18_on-growth-and-form-book-cover.jpg"
+   "name": "On Growth and Form (book cover).jpg",
+   "x": 511,
+   "y": 532.5,
+   "w": 184,
+   "h": 284,
+   "t": 1794083801021
+  },
+  "T:1966OnGrowthFormOnGrowthandF": {
+   "x": 513,
+   "y": 134,
+   "w": 422.5,
+   "h": 184,
+   "t": 1794083766827
+  },
+  "T:AsIopenedthethickbookforthef": {
+   "x": 514,
+   "y": 301.5,
+   "w": 421.5,
+   "h": 276,
+   "t": 1794083767873
+  },
+  "T:TetrahedralGeometryDiscovery": {
+   "x": 511,
+   "y": -20.5,
+   "w": 480,
+   "h": 178,
+   "html": "<h2 class=\"big two-line\" style=\"font-size: 31px;\"><span style=\"font-size: 31px;\"><span style=\"white-space: normal\"><span>Discovery Time-line</span></span></span></h2>",
+   "t": 1794083607280
+  },
+  "T:Forover50YearsIhavebeenonajo": {
+   "x": 514,
+   "y": 19.5,
+   "w": 419,
+   "h": 100,
+   "t": 1794083764845
+  },
+  "T:1986SynergeticsAftertheKunda": {
+   "x": 65.5,
+   "y": 1327.5,
+   "w": 870,
+   "h": 319,
+   "t": 1794083843028
+  },
+  "I:images/TETRA/TETRA-01_herschel-drawings-of-radiolaria.jpg": {
+   "x": 55,
+   "y": -13.5,
+   "w": 443.5,
+   "h": 846,
+   "t": 1794083793847
+  },
+  "T:1967In1967Idiscoveredtheamaz": {
+   "x": 510,
+   "y": 847.5,
+   "w": 421.5,
+   "h": 138,
+   "t": 1794083825897
+  },
+  "I:images/TETRA/TETRA-02_montreal-expo-1969-dome-by-fuller.jpg": {
+   "x": 65.5,
+   "y": 847.5,
+   "w": 433,
+   "h": 463,
+   "t": 1794083818303
+  },
+  "I:images/TETRA/TETRA-03_ideas-integrities.jpg": {
+   "x": 514,
+   "y": 993,
+   "w": 207,
+   "h": 311.5,
+   "t": 1794083830431
+  },
+  "T:1970TheeraofDomeBooksandGeod": {
+   "x": 532,
+   "y": 1572.5,
+   "w": 403.5,
+   "h": 250,
+   "t": 1794084101845
+  },
+  "I:images/TETRA/TETRA-04_domebooks-2.jpg": {
+   "x": 65.5,
+   "y": 1584.5,
+   "w": 459,
+   "h": 592.5,
+   "t": 1794083881478
+  },
+  "I:images/TETRA/TETRA-05_domebook-models-page.jpg": {
+   "x": 65.5,
+   "y": 2196.5,
+   "w": 459,
+   "h": 639.5,
+   "t": 1794083866830
+  },
+  "T:1974IndustrialDesignModelMak": {
+   "x": 536,
+   "y": 1904,
+   "w": 388.5,
+   "h": 568,
+   "t": 1794084099527
+  },
+  "I:images/TETRA/TETRA-06_alexander-graham-bell-kites.jpg": {
+   "x": 65.5,
+   "y": 2855,
+   "w": 456,
+   "h": 884,
+   "fit": "cover",
+   "t": 1794083916044
+  },
+  "T:1970TetrahedronKitesMyfirsty": {
+   "x": 536,
+   "y": 2855,
+   "w": 435.5,
+   "h": 498,
+   "t": 1794084111163
+  },
+  "I:images/TETRA/TETRA-07_joe-on-nantucket-w-tetrahedron-kite.jpg": {
+   "x": 65.5,
+   "y": 3764.5,
+   "w": 895,
+   "h": 497,
+   "fit": "cover",
+   "t": 1794084115285
+  },
+  "I:images/TETRA/TETRA-11_tetrahedron-kite-sketch.jpg": {
+   "x": 524.5,
+   "y": 4275.5,
+   "w": 430.5,
+   "h": 424,
+   "t": 1794084127561
+  },
+  "I:images/TETRA/TETRA-09_bell-and-daisy-bell-kissing-in-tetrahedron.jpg": {
+   "x": 277,
+   "y": 4275.5,
+   "w": 241,
+   "h": 254.5,
+   "t": 1794084129293
+  },
+  "I:images/TETRA/TETRA-08_bell-lounging-in-tetrahedron.jpg": {
+   "x": 65.5,
+   "y": 4275.5,
+   "w": 207.5,
+   "h": 254.5,
+   "t": 1794084130611
+  },
+  "I:images/TETRA/TETRA-10_calcified-tetrahedron-sketch.jpg": {
+   "x": 65.5,
+   "y": 4543,
+   "w": 452.5,
+   "h": 573,
+   "t": 1794084135911
+  },
+  "T:TetrahedralDrawingsGaloreAft": {
+   "x": 524.5,
+   "y": 4724.5,
+   "w": 440,
+   "h": 312,
+   "html": "<p><span style=\"font-size: 24px;\">Tetrahedral Drawings Galore!</span></p>\n<p>After the Kundalini Awakening&nbsp;I was compelled to draw these&nbsp;sketches one&nbsp;day reminding me of Alexander Graham Bell and his work&nbsp;with Tetrahedral Kites. This is a sketch of a 4-frequency lightweight kite which I built in 1978 from balsam wood and string.</p>\n<p>I would also&nbsp;pass the time drawing images both&nbsp;remembered and imagined,&nbsp;to try and capture the essence of those beautiful drawings by Herschel in \"On Growth and Form\" that I had first seen in 1968 in High School.</p>",
+   "t": 1794084196204
+  },
+  "I:images/TETRA/TETRA-12_pythagoras.jpg": {
+   "x": 63.5,
+   "y": 5245,
+   "w": 435,
+   "h": 651,
+   "t": 1794084050320
+  },
+  "I:images/TETRA/TETRA-13_luca-paciolli.jpg": {
+   "x": 510,
+   "y": 5245,
+   "w": 449.5,
+   "h": 368.5,
+   "t": 1794084199800
+  },
+  "T:1987DivinaProportioneInmyfir": {
+   "x": 513,
+   "y": 5582.5,
+   "w": 446.5,
+   "h": 422,
+   "t": 1794084201697
+  },
+  "T:PythagorasLETNOONEIGNORANTOF": {
+   "x": 65.5,
+   "y": 5910.5,
+   "w": 471,
+   "h": 156,
+   "t": 1794084207408
   }
  },
  "SKETCH": {
   "I:images/SKETCH/SKETCH-12_image.jpg": {
    "x": 473.5,
-   "y": 46,
-   "w": 410,
-   "h": 513.5
+   "y": 31.5,
+   "w": 421.5,
+   "h": 528,
+   "t": 1794087792230
   },
   "I:images/SKETCH/SKETCH-01_knapkin-sketch-magnetic-pulse.jpg": {
-   "x": 110.5,
-   "y": 46,
-   "w": 354,
-   "h": 509.5
+   "x": 100,
+   "y": 31,
+   "w": 364.5,
+   "h": 524.5,
+   "t": 1794087789128
   },
   "I:images/SKETCH/SKETCH-02_exploratory-sketch-helices-tetras.jpg": {
-   "x": 108,
-   "y": 569,
-   "w": 775.5,
-   "h": 580.5
+   "x": 100,
+   "y": 568,
+   "w": 791,
+   "h": 592.5,
+   "t": 1794087805768
   },
   "I:images/SKETCH/SKETCH-03_tetra-brane-collages.jpg": {
-   "x": 119.5,
-   "y": 1245,
-   "w": 775.5,
-   "h": 990.5
+   "x": 99,
+   "y": 1172,
+   "w": 795,
+   "h": 1015.5,
+   "t": 1794087804698
+  },
+  "I:images/SKETCH/SKETCH-06_tetra-spiral-vertibrate.jpg": {
+   "x": 502,
+   "y": 2200,
+   "w": 393,
+   "h": 499,
+   "t": 1794087819870
+  },
+  "I:images/SKETCH/SKETCH-04_ripple-intersections-edited.jpg": {
+   "x": 100,
+   "y": 2198.5,
+   "w": 394,
+   "h": 500.5,
+   "t": 1794087814696
+  },
+  "I:images/SKETCH/SKETCH-07_scaled-octave-rotation-edited.jpg": {
+   "x": 503,
+   "y": 2713.5,
+   "w": 388,
+   "h": 453,
+   "t": 1794087836072
+  },
+  "I:images/SKETCH/SKETCH-05_spinerrettes-edited.jpg": {
+   "x": 100,
+   "y": 2706.5,
+   "w": 395,
+   "h": 467,
+   "t": 1794087834102
+  },
+  "I:images/SKETCH/SKETCH-08_crystal-star-bridge.jpg": {
+   "x": 107,
+   "y": 3184.5,
+   "w": 387,
+   "h": 580.5,
+   "t": 1794087851250
+  },
+  "I:images/SKETCH/SKETCH-09_stargate-drawing-dome-over-star-table.jpg": {
+   "x": 500,
+   "y": 3184.5,
+   "w": 391,
+   "h": 586.5,
+   "t": 1794087845922
+  },
+  "I:images/SKETCH/SKETCH-10_tetra-facility.jpg": {
+   "x": 98.5,
+   "y": 3771,
+   "w": 396.5,
+   "h": 585.5,
+   "fit": "cover",
+   "t": 1794087875294
+  },
+  "I:images/SKETCH/SKETCH-11_stargate-temple-sketch.jpg": {
+   "x": 500,
+   "y": 3771,
+   "w": 393,
+   "h": 585.5,
+   "t": 1794087872474
   }
  },
  "P2": {
   "T:paper": {
    "x": 497,
-   "y": 37,
-   "w": 445,
-   "h": 1513
+   "y": 43.5,
+   "w": 396.5,
+   "h": 1513,
+   "t": 1794087723729
   },
   "I:images/P2/P2-01_the-symbols-of-the-1st-temple.jpg": {
-   "x": 50,
-   "y": 37,
-   "w": 440,
-   "h": 255
+   "x": 94.5,
+   "y": 66.5,
+   "w": 389,
+   "h": 225.5,
+   "t": 1794087713709
   },
   "T:JapansFirstZenTemple": {
-   "x": 50,
+   "x": 94.5,
    "y": 292,
    "w": 433.5,
-   "h": 27
+   "h": 27,
+   "t": 1794087727223
   },
   "I:images/P2/P2-02_circle-square-triangle-to-rt.png": {
-   "x": 30,
-   "y": 332.5,
-   "w": 460,
-   "h": 705
+   "x": 85.5,
+   "y": 324.5,
+   "w": 429,
+   "h": 657.5,
+   "t": 1794087729754
   },
   "T:excerpt": {
-   "x": 50,
-   "y": 1059.5,
+   "x": 43.5,
+   "y": 1046.5,
    "w": 440,
-   "h": 600
+   "h": 600,
+   "html": "<div class=\"paper excerpt\">\n<p style=\"font-size: 16px; color: rgb(255, 255, 255);\">It is intriguing to consider the meaning emerging from the integration of these shapes in terms of both their geometric and mathematical relationships. For if we superimpose the three, using the circle as the limiting shape, we discover a very interesting set of relationships (Fig. 2). Given the radius of the circle as unity or one, we find that the edge length of the square within the circle is the square root of two, and that the edge length of the triangle within the circle is the square root of three. The significance of these relationships is that the edge length of the square is precisely the height of a tetrahedron whose base is the same triangle originally circumscribed by the circle (Fig. 3).</p>\n<p style=\"font-size: 16px; color: rgb(255, 255, 255);\"><br></p>\n<p style=\"font-size: 16px; color: rgb(255, 255, 255);\"><br></p>\n</div>\n",
+   "hide": true,
+   "t": 1794062220265
+  },
+  "NT:mw6is44ez42c": {
+   "x": 94.5,
+   "y": 963,
+   "w": 389,
+   "h": 587,
+   "html": "<div class=\"paper\">\n<p class=\"pt pt1\" style=\"line-height: 1;\"><br></p>\n<p style=\"font-size: 16px; color: rgb(255, 255, 255);\">This particular combination of shapes provides all the necessary mathematical information, to transcend from&nbsp; 2-dimensional \"Flatland\", in a world of symbols and shadows.... into the space of 3-dimensional reality, namely in the form of a Tetrahedron, the most primary of space enclosing volumes.&nbsp; This transformation from 2-Dimensions to 3-Dimensions can be thought of as a connective \"bridge\" both abstract and physically real.&nbsp; It is no wonder that these shapes and their relationships have always been considered primary elements in the design and creation of sacred spaces and places. And in fact, the idea that simply conceiving and contemplating the relationships can initiate a change in consciousness.</p><p style=\"font-size: 16px; color: rgb(255, 255, 255);\">To uncover such an elegant connection is to experience delight in the underlying continuity of geometry and the inherent unity of&nbsp; the universe. In contemplating this discovery, one may find profound enlightenment or curious amusement. But certainly, if anything, one must be inspired to look further and to examine other possibilities of connective order and integrated harmony in the transitions between&nbsp; dimensions. If the transcendence between 2-dimensions to 3-dimensions is a matter of the correct relationships and alignments, then perhaps transformations between other dimensions may similarly exist.&nbsp;</p>\n</div>\n",
+   "new": "text",
+   "t": 1794087741056
+  }
+ },
+ "GRID": {
+  "I:images/GRID/GRID-01_tetrahelix-cross-section-11-11-grid.jpg": {
+   "x": 94.5,
+   "y": 6.5,
+   "w": 799.5,
+   "h": 675.5,
+   "t": 1794090780613
+  },
+  "T:TheTetraWaveFootprintcanbepe": {
+   "x": 149,
+   "y": 698,
+   "w": 696,
+   "h": 176,
+   "html": "<p style=\"text-align: center; font-size: 20px;\">The Tetra-Wave \"Footprint\" can be perfectly superimposed onto an orthogonal</p>\n<p style=\"text-align: center; font-size: 20px;\">2-dimensional Grid with an 11:11 ratio...</p>\n<p style=\"text-align: center; font-size: 20px;\">where each grid square equals the core diameter of \"1\".</p>\n<p style=\"text-align: center; font-size: 20px;\">This then results in a overall Diameter of the waveform perimeter as 9 Grid Squares. Amazingly, the centroids of each TOT Pair are in a PHI relationship to each other along the vector lines tangent to the Core equaling the golden mean ratio of1.6180.</p>",
+   "t": 1794090874213
   }
  }
 }
