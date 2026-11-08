@@ -523,7 +523,7 @@ def coil_text(it, inner, a):
 
 NO_FADE = {'TETRA', 'P2'}
 # items that are there as the page opens and then fade out (milliseconds)
-FADE_OUT = {'COIL': {'NT:mw8fl61pbibu': 1200}}   # the line 'Words from No-where !!??'
+FADE_OUT = {'COIL': {'NT:mw8fl61pbibu': 2400}}   # the line 'Words from No-where !!??'
 # Sub-heading standard (set 5 Nov 2026 from Part II, Section 1): the top of a sub-heading's capitals sits 37px (3/8 inch)
 # below the baseline of the page title. Each value is how far that page's content moves up (negative = down) to meet it.
 SUBHEAD_SHIFT = {'SKETCH': -4, 'MODEL': 19, 'P3': 34, 'PRE': 58, 'POST': 58, 'HELIX': 36, 'TETRA': 25, 'BUILD': 36, 'TILT': -7, 'TORUS': 46}   # pages with no fade-ins at all
