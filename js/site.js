@@ -239,6 +239,42 @@ for (const g of document.querySelectorAll('[data-slides]')) {
   addEventListener('keydown', (e) => { if (!over) return; if (e.key === 'ArrowLeft') show(i - 1); if (e.key === 'ArrowRight') show(i + 1); });
 }
 
+// StarCoil: the explosion of words from the "Star Coil" picture, set as real text (so nothing behind it but the
+// galaxy). Positions and sizes are measured on the 672 x 660 picture. The words burst out of the galaxy's core
+// (in the background video) and settle in the space between the page title and the bottom of the window,
+// centred across the galaxy.
+const BURST_WORDS = [   // [text (HTML), centre x, centre y, size] on the picture
+  ['structure', 539, 34, 44], ['induces', 540, 78, 27], ['fractal <b>reactance</b>', 440, 123, 27],
+  ['Transmission remission', 465, 170, 23], ['re(a)<i>ssembles</i> dilation', 498, 206, 21],
+  ['Telemetry', 370, 266, 29], ['traction', 338, 297, 17], ['counters', 223, 301, 21], ['rarefaction', 224, 331, 21],
+  ['sinus reminds us', 125, 360, 19], ['Sculpture', 521, 305, 23], ['formation', 540, 335, 21],
+  ['positions in', 438, 365, 26], ['time us', 438, 401, 24], ['of forces', 290, 436, 29], ['mid', 290, 477, 28],
+  ['immense', 290, 518, 29], ['motion', 467, 586, 25], ['compression', 107, 122, 21], ['bi-lateral', 56, 48, 19]];
+function wordBurst(IN, HOLD, OUT) {
+  const w = innerWidth, h = innerHeight, k = Math.max(w / 1920, h / 1080);
+  const core = [(w - 1920 * k) / 2 + 0.508 * 1920 * k, (h - 1080 * k) / 2 + 0.478 * 1080 * k];   // the galaxy's core
+  const box = [8, 12, 635, 600], cx = (box[0] + box[2]) / 2, cy = (box[1] + box[3]) / 2;
+  const t = document.querySelector('.page-title'), top = Math.max(80, (t ? t.getBoundingClientRect().bottom : 150) + 24), bottom = h - 24;
+  const s = Math.min((bottom - top) / (box[3] - box[1]) * 0.94, 0.9 * w / (box[2] - box[0]));
+  const at = [core[0], (top + bottom) / 2];   // where the middle of the cloud of words settles
+  const layer = document.createElement('div');
+  layer.className = 'word-burst'; layer.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(layer);
+  BURST_WORDS.forEach(([t, x, y, size], i) => {
+    const e = document.createElement('span');
+    e.innerHTML = t;
+    const px = at[0] + (x - cx) * s, py = at[1] + (y - cy) * s;
+    Object.assign(e.style, { left: px + 'px', top: py + 'px', fontSize: (size * s) + 'px' });
+    layer.appendChild(e);
+    const dx = core[0] - px, dy = core[1] - py, lag = (i * 137) % 500;   // each word leaves the core a moment apart
+    const start = `translate(-50%, -50%) translate(${dx}px, ${dy}px) scale(.25)`, home = 'translate(-50%, -50%)';
+    const away = `translate(-50%, -50%) translate(${-dx * 0.08}px, ${-dy * 0.08}px) scale(1.04)`;
+    e.animate([{ opacity: 0, transform: start }, { opacity: 1, transform: home }], { duration: IN - lag, delay: lag, easing: 'cubic-bezier(.16,.84,.3,1)', fill: 'both' });
+    e.animate([{ opacity: 1, transform: home }, { opacity: 0, transform: away }], { duration: OUT, delay: IN + HOLD, easing: 'ease-in-out', fill: 'forwards' });
+  });
+  setTimeout(() => layer.remove(), IN + HOLD + OUT + 200);
+}
+
 // StarCoil poem: revealed line by line, top to bottom, over about 2 seconds — the title, then each row of the two
 // columns together, then "Motion", then the initials (timing below).
 {
@@ -250,10 +286,15 @@ for (const g of document.querySelectorAll('[data-slides]')) {
     for (let i = 0; i < Math.max(L.length, R.length); i++) steps.push([L[i], R[i]].filter(Boolean));
     if (part('motion')) steps.push([part('motion')]);
     if (part('sig')) steps.push([part('sig')]);
-    // "Star Coil" waits 0.5 s, fades in over 2 s; the moment it is in place the lines roll down (about 2 s)
-    const WAIT = 500, TITLE = 2000, PAUSE = 0, ROLL = 2000, EACH = 450, gap = (ROLL - EACH) / Math.max(1, steps.length - 2);
+    // First the explosion of words (wordBurst, below): they burst out of the galaxy's core and fade in (2 s), stay
+    // (2 s) and fade out (2 s). When they are half faded out (5 s) the lines roll down (about 2 s); "Star Coil"
+    // fades in over the 2 s before that. Without the burst (phones, reduced motion): title after 0.5 s as before.
+    const burst = innerWidth >= 700 && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const B_IN = 2000, B_HOLD = 2000, B_OUT = 2000, ROLL_AT = B_IN + B_HOLD + B_OUT / 2;
+    const TITLE = 2000, WAIT = burst ? ROLL_AT - TITLE : 500, PAUSE = 0, ROLL = 2000, EACH = 450, gap = (ROLL - EACH) / Math.max(1, steps.length - 2);
     steps.flat().forEach((el) => el.classList.add('poem-line'));          // hidden until the reveal starts
-    const go = () => steps.forEach((s, i) => s.forEach((el) => {
+    const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); };
+    const reveal = () => steps.forEach((s, i) => s.forEach((el) => {
       el.classList.remove('poem-line');
       if (!el.animate) return;
       if (i === 0) el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: TITLE, delay: WAIT, easing: 'ease-in-out', fill: 'backwards' });

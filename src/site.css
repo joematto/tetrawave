@@ -328,3 +328,11 @@ a.wbtn:hover { color: var(--gold); }
 
 /* StarCoil poem, revealed line by line (js/site.js) */
 .js .poem-line { opacity: 0; }
+
+/* StarCoil: the explosion of words over the galaxy, before the poem rolls down (js/site.js, wordBurst) */
+.word-burst { position: fixed; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
+.word-burst > span { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; opacity: 0;
+  font: 400 16px/1 "Gill Sans", "Gill Sans MT", Calibri, var(--body); letter-spacing: .01em; color: #fff;
+  text-shadow: 0 0 6px rgba(255,255,255,.35), 0 1px 10px rgba(6,7,12,.6); }
+.word-burst span b { font-weight: 600; }
+.word-burst span i { font-style: normal; font-size: 1.35em; }   /* the large "ssembles" of re(a)ssembles */
