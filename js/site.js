@@ -270,7 +270,7 @@ function wordBurst(IN, HOLD, OUT) {
     const start = `translate(-50%, -50%) translate(${dx}px, ${dy}px) scale(.25)`, home = 'translate(-50%, -50%)';
     const away = `translate(-50%, -50%) translate(${-dx * 0.08}px, ${-dy * 0.08}px) scale(1.04)`;
     e.animate([{ opacity: 0, transform: start }, { opacity: 1, transform: home }], { duration: IN - lag, delay: lag, easing: 'cubic-bezier(.25,.55,.45,1)', fill: 'both' });   // still moving until it lands at 2 s
-    e.animate([{ opacity: 1, transform: home }, { opacity: 0, transform: away }], { duration: OUT, delay: IN + HOLD, easing: 'cubic-bezier(.2,.35,.6,1)', fill: 'forwards' });   // starts fading at once
+    e.animate([{ opacity: 1, transform: home }, { opacity: 0, transform: away }], { duration: OUT, delay: IN + HOLD, easing: 'cubic-bezier(.35,.15,.6,1)', fill: 'forwards' });   // a slow, gentle start
   });
   setTimeout(() => layer.remove(), IN + HOLD + OUT + 200);
 }
@@ -286,11 +286,11 @@ function wordBurst(IN, HOLD, OUT) {
     for (let i = 0; i < Math.max(L.length, R.length); i++) steps.push([L[i], R[i]].filter(Boolean));
     if (part('motion')) steps.push([part('motion')]);
     if (part('sig')) steps.push([part('sig')]);
-    // First the explosion of words (wordBurst, below): they burst out of the galaxy's core and fade in (2 s), then
-    // a quarter second after they land fade out (5 s). The lines roll down at 5 s (about 2 s); "Star Coil" fades in over the 2 s
-    // before that. Without the burst (phones, reduced motion): title after 0.5 s as before.
+    // First the explosion of words (wordBurst, below): they burst out of the galaxy's core and fade in (2 s), and the
+    // moment they land begin slowly fading out (5 s). The lines roll down at 5 s (about 2 s); "Star Coil" fades in
+    // over the 2 s before that. Without the burst (phones, reduced motion): title after 0.5 s as before.
     const burst = innerWidth >= 700 && !matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const B_IN = 2000, B_HOLD = 250, B_OUT = 5000, ROLL_AT = 5000;   // a quarter second between landing and fading
+    const B_IN = 2000, B_HOLD = 0, B_OUT = 5000, ROLL_AT = 5000;   // the fade-out begins the moment they land
     const TITLE = 2000, WAIT = burst ? ROLL_AT - TITLE : 500, PAUSE = 0, ROLL = 2000, EACH = 450, gap = (ROLL - EACH) / Math.max(1, steps.length - 2);
     steps.flat().forEach((el) => el.classList.add('poem-line'));          // hidden until the reveal starts
     const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); };
