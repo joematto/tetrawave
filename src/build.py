@@ -481,10 +481,10 @@ def model_adjust(page):
     return page
 
 def sketch_adjust(page):
-    # the page title is there as the page opens; the sub-heading under it fades in instead
+    # the page title and the sub-heading under it are both there as the page opens (no fade, no delay)
     for it in page['items']:
         if it['t'] == 'T' and it['paras'] and it['paras'][0][3].startswith('Inception/Ideation'):
-            it['a'] = 'fadeIn'
+            it['a'] = None
             it['paras'][0][3] = 'Ideation & Intuitive Sketches'
             it['b'][1] -= 24                   # raised 1/4 inch
     return page
