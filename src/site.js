@@ -239,11 +239,12 @@ for (const g of document.querySelectorAll('[data-slides]')) {
   addEventListener('keydown', (e) => { if (!over) return; if (e.key === 'ArrowLeft') show(i - 1); if (e.key === 'ArrowRight') show(i + 1); });
 }
 
-// Items marked data-fadeout="ms" are there as the page opens and fade away over that time (e.g. "Words from
-// No-where !!??" on StarCoil). They stay visible while editing.
+// Items marked data-fadeout="fade" or "stay,fade" (milliseconds) are there as the page opens, stay that long and
+// then fade away (e.g. "Words from No-where !!??" on StarCoil). They stay visible while editing.
 for (const el of document.querySelectorAll('[data-fadeout]')) {
+  const [a, b] = el.dataset.fadeout.split(',').map(Number), stay = b === undefined ? 0 : a, fade = b === undefined ? a : b;
   if (el.animate && !document.body.classList.contains('tw-editing'))
-    el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: +el.dataset.fadeout || 1200, easing: 'ease-in', fill: 'forwards' });
+    el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: fade || 1200, delay: stay, easing: stay ? 'cubic-bezier(.25,.1,.5,1)' : 'ease-in', fill: 'forwards' });
 }
 
 // StarCoil: the explosion of words from the "Star Coil" picture, set as real text (so nothing behind it but the
