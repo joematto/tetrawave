@@ -194,98 +194,134 @@
  },
  "SKETCH": {
   "I:images/SKETCH/SKETCH-12_image.jpg": {
-   "x": 473.5,
-   "y": 31.5,
-   "w": 421.5,
-   "h": 528,
-   "t": 1794087792230
+   "x": 438,
+   "y": 46,
+   "w": 453.5,
+   "h": 568.5,
+   "t": 1794174728955
   },
   "I:images/SKETCH/SKETCH-01_knapkin-sketch-magnetic-pulse.jpg": {
-   "x": 100,
+   "x": 99,
    "y": 31,
    "w": 364.5,
    "h": 524.5,
-   "t": 1794087789128
+   "hide": true,
+   "t": 1794174578295
   },
   "I:images/SKETCH/SKETCH-02_exploratory-sketch-helices-tetras.jpg": {
-   "x": 100,
-   "y": 568,
+   "x": 100.5,
+   "y": 623.5,
    "w": 791,
    "h": 592.5,
-   "t": 1794087805768
+   "t": 1794174708859
   },
   "I:images/SKETCH/SKETCH-03_tetra-brane-collages.jpg": {
-   "x": 99,
-   "y": 1172,
+   "x": 99.5,
+   "y": 1223.5,
    "w": 795,
    "h": 1015.5,
-   "t": 1794087804698
+   "t": 1794174708859
   },
   "I:images/SKETCH/SKETCH-06_tetra-spiral-vertibrate.jpg": {
-   "x": 502,
-   "y": 2200,
+   "x": 502.5,
+   "y": 2251.5,
    "w": 393,
    "h": 499,
-   "t": 1794087819870
+   "t": 1794174708859
   },
   "I:images/SKETCH/SKETCH-04_ripple-intersections-edited.jpg": {
-   "x": 100,
-   "y": 2198.5,
+   "x": 100.5,
+   "y": 2250,
    "w": 394,
    "h": 500.5,
-   "t": 1794087814696
+   "t": 1794174708859
   },
   "I:images/SKETCH/SKETCH-07_scaled-octave-rotation-edited.jpg": {
-   "x": 503,
-   "y": 2713.5,
+   "x": 503.5,
+   "y": 2765,
    "w": 388,
    "h": 453,
-   "t": 1794087836072
+   "t": 1794174708859
   },
   "I:images/SKETCH/SKETCH-05_spinerrettes-edited.jpg": {
-   "x": 100,
-   "y": 2706.5,
+   "x": 100.5,
+   "y": 2758,
    "w": 395,
    "h": 467,
-   "t": 1794087834102
+   "t": 1794174708859
   },
   "I:images/SKETCH/SKETCH-08_crystal-star-bridge.jpg": {
-   "x": 107,
-   "y": 3184.5,
+   "x": 107.5,
+   "y": 3236,
    "w": 387,
    "h": 580.5,
-   "t": 1794087851250
+   "t": 1794174708859
   },
   "I:images/SKETCH/SKETCH-09_stargate-drawing-dome-over-star-table.jpg": {
-   "x": 500,
-   "y": 3184.5,
+   "x": 500.5,
+   "y": 3236,
    "w": 391,
    "h": 586.5,
-   "t": 1794087845922
+   "t": 1794174708859
   },
   "I:images/SKETCH/SKETCH-10_tetra-facility.jpg": {
-   "x": 98.5,
-   "y": 3771,
+   "x": 99,
+   "y": 3822.5,
    "w": 396.5,
    "h": 585.5,
-   "fit": "cover",
-   "t": 1794087875294
+   "t": 1794174708859
   },
   "I:images/SKETCH/SKETCH-11_stargate-temple-sketch.jpg": {
-   "x": 500,
-   "y": 3771,
+   "x": 500.5,
+   "y": 3822.5,
    "w": 393,
    "h": 585.5,
-   "t": 1794087872474
+   "t": 1794174708859
+  },
+  "N:mw8d82px6na4": {
+   "x": 183,
+   "y": 14,
+   "w": 300,
+   "h": 588,
+   "hide": true,
+   "new": true,
+   "name": "Knapkin Energy Sketches.jpeg",
+   "pw": 1132,
+   "ph": 2220,
+   "t": 1794174588780
+  },
+  "N:mw8d86v6jpz8": {
+   "x": 161,
+   "y": -59,
+   "w": 300,
+   "h": 747,
+   "hide": true,
+   "new": true,
+   "name": "Knapkin Energy Sketch-w Pulse.jpg",
+   "pw": 892,
+   "ph": 2220,
+   "t": 1794174592845
+  },
+  "N:mw8d8bd883e4": {
+   "x": 99,
+   "y": 43.5,
+   "w": 330,
+   "h": 573.5,
+   "new": true,
+   "name": "Knapkin Energy Sketch Only.jpg",
+   "pw": 892,
+   "ph": 1549,
+   "t": 1794174723019,
+   "path": "images/SKETCH/SKETCH-13_knapkin-energy-sketch-only.jpg"
   }
  },
  "P2": {
   "T:paper": {
    "x": 497,
-   "y": 43.5,
+   "y": 66.5,
    "w": 396.5,
    "h": 1513,
-   "t": 1794087723729
+   "t": 1794175638730
   },
   "I:images/P2/P2-01_the-symbols-of-the-1st-temple.jpg": {
    "x": 94.5,
@@ -302,11 +338,11 @@
    "t": 1794087727223
   },
   "I:images/P2/P2-02_circle-square-triangle-to-rt.png": {
-   "x": 85.5,
-   "y": 324.5,
+   "x": 82.5,
+   "y": 343.5,
    "w": 429,
    "h": 657.5,
-   "t": 1794087729754
+   "t": 1794139302177
   },
   "T:excerpt": {
    "x": 43.5,
@@ -318,13 +354,20 @@
    "t": 1794062220265
   },
   "NT:mw6is44ez42c": {
+   "new": "text",
    "x": 94.5,
-   "y": 963,
+   "y": 1001,
    "w": 389,
    "h": 587,
-   "html": "<div class=\"paper\">\n<p class=\"pt pt1\" style=\"line-height: 1;\"><br></p>\n<p style=\"font-size: 16px; color: rgb(255, 255, 255);\">This particular combination of shapes provides all the necessary mathematical information, to transcend from&nbsp; 2-dimensional \"Flatland\", in a world of symbols and shadows.... into the space of 3-dimensional reality, namely in the form of a Tetrahedron, the most primary of space enclosing volumes.&nbsp; This transformation from 2-Dimensions to 3-Dimensions can be thought of as a connective \"bridge\" both abstract and physically real.&nbsp; It is no wonder that these shapes and their relationships have always been considered primary elements in the design and creation of sacred spaces and places. And in fact, the idea that simply conceiving and contemplating the relationships can initiate a change in consciousness.</p><p style=\"font-size: 16px; color: rgb(255, 255, 255);\">To uncover such an elegant connection is to experience delight in the underlying continuity of geometry and the inherent unity of&nbsp; the universe. In contemplating this discovery, one may find profound enlightenment or curious amusement. But certainly, if anything, one must be inspired to look further and to examine other possibilities of connective order and integrated harmony in the transitions between&nbsp; dimensions. If the transcendence between 2-dimensions to 3-dimensions is a matter of the correct relationships and alignments, then perhaps transformations between other dimensions may similarly exist.&nbsp;</p>\n</div>\n",
-   "new": "text",
-   "t": 1794087741056
+   "t": 1794139288522
+  },
+  "T:ABridgeacrossDimensions": {
+   "x": 20,
+   "y": -20,
+   "w": 954,
+   "h": 127,
+   "html": "<h3 class=\"ph\" style=\"text-align:center\">A Surprising Discovery !</h3>",
+   "t": 1794175603838
   }
  },
  "GRID": {
@@ -342,6 +385,56 @@
    "h": 176,
    "html": "<p style=\"text-align: center; font-size: 20px;\">The Tetra-Wave \"Footprint\" can be perfectly superimposed onto an orthogonal</p>\n<p style=\"text-align: center; font-size: 20px;\">2-dimensional Grid with an 11:11 ratio...</p>\n<p style=\"text-align: center; font-size: 20px;\">where each grid square equals the core diameter of \"1\".</p>\n<p style=\"text-align: center; font-size: 20px;\">This then results in a overall Diameter of the waveform perimeter as 9 Grid Squares. Amazingly, the centroids of each TOT Pair are in a PHI relationship to each other along the vector lines tangent to the Core equaling the golden mean ratio of1.6180.</p>",
    "t": 1794090874213
+  }
+ },
+ "TILT": {
+  "I:images/MODEL/MODEL-06_tetrahelix-1st-triangle-orientation-studies-models-good2.jpg": {
+   "x": 90.5,
+   "y": 30.5,
+   "w": 799.5,
+   "h": 1100.5,
+   "t": 1794138623330
+  },
+  "T:RotationAnglefor1stBottomFac": {
+   "x": 131,
+   "y": -33,
+   "w": 749,
+   "h": 52,
+   "html": "<h3 class=\"ph ph-wix\" style=\"text-align:center;font-size:16px\"><span style=\"font-size: 20px;\">Rotation Angle relative to a horizontal plane = \u221a2/3.</span></h3><h3 class=\"ph ph-wix\" style=\"text-align:center;font-size:16px\"><span style=\"font-size: 20px;\">Around Median of Bottom Hedral (Face) of 1st TOT</span></h3><h3 class=\"ph ph-wix\" style=\"text-align:center;font-size:16px\"><span style=\"color: rgb(220, 220, 220); font-family: &quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Arial, sans-serif;\">In Egyptian Mathematics, the fraction 2/3 is considered a special, if not, Sacred Number related to the idea of \"UNITY\" ... \"Zero\" was not used. Quantities would be expressed as some fraction of Unity.</span></h3>",
+   "t": 1794138770997
+  }
+ },
+ "BUILD": {
+  "T:TriangletoTetrahedrontoTetra": {
+   "x": 98,
+   "y": -35,
+   "w": 799,
+   "h": 40,
+   "html": "<h3 class=\"ph\" style=\"text-align:center\">\"TOT\" <span style=\"font-size: 15px;\">(Tetra-helically oriented Tetrahedron)</span> to Tetrawaveform</h3>",
+   "t": 1794175849506
+  }
+ },
+ "COIL": {
+  "N:mw8e45bhbw7d": {
+   "x": 456.5,
+   "y": 198.5,
+   "w": 694.5,
+   "h": 682.5,
+   "hide": true,
+   "new": true,
+   "name": "Screenshot 2026-11-08 at 8.55.36\u202fAM.jpg",
+   "pw": 672,
+   "ph": 660,
+   "t": 1794176471166
+  },
+  "NT:mw8fl61pbibu": {
+   "x": 228.5,
+   "y": -31,
+   "w": 523,
+   "h": 35,
+   "html": "<h3 class=\"ph\" style=\"text-align: center; font-size: 28px; color: rgb(255, 255, 255);\">Words from No-where !!??</h3>",
+   "new": "text",
+   "t": 1794178619230
   }
  }
 }

@@ -336,3 +336,4 @@ a.wbtn:hover { color: var(--gold); }
   text-shadow: 0 0 6px rgba(255,255,255,.35), 0 1px 10px rgba(6,7,12,.6); }
 .word-burst span b { font-weight: 600; }
 .word-burst span i { font-style: normal; font-size: 1.35em; }   /* the large "ssembles" of re(a)ssembles */
+.tw-editing .canvas [data-fadeout] { opacity: 1 !important; }   /* faded-out items stay visible while editing */

@@ -239,6 +239,13 @@ for (const g of document.querySelectorAll('[data-slides]')) {
   addEventListener('keydown', (e) => { if (!over) return; if (e.key === 'ArrowLeft') show(i - 1); if (e.key === 'ArrowRight') show(i + 1); });
 }
 
+// Items marked data-fadeout="ms" are there as the page opens and fade away over that time (e.g. "Words from
+// No-where !!??" on StarCoil). They stay visible while editing.
+for (const el of document.querySelectorAll('[data-fadeout]')) {
+  if (el.animate && !document.body.classList.contains('tw-editing'))
+    el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: +el.dataset.fadeout || 1200, easing: 'ease-in', fill: 'forwards' });
+}
+
 // StarCoil: the explosion of words from the "Star Coil" picture, set as real text (so nothing behind it but the
 // galaxy). Positions and sizes are measured on the 672 x 660 picture. The words burst out of the galaxy's core
 // (in the background video) and settle in the space between the page title and the bottom of the window,
