@@ -276,7 +276,9 @@ MOVES = [('MODEL', 'MODEL-06_tetrahelix-1st-triangle-orientation-studies', 'TILT
 GROUP_MOVES = [('MODEL', ['MODEL-10_tetrawave-centroid', 'MODEL-09_image', 'GRID-13_tetrawave-core'], 'DNA')]
 _media0 = json.load(open('media_index.json'))
 # Pictures taken off a page for now (they show in the Sorting Grid's Unassigned column): (page, file name part)
-UNASSIGN = [('PRE', 'PRE-01_prekundalini-artwork'), ('POST', 'PRE-01_prekundalini-artwork')]
+UNASSIGN = [('PRE', 'PRE-01_prekundalini-artwork'), ('POST', 'PRE-01_prekundalini-artwork'),
+            # P2-S3 pictures 9-11 taken off the page (8 Nov); each is still used on other pages
+            ('MODEL', 'MODEL-08_tetrahelixgeometry-1'), ('MODEL', 'MODEL-11_image'), ('MODEL', 'GRID-05_tetrawave-cad-model-light-trace-lines-core')]
 for pg_key, part in UNASSIGN:
     pg_items = LAYOUT[pg_key]['items']
     gone = [it for it in pg_items if it['t'] == 'I' and part in _media0.get(CV.canon(it['src']), [''])[0]]
