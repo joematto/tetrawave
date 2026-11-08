@@ -286,11 +286,11 @@ function wordBurst(IN, HOLD, OUT) {
     for (let i = 0; i < Math.max(L.length, R.length); i++) steps.push([L[i], R[i]].filter(Boolean));
     if (part('motion')) steps.push([part('motion')]);
     if (part('sig')) steps.push([part('sig')]);
-    // First the explosion of words (wordBurst, below): they burst out of the galaxy's core and fade in (2 s), stay
-    // (2 s) and fade out (2 s). When they are half faded out (5 s) the lines roll down (about 2 s); "Star Coil"
-    // fades in over the 2 s before that. Without the burst (phones, reduced motion): title after 0.5 s as before.
+    // First the explosion of words (wordBurst, below): they burst out of the galaxy's core and fade in (2 s), then
+    // straight away fade out (5 s). The lines roll down at 5 s (about 2 s); "Star Coil" fades in over the 2 s
+    // before that. Without the burst (phones, reduced motion): title after 0.5 s as before.
     const burst = innerWidth >= 700 && !matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const B_IN = 2000, B_HOLD = 2000, B_OUT = 2000, ROLL_AT = B_IN + B_HOLD + B_OUT / 2;
+    const B_IN = 2000, B_HOLD = 0, B_OUT = 5000, ROLL_AT = 5000;
     const TITLE = 2000, WAIT = burst ? ROLL_AT - TITLE : 500, PAUSE = 0, ROLL = 2000, EACH = 450, gap = (ROLL - EACH) / Math.max(1, steps.length - 2);
     steps.flat().forEach((el) => el.classList.add('poem-line'));          // hidden until the reveal starts
     const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); };
