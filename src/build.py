@@ -664,7 +664,7 @@ for part in re.split(r'(<h2 class="cat-group">.*?</h2>)', cat):
 def page_pictures(fname):
     h = open(os.path.join(OUT, fname)).read()
     units = []
-    for m in re.finditer(r'<(figure|div) class="el el-([IYG])"(?: data-eid="[^"]*")? data-y="(-?[\d.]+)"[^>]*?style="left:(-?[\d.]+)px[^>]*>(.*?)</(?:figure|div)>(?=\n)', h):
+    for m in re.finditer(r'<(figure|div) class="el el-([IYG])"(?: data-eid="[^"]*")?(?: data-group="[^"]*")? data-y="(-?[\d.]+)"[^>]*?style="left:(-?[\d.]+)px[^>]*>(.*?)</(?:figure|div)>(?=\n)', h):
         kind, y, x, inner = m.group(2), float(m.group(3)), float(m.group(4)), m.group(5)
         srcs = re.findall(r'<img src="([^"]+)"', inner)
         units.append((y, x, srcs if kind in 'YG' else srcs[:1]))

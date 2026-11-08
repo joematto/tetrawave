@@ -156,7 +156,8 @@ def render(key, page, img_info, link, docs, hooks=None, edits=None):
         extra = (hooks or {}).get('style', lambda it: '')(it)
         if it['t'] in 'SR' and w >= 1400:   # a full-width band on Wix: stretch it across the window
             extra += ';left:calc(490px - 50vw);width:100vw'
-        base = (f'class="el el-{it["t"]}" data-eid="{E(eid)}" data-y="{y2}" data-h="{h}" '
+        grp = f' data-group="{E(ed["g"])}"' if ed and ed.get('g') else ''   # grouped in the Edit tool
+        base = (f'class="el el-{it["t"]}" data-eid="{E(eid)}"{grp} data-y="{y2}" data-h="{h}" '
                 f'style="left:{x}px;top:{y2}px;width:{w}px;height:{h}px;z-index:{z + 1};--ar:{w}/{max(h, 1)}{extra}"')
         a = anim_attr(it.get('a'))
         t = it['t']
@@ -253,16 +254,17 @@ def render(key, page, img_info, link, docs, hooks=None, edits=None):
         if not ed.get('new') or ed.get('hide'):
             continue
         x, y2, w, h = ed['x'], ed['y'], ed['w'], ed['h']
+        grp = f' data-group="{E(ed["g"])}"' if ed.get('g') else ''
         if ed['new'] == 'text':   # a text box added by pasting in the Edit tool
             if ed.get('html'):
-                out.append(((y2, x), f'<div class="el el-T" data-eid="{E(eid)}" data-y="{y2}" data-h="{h}" '
+                out.append(((y2, x), f'<div class="el el-T" data-eid="{E(eid)}"{grp} data-y="{y2}" data-h="{h}" '
                                      f'style="left:{x}px;top:{y2}px;width:{w}px;z-index:{950 + n};--ar:{w}/{max(h, 1)}" data-text>'
                                      f'<div class="txt">{clean_html(ed["html"])}</div></div>'))
             continue
         if not ed.get('path'):
             continue
         alt = re.sub(r'^[A-Z0-9]+-\d+_', '', ed['path'].rsplit('/', 1)[-1].rsplit('.', 1)[0]).replace('-', ' ')
-        out.append(((y2, x), f'<figure class="el el-I" data-eid="{E(eid)}" data-y="{y2}" data-h="{h}" '
+        out.append(((y2, x), f'<figure class="el el-I" data-eid="{E(eid)}"{grp} data-y="{y2}" data-h="{h}" '
                              f'style="left:{x}px;top:{y2}px;width:{w}px;height:{h}px;z-index:{900 + n};--ar:{w}/{max(h, 1)}" data-file="{ed["path"]}">'
                              f'<img src="{ed["path"]}" alt="{E(alt)}" loading="lazy" decoding="async" '
                              f'style="left:0;top:0;width:100%;height:100%;object-fit:cover"></figure>'))

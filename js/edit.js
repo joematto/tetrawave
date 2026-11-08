@@ -19,6 +19,9 @@
 //  · Upload (in the ToolBox): a see-through tray to drop pictures and PDFs onto. Drag a picture from the tray
 //    onto the page to place it there. Pictures left in the tray are saved too, and are built into
 //    images/PENDING, so they appear in the Sorting Grid's Unassigned column.
+//  · Several items: Shift-click (or Cmd-click) adds or removes items, or drag a box over them from an empty part
+//    of the page. Group (Cmd+G) ties them together so a click selects them all and they move as a block;
+//    Ungroup (Cmd+Shift+G) separates them again. Groups are saved and built in like the other edits.
 //  · Changes are kept in this browser and shown on every visit until they are built into the site.
 //    "Save" downloads tetrawave-edits.json (to Downloads); hand that file to Claude to make them permanent.
 (() => {
@@ -37,15 +40,17 @@
   const cur = (e) => ({ x: parseFloat(e.style.left) || 0, y: +e.dataset.y || 0, w: parseFloat(e.style.width) || e.offsetWidth, h: +e.dataset.h || e.offsetHeight });
   const orig = new Map(els.map((e) => {
     const img = isPic(e) ? e.querySelector('img') : null, txt = isText(e) ? e.querySelector('.txt') : null;
-    return [e.dataset.eid, { ...cur(e), imgStyle: img ? img.getAttribute('style') : null, html: txt ? txt.innerHTML : undefined }];
+    return [e.dataset.eid, { ...cur(e), imgStyle: img ? img.getAttribute('style') : null, html: txt ? txt.innerHTML : undefined, g: e.dataset.group || '' }];
   }));
   const same = (a, b) => !b.isNew && ['x', 'y', 'w', 'h'].every((k) => Math.abs(a[k] - b[k]) < 0.6) && (a.fit || '') === (b.fit || '')
-    && (a.html === undefined || a.html === b.html) && !a.hide === !b.hide;
+    && (a.html === undefined || a.html === b.html) && !a.hide === !b.hide && (a.g === undefined || (a.g || '') === (b.g || ''));
   const entry = (e, v) => {   // what is stored for an item: its position, plus crop / edited text when changed
     const o = orig.get(e.dataset.eid), r = { x: v.x, y: v.y, w: v.w, h: v.h };
     if (v.fit) r.fit = v.fit;
     if (v.html !== undefined && v.html !== o.html) r.html = v.html;
     if (v.hide) r.hide = true;
+    const g = v.g !== undefined ? v.g : o.g;   // its group (kept on every entry so a later save never drops it)
+    if (g) r.g = g; else if (o.g) r.g = '';
     if (o.isNew && o.isText) Object.assign(r, { new: 'text', html: v.html !== undefined ? v.html : o.html });
     else if (o.isNew) Object.assign(r, { new: true, name: o.name, pw: o.pw, ph: o.ph });
     r.t = Date.now();   // when it was made: once a saved file containing it has been built in, the browser forgets it
@@ -54,6 +59,7 @@
 
   function apply(e, v) {
     e.style.display = v.hide ? 'none' : '';
+    if (v.g !== undefined) { if (v.g) e.dataset.group = v.g; else delete e.dataset.group; }
     e.style.left = v.x + 'px';
     e.dataset.y = v.y;
     e.style.width = v.w + 'px';
@@ -288,6 +294,9 @@
 #tw-sel i[data-h=e], #tw-sel i[data-h=w] { top: 0; height: 100%; margin-top: 0; width: var(--hs); background: transparent; border: 0; }
 #tw-sel i[data-h=n], #tw-sel i[data-h=s] { left: 0; width: 100%; margin-left: 0; height: var(--hs); background: transparent; border: 0; }
 #tw-sel i[data-h=nw], #tw-sel i[data-h=ne], #tw-sel i[data-h=se], #tw-sel i[data-h=sw] { z-index: 1; }
+.tw-band { position: absolute; z-index: 2147480002; pointer-events: none; border: 1px dashed #3aa0ff; background: rgba(58,160,255,.12); }
+#tw-sel.multi { outline-style: dashed; }
+.tw-editing .canvas > .el[data-group].tw-selected { box-shadow: 0 0 0 var(--px, 1px) rgba(58,160,255,.55); }
 .tw-snap { position: absolute; z-index: 2147480001; pointer-events: none; background: #ff2fd0; }
 #tw-tbar { position: fixed; left: 50%; top: 86px; transform: translateX(-50%); z-index: 2147483300; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
   max-width: calc(100vw - 24px); padding: 7px 9px; border-radius: 6px; background: rgba(14,18,30,.96); box-shadow: 0 6px 24px rgba(0,0,0,.55); font: 500 12px/1 system-ui, sans-serif; color: #fff; }
@@ -315,8 +324,9 @@
 #tw-edit button:hover { background: rgba(255,255,255,.16); }
 #tw-edit button[data-a=save] { background: #2a86e0; border-color: #2a86e0; }
 #tw-edit button:disabled { opacity: .4; cursor: default; }`;
-  let on = false, panel = null, sel = null, box = null;
+  let on = false, panel = null, sel = null, box = null, sels = [];   // sel: the item clicked; sels: everything selected
   const undo = [];
+  const groupOf = (e) => e.dataset.group ? els.filter((x) => x.dataset.group === e.dataset.group && x.style.display !== 'none') : [e];
 
   const scale = () => canvas.getBoundingClientRect().width / 980 || 1;
   const rectOf = (e) => {   // an element's rendered box on the 980px page
@@ -331,7 +341,15 @@
     panel.querySelector('[data-a=undo]').disabled = !undo.length;
     panel.querySelector('[data-a=reset]').disabled = !(all[KEY] && Object.keys(all[KEY]).length);
     const t = panel.querySelector('.e-sel');
+    panel.querySelector('[data-a=group]').disabled = !(sels.length > 1 && !(sels[0].dataset.group && sels.every((x) => x.dataset.group === sels[0].dataset.group)));
+    panel.querySelector('[data-a=ungroup]').disabled = !sels.some((x) => x.dataset.group);
     if (!sel) { t.textContent = 'Click an item to select it.'; return; }
+    if (sels.length > 1) {
+      const grouped = sels.every((x) => x.dataset.group && x.dataset.group === sels[0].dataset.group);
+      const u = union(sels);
+      t.textContent = `${sels.length} items ${grouped ? '· grouped' : 'selected'}\nx ${Math.round(u.x)}  y ${Math.round(u.y)}  w ${Math.round(u.w)}  h ${Math.round(u.h)}`;
+      t.style.whiteSpace = 'pre-line'; return;
+    }
     const v = cur(sel); let kind = isPic(sel) ? 'picture' : isText(sel) ? 'text box' : 'item';
     const name = isPic(sel) ? (sel.dataset.file || '').split('/').pop() : '';
     if (orig.get(sel.dataset.eid) && orig.get(sel.dataset.eid).isNew) kind = isText(sel) ? 'new text box' : 'new picture';
@@ -339,18 +357,62 @@
       (all[KEY] && all[KEY][sel.dataset.eid] ? '  · changed' : '');
     t.style.whiteSpace = 'pre-line';
   }
+  const union = (list) => {
+    const rs = list.map(rectOf), x = Math.min(...rs.map((r) => r.x)), y = Math.min(...rs.map((r) => r.y));
+    return { x, y, w: Math.max(...rs.map((r) => r.x + r.w)) - x, h: Math.max(...rs.map((r) => r.y + r.h)) - y };
+  };
   function place() {
     if (!box) return;
     if (!sel) { box.style.display = 'none'; return; }
-    const r = rectOf(sel), s = scale();
+    const multi = sels.length > 1, r = multi ? union(sels) : rectOf(sel), s = scale();
+    box.classList.toggle('multi', multi);
     Object.assign(box.style, { display: '', left: r.x + 'px', top: r.y + 'px', width: r.w + 'px', height: r.h + 'px' });
     box.style.setProperty('--hs', (9 / s) + 'px'); box.style.setProperty('--px', (1 / s) + 'px');
-    box.querySelectorAll('i').forEach((h) => { h.style.display = isText(sel) && !/^[ew]$/.test(h.dataset.h) ? 'none' : ''; });
+    box.querySelectorAll('i').forEach((h) => { h.style.display = multi || (isText(sel) && !/^[ew]$/.test(h.dataset.h)) ? 'none' : ''; });
   }
-  function select(e) {
-    if (sel && sel !== e) sel.classList.remove('tw-selected');
-    sel = e; if (e) e.classList.add('tw-selected');
+  function select(e, add) {   // add: Shift / Cmd-click — add the item (with its group) or take it away
+    let next;
+    if (!e) next = [];
+    else {
+      const g = groupOf(e);
+      if (add) next = sels.includes(e) ? sels.filter((x) => !g.includes(x)) : [...sels, ...g.filter((x) => !sels.includes(x))];
+      else next = g;
+    }
+    sels.forEach((x) => { if (!next.includes(x)) x.classList.remove('tw-selected'); });
+    next.forEach((x) => x.classList.add('tw-selected'));
+    sels = next;
+    sel = sels.includes(e) ? e : sels[0] || null;
     place(); label();
+  }
+  function setSelection(list) {
+    sels.forEach((x) => { if (!list.includes(x)) x.classList.remove('tw-selected'); });
+    list.forEach((x) => x.classList.add('tw-selected'));
+    sels = list.slice(); sel = sels[0] || null;
+    place(); label();
+  }
+  function commitMany(list) {   // several items changed together: one step to undo
+    const steps = [];
+    for (const [e, v, prev] of list) {
+      const id = e.dataset.eid, o = orig.get(id);
+      steps.push({ id, prev: prev ? { ...prev } : null });
+      const r = entry(e, v);
+      if (same({ ...r, html: r.html !== undefined ? r.html : o.html }, o)) { if (all[KEY]) delete all[KEY][id]; } else page()[id] = r;
+    }
+    undo.push({ many: steps });
+    if (all[KEY] && !Object.keys(all[KEY]).length) delete all[KEY];
+    save(all); label();
+  }
+  function groupSel() {
+    if (sels.length < 2) return;
+    const gid = 'g' + Date.now().toString(36);
+    commitMany(sels.map((e) => { const st = stateOf(e), v = { ...st, g: gid }; apply(e, v); return [e, v, st]; }));
+    select(sel); panelTip('Grouped ' + sels.length + ' items: a click selects them all. Cmd+Shift+G ungroups.');
+  }
+  function ungroupSel() {
+    const list = sels.filter((e) => e.dataset.group);
+    if (!list.length) return;
+    commitMany(list.map((e) => { const st = stateOf(e), v = { ...st, g: '' }; apply(e, v); return [e, v, st]; }));
+    const keep = sel; select(null); select(keep); panelTip('Ungrouped: each item can be selected on its own again.');
   }
   function commit(e, v, prev) {
     const id = e.dataset.eid, o = orig.get(id);
@@ -362,7 +424,7 @@
   }
   const stateOf = (e) => {
     const st = all[KEY] && all[KEY][e.dataset.eid], txt = isText(e) ? e.querySelector('.txt') : null;
-    return { ...cur(e), ...(st && st.fit ? { fit: st.fit } : {}), ...(st && st.hide ? { hide: true } : {}), ...(txt ? { html: txt.innerHTML } : {}) };
+    return { ...cur(e), ...(st && st.fit ? { fit: st.fit } : {}), ...(st && st.hide ? { hide: true } : {}), ...(txt ? { html: txt.innerHTML } : {}), g: e.dataset.group || '' };
   };
 
   // ---- snapping ----
@@ -378,7 +440,7 @@
   function snapTargets(except) {
     const xs = [490, 0, 980], ys = [];
     for (const e of els) {
-      if (e === except || e.offsetParent === null) continue;
+      if (e === except || (Array.isArray(except) && except.includes(e)) || e.offsetParent === null) continue;
       const r = rectOf(e);
       xs.push(r.x, r.x + r.w / 2, r.x + r.w); ys.push(r.y, r.y + r.h / 2, r.y + r.h);
     }
@@ -398,9 +460,12 @@
     if (editing) endText();
     const handle = ev.target.closest('#tw-sel i');
     const e = handle ? sel : ev.target.closest('.canvas > .el[data-eid]');
-    if (!e || !byId.has(e.dataset.eid)) { if (ev.target.closest('.canvas')) select(null); return; }
+    if (!e || !byId.has(e.dataset.eid)) { if (ev.target.closest('.canvas')) marquee(ev); return; }
     ev.preventDefault(); ev.stopPropagation();
-    if (e !== sel) select(e);
+    const add = ev.shiftKey || ev.metaKey || ev.ctrlKey;
+    if (add) { select(e, true); if (!sels.includes(e)) return; }
+    else if (!sels.includes(e)) select(e);
+    if (!handle && sels.length > 1) { dragMany(ev); return; }
     const s = scale(), p0 = { x: ev.clientX, y: ev.clientY }, start = stateOf(e), r0 = rectOf(e);
     const shiftY = r0.y - start.y;                 // how far text above has pushed it down
     const tg = snapTargets(e), tol = 6 / s;
@@ -442,6 +507,54 @@
     const up = () => {
       removeEventListener('pointermove', mv); removeEventListener('pointerup', up); clearGuides();
       if (moved) { commit(e, v, start); place(); }
+    };
+    addEventListener('pointermove', mv); addEventListener('pointerup', up);
+  }
+  function dragMany(ev) {   // move every selected item together, snapping the block's edges and centre
+    const s = scale(), p0 = { x: ev.clientX, y: ev.clientY }, list = sels.slice();
+    const starts = list.map((e) => stateOf(e)), u0 = union(list);
+    const tg = snapTargets(list), tol = 6 / s;
+    let moved = false, dxs = 0, dys = 0;
+    const mv = (m) => {
+      let dx = (m.clientX - p0.x) / s, dy = (m.clientY - p0.y) / s;
+      if (!moved && Math.hypot(dx, dy) * s < 2) return;
+      moved = true; clearGuides();
+      if (!m.altKey) {
+        const x = u0.x + dx, y = u0.y + dy;
+        const [kx, ax] = best([x, x + u0.w / 2, x + u0.w], tg.xs, tol); if (kx !== null) { dx += kx; guide('x', ax); }
+        const [ky, ay] = best([y, y + u0.h / 2, y + u0.h], tg.ys, tol); if (ky !== null) { dy += ky; guide('y', ay); }
+      }
+      dxs = Math.round(dx * 2) / 2; dys = Math.round(dy * 2) / 2;
+      list.forEach((e, i) => apply(e, { ...starts[i], x: starts[i].x + dxs, y: starts[i].y + dys }));
+      relayout(); place(); label();
+    };
+    const up = () => {
+      removeEventListener('pointermove', mv); removeEventListener('pointerup', up); clearGuides();
+      if (moved) { commitMany(list.map((e, i) => [e, { ...starts[i], x: starts[i].x + dxs, y: starts[i].y + dys }, starts[i]])); place(); }
+    };
+    addEventListener('pointermove', mv); addEventListener('pointerup', up);
+  }
+  function marquee(ev) {   // drag a box from an empty part of the page to select everything it touches
+    const add = ev.shiftKey || ev.metaKey || ev.ctrlKey, s = scale(), c0 = canvas.getBoundingClientRect();
+    const a = { x: (ev.clientX - c0.left) / s, y: (ev.clientY - c0.top) / s };
+    let band = null;
+    const mv = (m) => {
+      const c = canvas.getBoundingClientRect(), b = { x: (m.clientX - c.left) / s, y: (m.clientY - c.top) / s };
+      if (!band && Math.hypot(b.x - a.x, b.y - a.y) * s < 4) return;
+      if (!band) { band = document.createElement('div'); band.className = 'tw-band'; canvas.appendChild(band); ev.preventDefault(); }
+      Object.assign(band.style, { left: Math.min(a.x, b.x) + 'px', top: Math.min(a.y, b.y) + 'px', width: Math.abs(b.x - a.x) + 'px', height: Math.abs(b.y - a.y) + 'px', borderWidth: (1 / s) + 'px' });
+    };
+    const up = () => {
+      removeEventListener('pointermove', mv); removeEventListener('pointerup', up);
+      if (!band) { if (!add) select(null); return; }
+      const r = { x: parseFloat(band.style.left), y: parseFloat(band.style.top), w: parseFloat(band.style.width), h: parseFloat(band.style.height) };
+      band.remove();
+      const hit = els.filter((e) => e.style.display !== 'none' && e.offsetParent !== null).filter((e) => {
+        const q = rectOf(e); return q.x < r.x + r.w && q.x + q.w > r.x && q.y < r.y + r.h && q.y + q.h > r.y;
+      });
+      const next = add ? sels.slice() : [];
+      for (const e of hit) for (const x of groupOf(e)) if (!next.includes(x)) next.push(x);
+      setSelection(next);
     };
     addEventListener('pointermove', mv); addEventListener('pointerup', up);
   }
@@ -500,25 +613,30 @@
     if (!on) return;
     if (editing) { if (ev.key === 'Escape') { ev.preventDefault(); endText(); } return; }
     if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === 'z') { ev.preventDefault(); doUndo(); return; }
+    if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === 'g') { ev.preventDefault(); ev.shiftKey ? ungroupSel() : groupSel(); return; }
     if (ev.key === 'Escape') { select(null); return; }
     if (sel && (ev.key === 'Delete' || ev.key === 'Backspace') && !/input|textarea|select/i.test(ev.target.tagName)) {
       ev.preventDefault();
-      const start = stateOf(sel), v = { ...start, hide: true }, e = sel;
-      select(null); apply(e, v); relayout(); commit(e, v, start); return;
+      const list = sels.slice();
+      select(null);
+      commitMany(list.map((e) => { const st = stateOf(e), v = { ...st, hide: true }; apply(e, v); return [e, v, st]; }));
+      relayout(); return;
     }
     if (!sel || !/^Arrow/.test(ev.key) || /input|textarea/i.test(ev.target.tagName)) return;
     ev.preventDefault();
-    const d = ev.shiftKey ? 10 : 1, start = stateOf(sel), v = { ...start };
-    if (ev.key === 'ArrowLeft') v.x -= d; if (ev.key === 'ArrowRight') v.x += d;
-    if (ev.key === 'ArrowUp') v.y -= d; if (ev.key === 'ArrowDown') v.y += d;
-    apply(sel, v); relayout(); commit(sel, v, start); place();
+    const d = ev.shiftKey ? 10 : 1, ddx = ev.key === 'ArrowLeft' ? -d : ev.key === 'ArrowRight' ? d : 0, ddy = ev.key === 'ArrowUp' ? -d : ev.key === 'ArrowDown' ? d : 0;
+    commitMany(sels.map((e) => { const st = stateOf(e), v = { ...st, x: st.x + ddx, y: st.y + ddy }; apply(e, v); return [e, v, st]; }));
+    relayout(); place();
   }
   function doUndo() {
     const u = undo.pop(); if (!u) return;
-    const e = byId.get(u.id), o = orig.get(u.id), v = u.prev || (o.isNew ? { ...cur(e), hide: true } : o);
-    apply(e, v);
-    const r = entry(e, v);
-    if (same({ ...r, html: r.html !== undefined ? r.html : o.html }, o)) { if (all[KEY]) delete all[KEY][u.id]; } else page()[u.id] = r;
+    for (const step of (u.many || [u])) {
+      const e = byId.get(step.id), o = orig.get(step.id), v = step.prev || (o.isNew ? { ...cur(e), hide: true } : { ...o, g: o.g });
+      apply(e, v);
+      const r = entry(e, v);
+      if (same({ ...r, html: r.html !== undefined ? r.html : o.html }, o)) { if (all[KEY]) delete all[KEY][step.id]; } else page()[step.id] = r;
+    }
+    if (sel) { const k = sel; select(null); select(k); }
     if (all[KEY] && !Object.keys(all[KEY]).length) delete all[KEY];
     save(all); relayout(); place(); label();
   }
@@ -555,7 +673,7 @@
     const e = ev.target.closest('.canvas > .el[data-text][data-eid]');
     if (e && byId.has(e.dataset.eid)) { ev.preventDefault(); startText(e); }
   };
-  const TIP = 'Drag to move · corners resize (Shift = free shape) · sides re-proportion · arrows nudge · Alt = no snap · double-click text to edit it · drop pictures or PDFs from the desktop to add them · Delete removes';
+  const TIP = 'Drag to move · corners resize (Shift = free shape) · sides re-proportion · arrows nudge · Alt = no snap · double-click text to edit it · Shift-click or drag a box to select several, Cmd+G groups · drop pictures or PDFs to add them · Delete removes';
 
 
   // ---- text editing ----
@@ -689,12 +807,13 @@
     panel = document.createElement('div'); panel.id = 'tw-edit';
     panel.innerHTML = `<b>EDIT</b> · ${KEY}<div class="e-sel"></div>
       <p class="e-tip">${TIP}</p>
-      <div class="e-row"><button type="button" data-a="undo">Undo</button><button type="button" data-a="reset">Reset page</button>
+      <div class="e-row"><button type="button" data-a="group" title="Group the selected items (Cmd+G)">Group</button><button type="button" data-a="ungroup" title="Ungroup (Cmd+Shift+G)">Ungroup</button>
+      <button type="button" data-a="undo">Undo</button><button type="button" data-a="reset">Reset page</button>
       <button type="button" data-a="save">Save</button><button type="button" data-a="close">Done</button></div>`;
     document.body.appendChild(panel);
     panel.addEventListener('click', (e) => {
       const a = e.target.closest('button'); if (!a) return;
-      ({ undo: doUndo, reset: resetPage, save: download, close: hide })[a.dataset.a]();
+      ({ group: groupSel, ungroup: ungroupSel, undo: doUndo, reset: resetPage, save: download, close: hide })[a.dataset.a]();
     });
     if (innerWidth < 700) panel.querySelector('.e-tip').textContent = 'Widen the window to edit (the page stacks on phones).';
     addEventListener('pointerdown', onDown, true); addEventListener('keydown', onKey); addEventListener('click', blockClick, true); addEventListener('dblclick', onDbl, true);
