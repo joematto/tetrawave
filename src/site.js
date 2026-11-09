@@ -346,8 +346,8 @@ function wordBurst(IN, HOLD, OUT) {
     // then fades in
     const pageTitle = document.querySelector('.page-title'), TITLE_IN = 3000;
     if (burst && pageTitle && pageTitle.animate) pageTitle.animate([{ opacity: 0 }, { opacity: 1 }], { duration: TITLE_IN, delay: B_IN + 1000, easing: 'ease-in-out', fill: 'backwards' });
-    // 5 s after the roll-down is complete, the right-hand column of the poem fades to half strength (over 2 s)
-    const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 5000, DIM_FOR = 2000;
+    // 3 s after the roll-down is complete, the right-hand column of the poem fades to half strength (over 2 s)
+    const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 3000, DIM_FOR = 2000;
     const dimRight = () => { const r = part('R'); if (r && r.animate) r.animate([{ opacity: 1 }, { opacity: RIGHT_DIM }], { duration: DIM_FOR, delay: ROLL_END + DIM_AFTER, easing: 'ease-in-out', fill: 'forwards' }); };
     const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); dimRight(); };
     const reveal = () => steps.forEach((s, i) => s.forEach((el) => {
