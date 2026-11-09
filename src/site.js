@@ -122,7 +122,7 @@ if (homeVid) {
   setTimeout(start, 1500);   // fallback if the Spinor's start isn't reported
 }
 
-// Home: the soundtrack ("White Winds") starts as the site opens and fades out 3 s after the galaxy stops turning
+// Home: the soundtrack ("White Winds") starts (1 s into the track) as the site opens and fades out 3 s after the galaxy stops turning
 // (over 3 s). Browsers only allow sound once the visitor has interacted with the page, so if starting at once is
 // refused it starts at the first click, tap or key press instead. Using the Sound button cancels the automatic fade.
 let galaxyHasStopped = false;
@@ -135,7 +135,11 @@ if (homeVid && snd) {
   const WAIT = 3000, FADE = 3000;
   let auto = true;   // false once the visitor uses the Sound button themselves
   if (sbtn) sbtn.addEventListener('click', () => { auto = false; snd.volume = 1; }, true);
-  const begin = () => { if (!auto || galaxyHasStopped) return; snd.volume = 1; return snd.play(); };
+  // the track starts 1 s into itself, so the music lines up with the end of the Spinor's turn
+  const SKIP = 1;
+  const skip = () => { if (snd.currentTime < SKIP) try { snd.currentTime = SKIP; } catch (e) { /* not seekable yet */ } };
+  if (snd.readyState >= 1) skip(); else snd.addEventListener('loadedmetadata', skip, { once: true });
+  const begin = () => { if (!auto || galaxyHasStopped) return; skip(); snd.volume = 1; return snd.play(); };
   const firstTouch = (e) => {
     if (e.target && e.target.closest && e.target.closest('.sound-btn')) return;   // the Sound button does its own thing
     ['pointerdown', 'keydown', 'touchstart'].forEach((t) => removeEventListener(t, firstTouch, true));
