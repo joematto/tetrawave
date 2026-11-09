@@ -563,7 +563,7 @@ for part, pages in OUTLINE[1:]:
         if key == 'P2':     # title nudged 3px right; 1 pt smaller (29 pt), its line kept the same height so nothing below moves
             body = body.replace('<h1 class="page-title">', '<h1 class="page-title" style="position:relative;left:3px;font-size:clamp(26px,4.4vw,38.67px);line-height:calc(1.15 * clamp(26px,4.4vw,40px))">', 1)
         if key == 'COIL':   # page heading reads "First Download Transmission" (Contents keeps the section's full name)
-            body = re.sub(r'(<span class="k">COIL</span>)[^<]*</h1>', r'\1First &ldquo;Download&rdquo; Transmission</h1>', body, count=1)
+            body = re.sub(r'(<span class="k">COIL</span>)[^<]*</h1>', r'\1First &ldquo;Download&rdquo; Transmission!?</h1>', body, count=1)
         if key == 'P1':   # "Crisis" fades in with the whitepaper PDF icon, after the centre photo
             # the page heading is "Kundalini" with "Energy" under it at 18 pt (the Contents menu still says "Kundalini Crisis")
             body = body.replace('Kundalini Crisis</h1>', '<span class="t0" data-anim="fade" style="--d:1000ms">Spontaneous!!</span>Kundalini<span class="t2" style="font-size:30px">Energy</span></h1>')   # 10 pt line above, 18 pt sub-heading
