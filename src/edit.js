@@ -727,7 +727,27 @@
     changed();
   }
   function cmd(c) { restore(); document.execCommand(c, false, null); changed(); }
-  function alignText(v) { const r = restore(); if (!r) return; for (const b of blocksIn(r)) b.style.textAlign = v; changed(); }
+  function alignText(v) {   // left / justified text wraps normally out to the box edge (headings otherwise balance their lines)
+    const r = restore(); if (!r) return;
+    for (const b of blocksIn(r)) { b.style.textAlign = v; if (v === 'left' || v === 'justify') b.style.textWrap = 'wrap'; else b.style.removeProperty('text-wrap'); }
+    changed();
+  }
+  // Typing: browsers put "non-breaking" spaces into editable text, which glue words together so they jump to the
+  // next line in pairs. Turn them back into ordinary spaces (except the one just typed, which the browser needs
+  // while the cursor sits after it), and let long paragraphs wrap normally rather than balancing their lines.
+  function tidyTyping() {
+    if (!editing) return;
+    const root = txtOf(editing), sl = getSelection(), at = sl.rangeCount ? sl.getRangeAt(0) : null;
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode(); n; n = w.nextNode()) {
+      const d = n.data;
+      for (let i = d.indexOf('\u00a0'); i !== -1; i = d.indexOf('\u00a0', i + 1)) {
+        if (at && at.startContainer === n && at.startOffset === i + 1) continue;          // the space just typed
+        if (i > 0 && i < d.length - 1 && /\S/.test(d[i - 1]) && /\S/.test(d[i + 1])) n.replaceData(i, 1, ' ');
+      }
+    }
+    for (const b of root.querySelectorAll(BLOCK)) if (b.textContent.length > 120 && !b.style.textWrap) b.style.textWrap = 'wrap';
+  }
   function clearText() {
     const r = restore(); if (!r) return;
     for (const b of blocksIn(r)) {
@@ -781,6 +801,7 @@
     before = stateOf(e);
     const t = txtOf(e);
     t.contentEditable = 'true'; t.spellcheck = true; e.classList.add('tw-typing'); if (box) box.classList.add('typing');
+    t.addEventListener('input', tidyTyping);
     t.focus();
     if (!bar) makeBar();
     bar.style.display = '';
@@ -791,6 +812,8 @@
   function endText() {
     if (!editing) return;
     const e = editing, t = txtOf(e);
+    getSelection().removeAllRanges(); tidyTyping();   // last tidy, with no cursor to protect
+    t.removeEventListener('input', tidyTyping);
     t.removeAttribute('contenteditable'); t.removeAttribute('spellcheck'); e.classList.remove('tw-typing'); if (box) box.classList.remove('typing');
     t.querySelectorAll('span[style=""]').forEach((d) => d.replaceWith(...d.childNodes));   // tidy wrappers left empty by restyling
     editing = null; saved = null;
