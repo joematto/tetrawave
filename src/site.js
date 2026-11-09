@@ -336,17 +336,20 @@ function wordBurst(IN, HOLD, OUT) {
     if (part('motion')) steps.push([part('motion')]);
     if (part('sig')) steps.push([part('sig')]);
     // First the explosion of words (wordBurst, below): they burst out of the galaxy's core and fade in (2 s), and the
-    // moment they land begin slowly fading out (6.5 s, so they are still fading while the poem rolls down). The lines roll down at 2.5 s (about 3 s); "Star Coil" fades in
+    // moment they land begin slowly fading out (6.5 s, so they are still fading while the poem rolls down). The lines roll down at 5.5 s (about 3 s); "Star Coil" fades in
     // over the 2 s before that. Without the burst (phones, reduced motion): title after 0.5 s as before.
     const burst = innerWidth >= 700 && !matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const B_IN = 2000, B_HOLD = 0, B_OUT = 6500, ROLL_AT = 2500;   // the fade-out begins the moment they land and lasts 6.5 s; the lines roll from 2.5 s (was 5 s)
+    const B_IN = 2000, B_HOLD = 0, B_OUT = 6500, ROLL_AT = 5500;   // the fade-out begins the moment they land and lasts 6.5 s; the lines roll from 5.5 s
     const TITLE = 2000, WAIT = burst ? ROLL_AT - TITLE : 500, PAUSE = 0, ROLL = 3000, EACH = 675, gap = (ROLL - EACH) / Math.max(1, steps.length - 2);
     steps.flat().forEach((el) => el.classList.add('poem-line'));          // hidden until the reveal starts
     // the page title ("First "Download" Transmission") waits until a second after the words have all exploded (3 s),
     // then fades in
     const pageTitle = document.querySelector('.page-title'), TITLE_IN = 3000;
     if (burst && pageTitle && pageTitle.animate) pageTitle.animate([{ opacity: 0 }, { opacity: 1 }], { duration: TITLE_IN, delay: B_IN + 1000, easing: 'ease-in-out', fill: 'backwards' });
-    const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); };
+    // 5 s after the roll-down is complete, the right-hand column of the poem fades to half strength (over 2 s)
+    const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 5000, DIM_FOR = 2000;
+    const dimRight = () => { const r = part('R'); if (r && r.animate) r.animate([{ opacity: 1 }, { opacity: RIGHT_DIM }], { duration: DIM_FOR, delay: ROLL_END + DIM_AFTER, easing: 'ease-in-out', fill: 'forwards' }); };
+    const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); dimRight(); };
     const reveal = () => steps.forEach((s, i) => s.forEach((el) => {
       el.classList.remove('poem-line');
       if (!el.animate) return;
