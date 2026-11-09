@@ -307,7 +307,7 @@ function wordBurst(IN, HOLD, OUT) {
     const TITLE = 2000, WAIT = burst ? ROLL_AT - TITLE : 500, PAUSE = 0, ROLL = 3000, EACH = 675, gap = (ROLL - EACH) / Math.max(1, steps.length - 2);
     steps.flat().forEach((el) => el.classList.add('poem-line'));          // hidden until the reveal starts
     // the page title ("First "Download" Transmission") waits until the words have all exploded (2 s), then fades in
-    const pageTitle = document.querySelector('.page-title'), TITLE_IN = 1500;
+    const pageTitle = document.querySelector('.page-title'), TITLE_IN = 3000;
     if (burst && pageTitle && pageTitle.animate) pageTitle.animate([{ opacity: 0 }, { opacity: 1 }], { duration: TITLE_IN, delay: B_IN, easing: 'ease-in-out', fill: 'backwards' });
     const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); };
     const reveal = () => steps.forEach((s, i) => s.forEach((el) => {
