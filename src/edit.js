@@ -324,8 +324,12 @@
 #tw-edit button:hover { background: rgba(255,255,255,.16); }
 #tw-edit button[data-a=save] { background: #2a86e0; border-color: #2a86e0; }
 #tw-edit button.on { background: #f0a020; border-color: #f0a020; color: #111; }
+#tw-edit button.off { background: rgba(255,255,255,.02); color: #9aa6b8; border-style: dashed; }
 #tw-edit button:disabled { opacity: .4; cursor: default; }`;
-  let on = false, panel = null, sel = null, box = null, sels = [], several = false;   // several: 'Select several' button is on   // sel: the item clicked; sels: everything selected
+  let on = false, panel = null, sel = null, box = null, sels = [], several = false;
+  // snapping to the page centre and other items' edges: on unless switched off (remembered in this browser)
+  let snapOn = true; try { snapOn = localStorage.getItem('tw-snap') !== 'off'; } catch (e) { /* storage unavailable */ }
+  const snapLabel = () => 'Snap: ' + (snapOn ? 'On' : 'Off');   // several: 'Select several' button is on   // sel: the item clicked; sels: everything selected
   const undo = [];
   const groupOf = (e) => e.dataset.group ? els.filter((x) => x.dataset.group === e.dataset.group && x.style.display !== 'none') : [e];
 
@@ -476,7 +480,7 @@
       const dx = (m.clientX - p0.x) / s, dy = (m.clientY - p0.y) / s;
       if (!moved && Math.hypot(dx, dy) * s < 2) return;
       moved = true; clearGuides();
-      const snap = !m.altKey;
+      const snap = snapOn && !m.altKey;
       v = { ...start };
       if (!h) {   // move
         v.x = start.x + dx; v.y = start.y + dy;
@@ -520,7 +524,7 @@
       let dx = (m.clientX - p0.x) / s, dy = (m.clientY - p0.y) / s;
       if (!moved && Math.hypot(dx, dy) * s < 2) return;
       moved = true; clearGuides();
-      if (!m.altKey) {
+      if (snapOn && !m.altKey) {
         const x = u0.x + dx, y = u0.y + dy;
         const [kx, ax] = best([x, x + u0.w / 2, x + u0.w], tg.xs, tol); if (kx !== null) { dx += kx; guide('x', ax); }
         const [ky, ay] = best([y, y + u0.h / 2, y + u0.h], tg.ys, tol); if (ky !== null) { dy += ky; guide('y', ay); }
@@ -808,13 +812,14 @@
     panel = document.createElement('div'); panel.id = 'tw-edit';
     panel.innerHTML = `<b>EDIT</b> · ${KEY}<div class="e-sel"></div>
       <p class="e-tip">${TIP}</p>
-      <div class="e-row"><button type="button" data-a="several" title="While on, each click adds or removes an item (same as Shift-click)">Select several</button><button type="button" data-a="group" title="Group the selected items (Cmd+G)">Group</button><button type="button" data-a="ungroup" title="Ungroup (Cmd+Shift+G)">Ungroup</button>
+      <div class="e-row"><button type="button" data-a="snap" title="Snapping to the page centre and to other items' edges (hold Option while dragging to skip it once)">${snapLabel()}</button><button type="button" data-a="several" title="While on, each click adds or removes an item (same as Shift-click)">Select several</button><button type="button" data-a="group" title="Group the selected items (Cmd+G)">Group</button><button type="button" data-a="ungroup" title="Ungroup (Cmd+Shift+G)">Ungroup</button>
       <button type="button" data-a="undo">Undo</button><button type="button" data-a="reset">Reset page</button>
       <button type="button" data-a="save">Save</button><button type="button" data-a="close">Done</button></div>`;
     document.body.appendChild(panel);
+    panel.querySelector('[data-a=snap]').classList.toggle('off', !snapOn);
     panel.addEventListener('click', (e) => {
       const a = e.target.closest('button'); if (!a) return;
-      ({ several: () => { several = !several; a.classList.toggle('on', several); a.textContent = several ? 'Select several: ON' : 'Select several'; panelTip(several ? 'Click items to add or remove them from the selection. Click the button again to finish.' : TIP); }, group: groupSel, ungroup: ungroupSel, undo: doUndo, reset: resetPage, save: download, close: hide })[a.dataset.a]();
+      ({ snap: () => { snapOn = !snapOn; try { localStorage.setItem('tw-snap', snapOn ? 'on' : 'off'); } catch (err) { /* storage unavailable */ } a.textContent = snapLabel(); a.classList.toggle('off', !snapOn); panelTip(snapOn ? 'Snapping is on: items line up with the page centre and other items. Hold Option while dragging to skip it once.' : 'Snapping is off: items move freely, to the half pixel. Arrow keys nudge 1px (Shift 10px).'); }, several: () => { several = !several; a.classList.toggle('on', several); a.textContent = several ? 'Select several: ON' : 'Select several'; panelTip(several ? 'Click items to add or remove them from the selection. Click the button again to finish.' : TIP); }, group: groupSel, ungroup: ungroupSel, undo: doUndo, reset: resetPage, save: download, close: hide })[a.dataset.a]();
     });
     if (innerWidth < 700) panel.querySelector('.e-tip').textContent = 'Widen the window to edit (the page stacks on phones).';
     addEventListener('pointerdown', onDown, true); addEventListener('keydown', onKey); addEventListener('click', blockClick, true); addEventListener('dblclick', onDbl, true);
