@@ -22,7 +22,7 @@ OUTLINE = [
     ('Part I · The Awakening', [('P1', 'Kundalini Crisis', 'part-1-kundalini-crisis.html'), ('PRE', 'Pre-Kundalini Artwork', 'pre-kundalini-artwork.html'),
         ('POST', 'Post-Kundalini Artwork', 'post-kundalini-artwork.html'), ('COIL', 'StarCoil-1st Download Transmission', 'starcoil-1st-download-message.html'),
         ('SKETCH', '2D Exploratory & Inception Sketches', '2d-exploratory-inception-sketches.html')]),
-    ('Part II · The Geometry', [('P2', 'The Geometry', 'part-2-the-geometry.html'),
+    ('Part II · The Geometry', [('P2', 'Geometry Unified across Dimensions', 'part-2-the-geometry.html'),
         ('TETRA', 'Tetrahedron Fascination', 'tetrahedron-fascination.html'),
         ('MODEL', '3D Exploration Models', '3d-exploration-models.html'),
         ('TILT', 'Tilt Angle Analysis', 'tilt-angle-analysis.html'),
