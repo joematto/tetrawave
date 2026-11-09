@@ -765,6 +765,7 @@
     const sz = bar.querySelector('[data-k=size]'); if (document.activeElement !== sz) sz.value = Math.round(parseFloat(cs.fontSize) * 10) / 10;
     const col = bar.querySelector('[data-k=color]'); if (document.activeElement !== col) col.value = rgbHex(cs.color);
     const lh = bar.querySelector('[data-k=lh]'); if (document.activeElement !== lh) lh.value = '';
+    const pgs = bar.querySelector('[data-k=pg]'); if (document.activeElement !== pgs) pgs.value = '';
     const fam = cs.fontFamily.toLowerCase(), f = bar.querySelector('[data-k=font]');
     if (document.activeElement !== f) f.value = fam.includes('cinzel') ? 'var(--display)' : fam.includes('source sans') ? 'var(--body)' : '';
   }
@@ -775,7 +776,8 @@
       <span class="tb-g"><input data-k="color" type="color" title="Colour">${SWATCH.map(([c, t]) => `<button class="sw" data-sw="${c}" title="${t}" style="background:${c}"></button>`).join('')}</span>
       <span class="tb-g"><button data-c="bold" title="Bold"><b>B</b></button><button data-c="italic" title="Italic"><i>I</i></button><button data-c="underline" title="Underline"><u>U</u></button></span>
       <span class="tb-g"><button data-al="left" title="Align left">⟸</button><button data-al="center" title="Centre">≡</button><button data-al="right" title="Align right">⟹</button><button data-al="justify" title="Justify">☰</button></span>
-      <select data-k="lh" title="Line spacing"><option value="">Spacing…</option>${[1, 1.15, 1.3, 1.45, 1.6, 1.8, 2].map((v) => `<option>${v}</option>`).join('')}</select>
+      <select data-k="lh" title="Line spacing: space between the lines of a paragraph"><option value="">Lines…</option>${[0.7, 0.8, 0.85, 0.9, 0.95, 1, 1.15, 1.3, 1.45, 1.6, 1.8, 2].map((v) => `<option>${v}</option>`).join('')}</select>
+      <select data-k="pg" title="Paragraph gap: space after each paragraph"><option value="">Para gap…</option>${[['0', 'none'], ['.15em', 'tiny'], ['.35em', 'small'], ['.7em', 'normal'], ['1.1em', 'large']].map(([v, t]) => `<option value="${v}">${t}</option>`).join('')}</select>
       <button data-c="clear" title="Remove formatting from the selection">Clear</button><button data-c="done" class="tb-done">Done</button>`;
     document.body.appendChild(bar);
     bar.addEventListener('mousedown', (e) => { if (!e.target.closest('select,input')) e.preventDefault(); });   // keep the text selection
@@ -792,7 +794,16 @@
     bar.querySelector('[data-k=font]').addEventListener('change', (e) => { if (e.target.value) styleText('fontFamily', e.target.value); });
     bar.querySelector('[data-k=size]').addEventListener('change', (e) => { if (+e.target.value) styleText('fontSize', +e.target.value + 'px'); });
     bar.querySelector('[data-k=color]').addEventListener('input', (e) => styleText('color', e.target.value));
-    bar.querySelector('[data-k=lh]').addEventListener('change', (e) => { if (e.target.value) { const r = restore(); if (r) { for (const b of blocksIn(r)) b.style.lineHeight = e.target.value; changed(); } } });
+    bar.querySelector('[data-k=lh]').addEventListener('change', (e) => {   // set on the paragraph; nothing inside it overrides it
+      if (!e.target.value) return; const r = restore(); if (!r) return;
+      for (const b of blocksIn(r)) { b.style.lineHeight = e.target.value; b.querySelectorAll('[style]').forEach((d) => { d.style.lineHeight = ''; if (!d.getAttribute('style')) d.removeAttribute('style'); }); }
+      changed();
+    });
+    bar.querySelector('[data-k=pg]').addEventListener('change', (e) => {
+      if (e.target.value === '') return; const r = restore(); if (!r) return;
+      for (const b of blocksIn(r)) b.style.marginBottom = e.target.value;
+      changed();
+    });
   }
   function startText(e) {
     if (editing === e) return;
