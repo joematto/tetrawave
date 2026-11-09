@@ -108,7 +108,7 @@ if (homeVid) {
   const tick = (now) => {
     if (stopAt === null) return;
     const left = stopAt - now;
-    if (left <= 0) { homeVid.pause(); return; }
+    if (left <= 0) { homeVid.pause(); galaxyStopped(); return; }
     if (left < EASE) setRate(Math.max(0.0625, HALF * (left / EASE)));
     requestAnimationFrame(tick);
   };
@@ -117,9 +117,45 @@ if (homeVid) {
   if (sp) {
     sp.addEventListener('animationstart', start);
     // stop exactly when the Spinor's turn ends
-    sp.addEventListener('animationend', (e) => { if (e.animationName === 'spinor-turn') { stopAt = 0; homeVid.pause(); } });
+    sp.addEventListener('animationend', (e) => { if (e.animationName === 'spinor-turn') { stopAt = 0; homeVid.pause(); galaxyStopped(); } });
   }
   setTimeout(start, 1500);   // fallback if the Spinor's start isn't reported
+}
+
+// Home: the soundtrack ("White Winds") starts as the site opens and fades out 3 s after the galaxy stops turning
+// (over 3 s). Browsers only allow sound once the visitor has interacted with the page, so if starting at once is
+// refused it starts at the first click, tap or key press instead. Using the Sound button cancels the automatic fade.
+let galaxyHasStopped = false;
+function galaxyStopped() {
+  if (galaxyHasStopped) return;
+  galaxyHasStopped = true;
+  document.dispatchEvent(new Event('tw:galaxy-stopped'));
+}
+if (homeVid && snd) {
+  const WAIT = 3000, FADE = 3000;
+  let auto = true;   // false once the visitor uses the Sound button themselves
+  if (sbtn) sbtn.addEventListener('click', () => { auto = false; snd.volume = 1; }, true);
+  const begin = () => { if (!auto || galaxyHasStopped) return; snd.volume = 1; return snd.play(); };
+  const firstTouch = (e) => {
+    if (e.target && e.target.closest && e.target.closest('.sound-btn')) return;   // the Sound button does its own thing
+    ['pointerdown', 'keydown', 'touchstart'].forEach((t) => removeEventListener(t, firstTouch, true));
+    if (snd.paused) begin();
+  };
+  const p = begin();
+  if (p && p.catch) p.catch(() => ['pointerdown', 'keydown', 'touchstart'].forEach((t) => addEventListener(t, firstTouch, true)));
+  document.addEventListener('tw:galaxy-stopped', () => {
+    setTimeout(() => {
+      if (!auto || snd.paused) return;
+      const v0 = snd.volume, t0 = performance.now();
+      const step = (now) => {
+        if (!auto) { snd.volume = 1; return; }
+        const k = Math.min(1, (now - t0) / FADE);
+        try { snd.volume = v0 * (1 - k) * (1 - k); } catch (e) { /* volume fixed on this device */ }
+        if (k < 1) requestAnimationFrame(step); else { snd.pause(); snd.volume = 1; }
+      };
+      requestAnimationFrame(step);
+    }, WAIT);
+  });
 }
 
 
