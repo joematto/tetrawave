@@ -211,12 +211,12 @@ IMAGE_NUMBERS = 'ALL'   # (or a set of page keys, e.g. {'TETRA'}; '' to turn the
 
 def shell(key, title, body, home=False, bgvideo='video/background.mp4', bgposter='video/background-poster.jpg'):
     head = f'''<!doctype html>
-<html lang="en" style="background:#05060b">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
-<style>html,body{{background:#05060b}}{'#tw-cover{position:fixed;inset:0;z-index:2147483400;background:#05060b}body.home .bg,body.home .veil{opacity:0}html.tw-intro body.home .bg,html.tw-intro body.home .veil{opacity:1;transition:opacity 900ms ease}' if home else ''}</style>
+<style>body{{background:#05060b}}{'#tw-cover{position:fixed;inset:0;z-index:2147483400;background:#05060b}body.home .bg,body.home .veil{opacity:0}html.tw-intro body.home .bg,html.tw-intro body.home .veil{opacity:1;transition:opacity 900ms ease}' if home else ''}</style>
 <!-- Page key: {key}  ·  this page's images live in images/{key}/  -->
 <title>{E(title)} · TetraWave</title>
 {FONTS}
