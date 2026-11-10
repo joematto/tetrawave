@@ -351,7 +351,10 @@ function wordBurst(IN, HOLD, OUT) {
     // 8 s after the roll-down is complete, the right-hand column of the poem fades to half strength (over 2 s)
     const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 8000, DIM_FOR = 2000;
     const dimRight = () => { const r = part('R'); if (r && r.animate) r.animate([{ opacity: 1 }, { opacity: RIGHT_DIM }], { duration: DIM_FOR, delay: ROLL_END + DIM_AFTER, easing: 'ease-in-out', fill: 'forwards' }); };
-    const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); dimRight(); };
+    // once the right-hand column has faded, the subtitle ("A Message within a Message?") fades in quickly (0.8 s)
+    const SUB_IN = 800, sub = document.querySelector('.page-title .subtitle');
+    const showSub = () => { if (sub && sub.animate) sub.animate([{ opacity: 0 }, { opacity: 1 }], { duration: SUB_IN, delay: ROLL_END + DIM_AFTER + DIM_FOR, easing: 'ease-out', fill: 'backwards' }); };
+    const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); dimRight(); showSub(); };
     const reveal = () => steps.forEach((s, i) => s.forEach((el) => {
       el.classList.remove('poem-line');
       if (!el.animate) return;
