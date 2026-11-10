@@ -437,15 +437,15 @@ function wordBurst(IN, HOLD, OUT) {
     // then fades in
     const pageTitle = document.querySelector('.page-title'), TITLE_IN = 3000;
     if (burst && pageTitle && pageTitle.animate) pageTitle.animate([{ opacity: 0 }, { opacity: 1 }], { duration: TITLE_IN, delay: B_IN + 8500, easing: 'ease-in-out', fill: 'backwards' });
-    // 11.5 s after the roll-down is complete (18 s), the right-hand column of the poem fades to half strength (over 2 s)
-    const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 11500, DIM_FOR = 2000;
+    // 13.5 s after the roll-down is complete (20 s), the right-hand column of the poem fades to half strength (over 2 s)
+    const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 13500, DIM_FOR = 2000;
     const dimRight = () => { const r = part('R'); if (r && r.animate) r.animate([{ opacity: 1 }, { opacity: RIGHT_DIM }], { duration: DIM_FOR, delay: ROLL_END + DIM_AFTER, easing: 'ease-in-out', fill: 'forwards' }); };
     // once the right-hand column has faded, the subtitle ("A Message within a Message?") fades in quickly (0.8 s)
     const SUB_IN = 800, sub = document.querySelector('.page-title .subtitle');
     const showSub = () => { if (sub && sub.animate) sub.animate([{ opacity: 0 }, { opacity: 1 }], { duration: SUB_IN, delay: ROLL_END + DIM_AFTER + DIM_FOR, easing: 'ease-out', fill: 'backwards' }); };
     // the right-hand column rolls down in the same white as the left, then slowly turns to its own grey (over 4 s, from
-    // 7.5 s after the roll-down, i.e. 14 s), arriving just as it starts to fade to half strength
-    const GREY_AFTER = 7500, GREY_FOR = DIM_AFTER - GREY_AFTER;
+    // 9.5 s after the roll-down, i.e. 16 s), arriving just as it starts to fade to half strength
+    const GREY_AFTER = 9500, GREY_FOR = DIM_AFTER - GREY_AFTER;
     const whiteToGrey = () => { const r = part('R'); if (!r) return; r.querySelectorAll('p').forEach((p) => {
       if (!p.animate) return;
       const grey = getComputedStyle(p).color;
