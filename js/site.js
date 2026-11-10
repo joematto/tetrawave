@@ -159,7 +159,11 @@ if (homeVid && snd) {
     if (t >= FADE_END) { done = true; snd.pause(); snd.volume = 1; return; }
     const k = Math.max(0, Math.min(1, (FADE_END - t) / FADE));   // fade-out: 1 before it, 0 at the end
     const f = Math.max(0, Math.min(1, (t - SKIP) / FADE_IN));     // fade-in: 0 at the start, 1 after FADE_IN
-    try { snd.volume = Math.min(f * f, Math.pow(k, 4.5)); } catch (e) { /* volume fixed on this device: it simply stops at the end */ }   // fade-out on a steep curve (power 4.5): it turns soft early, same start and end
+    // fade-out: loudness falls at an even rate (decibels per second) down to 60 dB below, after a gentle start (the
+    // first 30% of the fade eases in rather than dropping at once); same start and end
+    const p = 1 - k, A = 0.3, sDb = (p < A ? p * p / (2 * A) : p - A / 2) / (1 - A / 2);
+    const out = k <= 0 ? 0 : Math.pow(10, -60 * sDb / 20);
+    try { snd.volume = Math.min(f * f, out); } catch (e) { /* volume fixed on this device: it simply stops at the end */ }
     requestAnimationFrame(fade);
   };
   snd.addEventListener('play', () => { if (auto) requestAnimationFrame(fade); });
