@@ -379,12 +379,13 @@ for (const el of document.querySelectorAll('[data-fadeout]')) {
 // (in the background video) and settle in the space between the page title and the bottom of the window,
 // centred across the galaxy.
 const BURST_WORDS = [   // [text (HTML), centre x, centre y, size] on the picture
-  ['structure', 539, 34, 44], ['induces', 540, 78, 27], ['fractal <b>reactance</b>', 440, 123, 27],
+  ['structure', 539, 34, 30.8], ['induces', 540, 78, 27], ['fractal <b>reactance</b>', 440, 123, 27],
   ['Transmission remission', 465, 170, 23], ['re(a)<i>ssembles</i> dilation', 498, 206, 21],
   ['Telemetry', 370, 266, 29], ['traction', 338, 297, 17], ['counters', 223, 301, 21], ['rarefaction', 224, 331, 21],
   ['sinus reminds us', 125, 360, 19], ['Sculpture', 521, 305, 23], ['formation', 540, 335, 21],
   ['positions in', 438, 365, 26], ['time us', 438, 401, 24], ['of forces', 290, 436, 29], ['mid', 290, 477, 28],
-  ['immense', 290, 518, 29], ['motion', 467, 586, 25], ['compression', 107, 122, 21], ['bi-lateral', 56, 48, 19]];
+  ['immense', 290, 518, 29], ['motion', 467, 586, 25], ['compression', 107, 122, 21], ['bi-lateral', 56, 48, 19],
+  ['remember', 82, 214, 23]];   // (10 Nov: 'structure' 30% smaller; 'remember' added on the left, two-thirds of the way up)
 function wordBurst(IN, HOLD, OUT) {
   const w = innerWidth, h = innerHeight, k = Math.max(w / 1920, h / 1080);
   const core = [(w - 1920 * k) / 2 + 0.508 * 1920 * k, (h - 1080 * k) / 2 + 0.478 * 1080 * k];   // the galaxy's core
