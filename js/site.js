@@ -1,11 +1,19 @@
 // TetraWave — entrance effects, contents menu, and the "#files" image-label mode.
 document.documentElement.classList.add('js');
 
+// Home: the opening (Spinor, titles, galaxy, music) waits for introGo(). If the browser lets the page play sound by
+// itself (e.g. arriving from another page of the site), it starts at once; if not (a fresh open or a refresh), a dark
+// opening screen asks for one click, which starts the Spinor and the music together. Other pages start at once.
+const IS_HOME = document.body.classList.contains('home');
+let introGo;
+const intro = new Promise((res) => { introGo = res; });
+if (!IS_HOME) introGo();
+
 // Fade In / Spin In when an element scrolls into view (like Wix's animations)
 const io = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
   for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
 }, { rootMargin: '0px 0px -8% 0px' }) : null;
-document.querySelectorAll('[data-anim]:not([data-seq])').forEach((el) => io ? io.observe(el) : el.classList.add('in'));
+intro.then(() => document.querySelectorAll('[data-anim]:not([data-seq])').forEach((el) => io ? io.observe(el) : el.classList.add('in')));
 
 // Chained fades (data-seq="1", "2", …): each fades in 2 s after the one before has finished fading in,
 // and not before it has come into view (then it waits 2 s from there).
@@ -119,7 +127,9 @@ if (homeVid) {
     // stop exactly when the Spinor's turn ends
     sp.addEventListener('animationend', (e) => { if (e.animationName === 'spinor-turn') { stopAt = 0; homeVid.pause(); galaxyStopped(); } });
   }
-  setTimeout(start, 1500);   // fallback if the Spinor's start isn't reported
+  intro.then(() => setTimeout(start, 1500));   // fallback if the Spinor's start isn't reported
+  homeVid.autoplay = false; homeVid.pause();          // the galaxy waits for the opening too
+  intro.then(() => { const p = homeVid.play(); if (p && p.catch) p.catch(() => {}); });
 }
 
 // Home: the soundtrack ("White Winds") starts half a second after the Spinor starts turning, 1 s into the track, and
@@ -140,7 +150,9 @@ if (homeVid && snd) {
   const skip = () => { if (snd.currentTime < SKIP) try { snd.currentTime = SKIP; } catch (e) { /* not seekable yet */ } };
   if (snd.readyState >= 1) skip(); else snd.addEventListener('loadedmetadata', skip, { once: true });
   let done = false;   // the automatic play has faded out
+  let testing = false;   // the silent check below: leave the volume alone
   const fade = () => {
+    if (testing) return;
     if (!auto) { snd.volume = 1; return; }
     if (snd.paused) return;
     const t = snd.currentTime;
@@ -168,8 +180,39 @@ if (homeVid && snd) {
   };
   const spinor = document.getElementById('mark');
   if (spinor) spinor.addEventListener('animationstart', (e) => { if (e.animationName === 'spinor-turn') startMusic(); });
-  setTimeout(startMusic, 1500);   // fallback if the Spinor's start isn't reported
+  intro.then(() => setTimeout(startMusic, 1500));   // fallback if the Spinor's start isn't reported
+
+  // may the page play sound by itself? Try silently; if not, show the opening screen and wait for a click
+  let decided = false;
+  const go = () => { if (decided) return; decided = true; introGo(); };
+  const gate = () => {
+    if (decided) return; decided = true; testing = false;
+    try { snd.pause(); snd.volume = 1; } catch (e) { /* ignore */ }
+    const g = document.createElement('div');
+    g.id = 'tw-gate'; g.setAttribute('role', 'button'); g.tabIndex = 0; g.setAttribute('aria-label', 'Enter the site (starts the soundtrack)');
+    g.innerHTML = '<div class="g-in"><p class="g-title">TetraWave</p><p class="g-sub">&amp; The StarGate Poems</p><p class="g-enter">' + (matchMedia('(hover: none)').matches ? 'Tap' : 'Click') + ' to enter</p></div>';
+    document.body.appendChild(g);
+    requestAnimationFrame(() => g.classList.add('on'));
+    const enter = (e) => {
+      if (e && e.type === 'keydown' && !['Enter', ' ', 'Spacebar'].includes(e.key)) return;
+      if (e) e.preventDefault();
+      g.removeEventListener('click', enter); removeEventListener('keydown', enter);
+      g.classList.add('out'); setTimeout(() => g.remove(), 900);
+      introGo();
+    };
+    g.addEventListener('click', enter); addEventListener('keydown', enter);
+    g.focus({ preventScroll: true });
+  };
+  try {
+    snd.volume = 0; testing = true;
+    const t = snd.play();
+    if (t && t.then) {
+      t.then(() => { snd.pause(); try { snd.currentTime = 0; } catch (e) {} snd.volume = 1; testing = false; go(); }, () => { testing = false; gate(); });
+      setTimeout(gate, 1500);   // no answer in time: ask
+    } else gate();
+  } catch (e) { gate(); }
 }
+if (IS_HOME && !(homeVid && snd)) introGo();
 
 
 // Wix-exact page layout: scale the 980px page to the window, and push elements down when text runs
