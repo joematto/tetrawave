@@ -378,8 +378,8 @@ for (const el of document.querySelectorAll('[data-fadeout]')) {
 // galaxy). Positions and sizes are measured on the 672 x 660 picture. The words burst out of the galaxy's core
 // (in the background video) and settle in the space between the page title and the bottom of the window,
 // centred across the galaxy.
-const BURST_WORDS = [   // [text (HTML), centre x, centre y, size] on the picture
-  ['structure', 539, 34, 30.8], ['induces', 540, 78, 27], ['fractal <b>reactance</b>', 440, 123, 27],
+const BURST_WORDS = [   // [text (HTML), centre x, centre y, size] on the picture, and optionally { dx: screen px, tilt: extra degrees (clockwise) }
+  ['structure', 539, 34, 30.8, { dx: -20, tilt: 8 }], ['induces', 540, 78, 27], ['fractal <b>reactance</b>', 440, 123, 27],
   ['Transmission remission', 465, 170, 23], ['re(a)<i>ssembles</i> dilation', 498, 206, 21],
   ['Telemetry', 370, 266, 29], ['traction', 338, 297, 17], ['counters', 223, 301, 21], ['rarefaction', 224, 331, 21],
   ['sinus reminds us', 125, 360, 19], ['Sculpture', 521, 305, 23], ['formation', 540, 335, 21],
@@ -400,13 +400,13 @@ function wordBurst(IN, HOLD, OUT) {
   // about half to one and a third of that), a tilt, a nudge off its place and its own moment of leaving the core.
   // At their brightest the words are 60% transparent.
   const PEAK = 0.4, rnd = (a, b) => a + Math.random() * (b - a);
-  BURST_WORDS.forEach(([t, x, y, size]) => {
+  BURST_WORDS.forEach(([t, x, y, size, opt = {}]) => {
     const e = document.createElement('span');
     e.innerHTML = t;
-    const px = at[0] + (x - cx) * s + rnd(-28, 28) * s, py = at[1] + (y - cy) * s + rnd(-16, 16) * s;
+    const px = at[0] + (x - cx) * s + rnd(-28, 28) * s + (opt.dx || 0), py = at[1] + (y - cy) * s + rnd(-16, 16) * s;
     Object.assign(e.style, { left: px + 'px', top: py + 'px', fontSize: (size * s * 0.8 * rnd(0.55, 1.35)) + 'px' });
     layer.appendChild(e);
-    const dx = core[0] - px, dy = core[1] - py, lag = rnd(0, 600), tilt = rnd(-14, 14);
+    const dx = core[0] - px, dy = core[1] - py, lag = rnd(0, 600), tilt = rnd(-14, 14) + (opt.tilt || 0);
     const start = `translate(-50%, -50%) translate(${dx}px, ${dy}px) rotate(${rnd(-90, 90)}deg) scale(.2)`;
     const home = `translate(-50%, -50%) rotate(${tilt}deg)`;
     const away = `translate(-50%, -50%) translate(${-dx * rnd(0.05, 0.14)}px, ${-dy * rnd(0.05, 0.14)}px) rotate(${tilt + rnd(-6, 6)}deg) scale(${rnd(1, 1.08)})`;
