@@ -593,9 +593,8 @@ for part, pages in OUTLINE[1:]:
 # Home: hand-composed to match the Wix homepage (two title lines, credit, spinning graphic)
 hp, hw, hh = IMG[canon('9c79f0_2e6f0d49e6d44dbdadb504a7e448352e~mv2.png')]
 # The Spinor picture (replaced 4 Nov 2026; the earlier one is kept in images/HOME as HOME-01_...)
-# 10 Nov 2026: re-cut square (1388 x 1388) and centred exactly on the Phi core, so the Spinor turns about its core
-# without wobbling (HOME-02 is kept)
-hp, hw, hh = 'images/HOME/HOME-03_spinor-tetrahelix-phi-centred.jpg', 1388, 1388
+# (10 Nov 2026: a re-cut, centred version HOME-03 was tried and set aside at Joe's request; HOME-02 is used)
+hp, hw, hh = 'images/HOME/HOME-02_spinor-tetrahelix-phi.jpg', 1400, 1394
 home = f'''<section class="hero">
   <div class="hero-text" id="heroText">
   <p class="hero-small" data-anim="fade" style="--d:250ms"><span class="hs-big">TetraWave</span><span>&amp;</span><span>The StarGate Poems</span></p>
