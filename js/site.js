@@ -13,7 +13,7 @@ if (!IS_HOME) introGo();
   const cover = document.getElementById('tw-cover');
   if (cover) {
     const lift = () => { if (!cover.isConnected) return; cover.classList.add('out'); setTimeout(() => cover.remove(), 450); };
-    intro.then(lift);
+    intro.then(() => { document.documentElement.classList.add('tw-intro'); lift(); });   // the galaxy fades up from black
     setTimeout(() => { if (cover.isConnected && !document.getElementById('tw-gate')) lift(); }, 4000);   // safety net
   }
 }
