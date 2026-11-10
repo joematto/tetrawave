@@ -345,10 +345,14 @@ html.scrolled .pager-top a { background: rgba(6, 7, 12, .72); -webkit-backdrop-f
 .tw-editing .canvas [data-fadeout] { opacity: 1 !important; }   /* faded-out items stay visible while editing */
 .tw-editing .canvas [data-poem] { opacity: 1 !important; }   /* the poem shows fully while editing */
 
+/* Home: black from the very first moment (removed by js/site.js when the opening starts, or replaced by the opening screen) */
+#tw-cover { position: fixed; inset: 0; z-index: 2147483400; background: #05060b; transition: opacity 400ms ease; }
+#tw-cover.out { opacity: 0; pointer-events: none; }
 /* Home: opening screen (only when the browser will not play the soundtrack without a click) */
 #tw-gate { position: fixed; inset: 0; z-index: 2147483500; display: grid; place-items: center; background: #05060b; cursor: pointer;
   opacity: 0; transition: opacity 500ms ease; }
-#tw-gate.on { opacity: 1; }
+#tw-gate.on, #tw-gate.now { opacity: 1; }
+#tw-gate.now { transition: none; }
 #tw-gate.out { opacity: 0; transition: opacity 800ms ease; pointer-events: none; }
 #tw-gate:focus { outline: none; }
 #tw-gate .g-in { text-align: center; }

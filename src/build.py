@@ -221,6 +221,7 @@ def shell(key, title, body, home=False, bgvideo='video/background.mp4', bgposter
 {TOOLS_FLAG}
 </head>
 <body class="{'home' if home else 'inner'}" data-key="{key}" data-edits-saved="{EDITS_SAVED}"{' data-image-numbers' if IMAGE_NUMBERS == 'ALL' or key in IMAGE_NUMBERS else ''}>
+{'<div id="tw-cover" aria-hidden="true"></div><noscript><style>#tw-cover{display:none}</style></noscript>' if home else ''}
 <video class="bg" autoplay muted loop playsinline poster="{bgposter}" aria-hidden="true"><source src="{bgvideo}" type="video/mp4"></video>
 <div class="veil" aria-hidden="true"></div>
 '''

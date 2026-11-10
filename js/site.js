@@ -8,6 +8,15 @@ const IS_HOME = document.body.classList.contains('home');
 let introGo;
 const intro = new Promise((res) => { introGo = res; });
 if (!IS_HOME) introGo();
+// the black cover put on the home page by the HTML itself (so the galaxy never flashes up first): lift it as the opening starts
+{
+  const cover = document.getElementById('tw-cover');
+  if (cover) {
+    const lift = () => { if (!cover.isConnected) return; cover.classList.add('out'); setTimeout(() => cover.remove(), 450); };
+    intro.then(lift);
+    setTimeout(() => { if (cover.isConnected && !document.getElementById('tw-gate')) lift(); }, 4000);   // safety net
+  }
+}
 
 // Fade In / Spin In when an element scrolls into view (like Wix's animations)
 const io = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
@@ -215,8 +224,9 @@ if (homeVid && snd) {
     const g = document.createElement('div');
     g.id = 'tw-gate'; g.setAttribute('role', 'button'); g.tabIndex = 0; g.setAttribute('aria-label', 'Enter the site (starts the soundtrack)');
     g.innerHTML = '<div class="g-in"><p class="g-title">TetraWave</p><p class="g-sub">&amp; The StarGate Poems</p><p class="g-enter">' + (matchMedia('(hover: none)').matches ? 'Tap' : 'Click') + ' to enter</p></div>';
-    document.body.appendChild(g);
-    requestAnimationFrame(() => g.classList.add('on'));
+    const cover = document.getElementById('tw-cover');
+    if (cover) { g.classList.add('now'); document.body.appendChild(g); cover.remove(); }   // black straight into the opening screen
+    else { document.body.appendChild(g); requestAnimationFrame(() => g.classList.add('on')); }
     const enter = (e) => {
       if (e && e.type === 'keydown' && !['Enter', ' ', 'Spacebar'].includes(e.key)) return;
       if (e) e.preventDefault();
