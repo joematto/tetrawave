@@ -133,9 +133,10 @@ if (homeVid) {
 }
 
 // Home: the soundtrack ("White Winds") starts one second after the Spinor starts turning, 1 s into the track, fades in over 1.5 s, and
-// fades out over 3 s: the fade runs from 7.0 s to 10.0 s of the track, i.e. about 7.3–10.3 s after the opening starts. Browsers only allow sound once the visitor has interacted with the page, so if starting
-// at once is refused it starts at the first click, tap or key press instead (and still fades at the same point in the
-// music). Using the Sound button cancels the automatic fade.
+// from 7.0 s to 10.0 s of the track eases down to half volume, then plays on quietly (drums and all) to the end of the
+// track, or until another page is opened. Browsers only allow sound once the visitor has interacted with the page,
+// so if starting at once is refused the opening screen asks for a click. Using the Sound button cancels the automatic
+// volume changes (full volume, repeating, as before).
 let galaxyHasStopped = false;
 function galaxyStopped() {
   if (galaxyHasStopped) return;
@@ -143,10 +144,10 @@ function galaxyStopped() {
   document.dispatchEvent(new Event('tw:galaxy-stopped'));
 }
 if (homeVid && snd) {
-  const SKIP = 1, FADE_IN = 1.5, FADE_END = 10.0, FADE = 3.0;   // seconds of the track: plays 1–10 s, fading over the last 3 s (the drum roll starts at 9.1 s,
+  const SKIP = 1, FADE_IN = 1.5, FADE_END = 10.0, FADE = 3.0, BG = 0.5;   // BG: the volume it settles at   // seconds of the track: plays 1–10 s, fading over the last 3 s (the drum roll starts at 9.1 s,
   // when the fade is at about 9% volume)
   let auto = true;   // false once the visitor uses the Sound button themselves
-  if (sbtn) sbtn.addEventListener('click', () => { auto = false; snd.volume = 1; }, true);
+  if (sbtn) sbtn.addEventListener('click', () => { auto = false; snd.volume = 1; snd.loop = true; }, true);
   const skip = () => { if (snd.currentTime < SKIP) try { snd.currentTime = SKIP; } catch (e) { /* not seekable yet */ } };
   if (snd.readyState >= 1) skip(); else snd.addEventListener('loadedmetadata', skip, { once: true });
   let done = false;   // the automatic play has faded out
@@ -156,18 +157,17 @@ if (homeVid && snd) {
     if (!auto) { snd.volume = 1; return; }
     if (snd.paused) return;
     const t = snd.currentTime;
-    if (t >= FADE_END) { done = true; snd.pause(); snd.volume = 1; return; }
-    const k = Math.max(0, Math.min(1, (FADE_END - t) / FADE));   // fade-out: 1 before it, 0 at the end
+    if (t >= FADE_END) { try { snd.volume = BG; } catch (e) {} return; }   // from here it plays on quietly to the end of the track
+    const k = Math.max(0, Math.min(1, (FADE_END - t) / FADE));   // 1 before the fade-down, 0 at its end
     const f = Math.max(0, Math.min(1, (t - SKIP) / FADE_IN));     // fade-in: 0 at the start, 1 after FADE_IN
-    // fade-out: loudness falls at an even rate (decibels per second) down to 60 dB below, after a gentle start (the
-    // first 30% of the fade eases in rather than dropping at once); same start and end
-    const p = 1 - k, A = 0.3, sDb = (p < A ? p * p / (2 * A) : p - A / 2) / (1 - A / 2);
-    const out = k <= 0 ? 0 : Math.pow(10, -60 * sDb / 20);
-    try { snd.volume = Math.min(f * f, out); } catch (e) { /* volume fixed on this device: it simply stops at the end */ }
+    // fade-down to half volume: smooth at both ends, even in loudness through the middle
+    const p = 1 - k, sm = p * p * (3 - 2 * p), out = Math.pow(10, 20 * Math.log10(BG) * sm / 20);
+    try { snd.volume = Math.min(f * f, out); } catch (e) { /* volume fixed on this device */ }
     requestAnimationFrame(fade);
   };
   snd.addEventListener('play', () => { if (auto) requestAnimationFrame(fade); });
-  const begin = () => { if (!auto || done || galaxyHasStopped) return; skip(); try { snd.volume = 0; } catch (e) {} return snd.play(); };   // starts silent, then fades in
+  const begin = () => { if (!auto || done || galaxyHasStopped) return; skip(); snd.loop = false; try { snd.volume = 0; } catch (e) {} return snd.play(); };   // starts silent, fades in, plays once
+  snd.addEventListener('ended', () => { if (auto) done = true; });
   const firstTouch = (e) => {
     if (e.target && e.target.closest && e.target.closest('.sound-btn')) return;   // the Sound button does its own thing
     ['pointerdown', 'keydown', 'touchstart'].forEach((t) => removeEventListener(t, firstTouch, true));
