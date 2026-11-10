@@ -122,11 +122,11 @@ if (homeVid) {
   setTimeout(start, 1500);   // fallback if the Spinor's start isn't reported
 }
 
-// Home: the soundtrack ("White Winds") starts (1 s into the track) as the site opens and stops abruptly (no fade) 9.0 s
-// into the track, just before the drum roll begins (9.1 s), i.e. about 8 s after the page opens. Browsers only allow
-// sound once the visitor has interacted with the page, so if starting at once is refused it starts at the first
-// click, tap or key press instead (and still stops at the same point in the music). Using the Sound button cancels
-// the automatic stop.
+// Home: the soundtrack ("White Winds") starts (1 s into the track) as the site opens and fades out over 3 s so that it is
+// silent before the drum roll begins (9.1 s into the track): the fade runs from 6.0 s to 9.0 s of the track, i.e. about
+// 5–8 s after the page opens. Browsers only allow sound once the visitor has interacted with the page, so if starting
+// at once is refused it starts at the first click, tap or key press instead (and still fades at the same point in the
+// music). Using the Sound button cancels the automatic fade.
 let galaxyHasStopped = false;
 function galaxyStopped() {
   if (galaxyHasStopped) return;
@@ -134,19 +134,23 @@ function galaxyStopped() {
   document.dispatchEvent(new Event('tw:galaxy-stopped'));
 }
 if (homeVid && snd) {
-  const SKIP = 1, STOP_AT = 9.0;   // seconds of the track (the drum roll starts at 9.1 s)
+  const SKIP = 1, FADE_END = 9.0, FADE = 3.0;   // seconds of the track (the drum roll starts at 9.1 s)
   let auto = true;   // false once the visitor uses the Sound button themselves
-  if (sbtn) sbtn.addEventListener('click', () => { auto = false; }, true);
+  if (sbtn) sbtn.addEventListener('click', () => { auto = false; snd.volume = 1; }, true);
   const skip = () => { if (snd.currentTime < SKIP) try { snd.currentTime = SKIP; } catch (e) { /* not seekable yet */ } };
   if (snd.readyState >= 1) skip(); else snd.addEventListener('loadedmetadata', skip, { once: true });
-  let done = false;   // the automatic play has stopped
-  const watch = () => {
-    if (!auto || snd.paused) return;
-    if (snd.currentTime >= STOP_AT) { done = true; snd.pause(); return; }
-    requestAnimationFrame(watch);
+  let done = false;   // the automatic play has faded out
+  const fade = () => {
+    if (!auto) { snd.volume = 1; return; }
+    if (snd.paused) return;
+    const t = snd.currentTime;
+    if (t >= FADE_END) { done = true; snd.pause(); snd.volume = 1; return; }
+    const k = Math.max(0, Math.min(1, (FADE_END - t) / FADE));   // 1 before the fade, 0 at the end
+    try { snd.volume = k * k; } catch (e) { /* volume fixed on this device: it simply stops at the end */ }
+    requestAnimationFrame(fade);
   };
-  snd.addEventListener('play', () => { if (auto) requestAnimationFrame(watch); });
-  const begin = () => { if (!auto || done || galaxyHasStopped) return; skip(); return snd.play(); };
+  snd.addEventListener('play', () => { if (auto) requestAnimationFrame(fade); });
+  const begin = () => { if (!auto || done || galaxyHasStopped) return; skip(); snd.volume = 1; return snd.play(); };
   const firstTouch = (e) => {
     if (e.target && e.target.closest && e.target.closest('.sound-btn')) return;   // the Sound button does its own thing
     ['pointerdown', 'keydown', 'touchstart'].forEach((t) => removeEventListener(t, firstTouch, true));
