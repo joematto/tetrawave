@@ -27,7 +27,7 @@ OUTLINE = [
         ('MODEL', '3D Exploration Models', '3d-exploration-models.html'),
         ('BUILD', 'Tetrawave Build Sequence', 'tetrawave-build-sequence.html'),
         ('TILT', 'TOT Tilt Angle Analysis', 'tilt-angle-analysis.html'),
-        ('GOLD', 'The Golden Section is an Artifact', 'the-golden-section-is-an-artifact.html'),
+        ('GOLD', 'PHI is an Artifact', 'the-golden-section-is-an-artifact.html'),
         ('GRID', '11:11', '11-11-grid.html'),
         ('CAD', '3D Exploration CAD Models', '3d-exploration-cad-models.html'),
         ('HELIX', 'Tetra-Helix 2D Drawing Methods', 'tetra-helix-2d-drawing-methods.html')]),
@@ -571,6 +571,8 @@ for part, pages in OUTLINE[1:]:
             body = re.sub(r'(<span class="k">SKETCH</span>)[^<]*</h1>', r'\1Inception</h1>', body, count=1)
         if key == 'P2':     # title nudged 3px right; 1 pt smaller (29 pt), its line kept the same height so nothing below moves
             body = body.replace('<h1 class="page-title">', '<h1 class="page-title" style="position:relative;left:3px;font-size:clamp(26px,4.4vw,38.67px);line-height:calc(1.15 * clamp(26px,4.4vw,40px))">', 1)
+        if key == 'GOLD':   # the Phi symbol under the title
+            body = body.replace('PHI is an Artifact</h1>', 'PHI is an Artifact<span class="phi-sym" aria-label="Phi">&#934;</span></h1>', 1)
         if key == 'COIL':   # page heading reads "First Download Transmission" (Contents keeps the section's full name)
             body = re.sub(r'(<span class="k">COIL</span>)[^<]*</h1>', r'\1First &ldquo;Download&rdquo; Transmission!?<span class="subtitle">A Message within a Message?</span></h1>', body, count=1)
             body = body.replace('<h1 class="page-title">', '<h1 class="page-title" style="position:relative">', 1)   # the subtitle hangs below it

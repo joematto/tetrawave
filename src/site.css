@@ -68,6 +68,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 .page-title .k { display: block; width: max-content; margin: 0 auto 14px; font-size: 11px; }
 .page-title .t0 { display: block; font: 400 13.33px/1.2 var(--body); letter-spacing: .06em; color: var(--pale); margin-bottom: 2px; }   /* small line above a title, 10 pt Source Sans 3 */
 .page-title .t2 { display: block; font-size: .5em; margin-top: .1em; }   /* second line of a title, half size (Part I, Section 1) */
+.page-title .phi-sym { display: block; margin-top: 14px; font: 400 64px/1 "Times New Roman", Times, Georgia, serif; color: var(--gold); letter-spacing: 0; }   /* P2-S6: the Phi symbol under the title */
 .page-title .subtitle { position: absolute; left: 0; right: 0; top: calc(100% + 10px); font: 400 var(--fs-sub)/1.2 var(--display); color: #ffffff; letter-spacing: .05em; }   /* P1-S4 subtitle: hangs below the title (closer to the title than to "Star Coil"), so nothing on the page moves */
 @media (max-width: 699px) { .page-title .subtitle { position: static; display: block; margin-top: 10px; font-size: 19px; } }
 .blk { width: min(100%, var(--w)); margin: 22px auto; min-width: 0; }
