@@ -50,6 +50,17 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') toc.hidden
 const files = () => document.body.classList.toggle('show-files', location.hash === '#files');
 window.addEventListener('hashchange', files); files();
 
+// The Previous / Next links float just under the header as the page scrolls (site.css): keep the header's height in
+// --bar-h, and mark the page as scrolled so the links get a dark backing over the content.
+{
+  const bar = document.querySelector('.bar'), root = document.documentElement;
+  const setH = () => { if (bar) root.style.setProperty('--bar-h', bar.offsetHeight + 'px'); };
+  const onScroll = () => root.classList.toggle('scrolled', scrollY > 4);
+  setH(); onScroll();
+  addEventListener('resize', setH); addEventListener('load', setH); addEventListener('scroll', onScroll, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(setH);
+}
+
 // Sound button in the top line (plays the "White Winds" track)
 const snd = document.getElementById('sound'), sbtn = document.querySelector('.sound-btn');
 if (snd && sbtn) {
@@ -422,7 +433,19 @@ function wordBurst(IN, HOLD, OUT) {
       const grey = getComputedStyle(p).color;
       p.animate([{ color: '#ffffff' }, { color: grey }], { duration: GREY_FOR, delay: ROLL_END + GREY_AFTER, easing: 'ease-in-out', fill: 'backwards' });
     }); };
-    const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); whiteToGrey(); dimRight(); showSub(); };
+    // at the very end (1 s after the subtitle), a blank line opens slowly (3 s) after lines 4, 8 and 12 of both columns,
+    // so the poem reads as four verses; "Motion" and the initials move down with it
+    const VERSE_AT = ROLL_END + DIM_AFTER + DIM_FOR + 1000, VERSE_FOR = 3000;
+    const verses = () => setTimeout(() => {
+      const box = part('L') || part('R'), col = L.length > 1 ? L : R;
+      if (!box || col.length < 2) return;
+      const scale = box.getBoundingClientRect().width / box.offsetWidth || 1;
+      const gap = (col[1].getBoundingClientRect().top - col[0].getBoundingClientRect().top) / scale;   // one line, in page pixels
+      const t = { duration: VERSE_FOR, easing: 'ease-in-out', fill: 'forwards' };
+      [4, 8, 12].forEach((i) => [L[i], R[i]].forEach((p) => { if (p && p.animate) p.animate([{ paddingTop: '0px' }, { paddingTop: gap + 'px' }], t); }));
+      ['motion', 'sig'].forEach((k) => { const e = part(k); if (e && e.animate) e.animate([{ transform: 'translateY(0)' }, { transform: `translateY(${3 * gap}px)` }], t); });
+    }, VERSE_AT);
+    const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); whiteToGrey(); dimRight(); showSub(); verses(); };
     const reveal = () => steps.forEach((s, i) => s.forEach((el) => {
       el.classList.remove('poem-line');
       if (!el.animate) return;

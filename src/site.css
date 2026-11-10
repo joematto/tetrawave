@@ -222,11 +222,14 @@ a.wbtn:hover { color: var(--gold); }
 .pager small { display: block; font: 600 11px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
 .pager .next { text-align: right; }
 /* Small Previous / Next just under the header line */
-.pager-top { position: relative; height: 0; z-index: 4; }
+.pager-top { position: sticky; top: var(--bar-h, 0px); height: 0; z-index: 4; }   /* floats just under the header while the page scrolls */
 .pager-top a { position: absolute; top: 7px; max-width: calc(50% - 24px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font: 400 12px/1.4 var(--display); letter-spacing: .08em; color: var(--pale); text-decoration: none; opacity: .8; }
 .pager-top a:hover { color: var(--gold); opacity: 1; }
 .pager-top .prev { left: max(16px, env(safe-area-inset-left)); }
+/* once the page has scrolled, the links get a soft dark backing so they stay readable over pictures and text */
+.pager-top a { padding: 3px 8px; margin: -3px -8px; border-radius: 3px; transition: background-color .3s ease; }
+html.scrolled .pager-top a { background: rgba(6, 7, 12, .72); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
 .pager-top a { display: flex; align-items: center; gap: 8px; }
 .pager-top .arw { font-size: 3em; line-height: .6; position: relative; top: -.06em; }   /* arrows 3x the text size */
 .pager-top .next { right: max(16px, env(safe-area-inset-right)); }
