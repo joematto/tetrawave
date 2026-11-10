@@ -351,7 +351,15 @@ function wordBurst(IN, HOLD, OUT) {
     // once the right-hand column has faded, the subtitle ("A Message within a Message?") fades in quickly (0.8 s)
     const SUB_IN = 800, sub = document.querySelector('.page-title .subtitle');
     const showSub = () => { if (sub && sub.animate) sub.animate([{ opacity: 0 }, { opacity: 1 }], { duration: SUB_IN, delay: ROLL_END + DIM_AFTER + DIM_FOR, easing: 'ease-out', fill: 'backwards' }); };
-    const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); dimRight(); showSub(); };
+    // the right-hand column rolls down in the same white as the left, then slowly turns to its own grey (over 6 s, from
+    // 2 s after the roll-down), arriving just as it starts to fade to half strength
+    const GREY_AFTER = 2000, GREY_FOR = DIM_AFTER - GREY_AFTER;
+    const whiteToGrey = () => { const r = part('R'); if (!r) return; r.querySelectorAll('p').forEach((p) => {
+      if (!p.animate) return;
+      const grey = getComputedStyle(p).color;
+      p.animate([{ color: '#ffffff' }, { color: grey }], { duration: GREY_FOR, delay: ROLL_END + GREY_AFTER, easing: 'ease-in-out', fill: 'backwards' });
+    }); };
+    const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); whiteToGrey(); dimRight(); showSub(); };
     const reveal = () => steps.forEach((s, i) => s.forEach((el) => {
       el.classList.remove('poem-line');
       if (!el.animate) return;
