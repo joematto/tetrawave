@@ -30,7 +30,7 @@
   const canvas = document.querySelector('.canvas');
   const load = () => { try { return JSON.parse(localStorage.getItem(STORE) || '{}'); } catch (e) { return {}; } };
   const save = (all) => { try { localStorage.setItem(STORE, JSON.stringify(all)); } catch (e) { /* storage unavailable */ } };
-  const relayout = () => { try { if (typeof layoutCanvas === 'function') layoutCanvas(); } catch (e) { /* not on this page */ } };
+  const relayout = () => { try { if (typeof layoutCanvas === 'function') layoutCanvas(); } catch (e) { /* not on this page */ } if (typeof bake === 'function') bake(); };
 
   // ---- elements and their original (built) positions ----
   const els = canvas ? [...canvas.querySelectorAll(':scope > .el[data-eid]')].filter((e) => !/calc/.test(e.style.left)) : [];
@@ -67,6 +67,7 @@
     e.dataset.y = v.y;
     e.style.width = v.w + 'px';
     if (!isText(e)) { e.style.height = v.h + 'px'; e.dataset.h = v.h; e.style.setProperty('--ar', v.w + '/' + Math.max(1, v.h)); }
+    else if (v.h) e.dataset.h = v.h;
     const txt = isText(e) ? e.querySelector('.txt') : null, o = orig.get(e.dataset.eid);
     if (txt && txt.innerHTML !== (v.html !== undefined ? v.html : o.html)) txt.innerHTML = v.html !== undefined ? v.html : o.html;
     const img = isPic(e) ? e.querySelector('img') : null;
@@ -423,6 +424,38 @@
     commitMany(list.map((e) => { const st = stateOf(e), v = { ...st, g: '' }; apply(e, v); return [e, v, st]; }));
     const keep = sel; select(null); select(keep); panelTip('Ungrouped: each item can be selected on its own again.');
   }
+  // ---- what you see is what is stored ----
+  // The page pushes items down when a text box runs taller than its stored height (as Wix did). While editing that made
+  // items jump when dragged past such a text box's bottom. So in edit mode the pushed layout is written into the items
+  // themselves: text boxes take their real height, and pushed items take the place where they are seen. Nothing moves
+  // on screen; there is simply no hidden push left. (Saved with the other edits; not an Undo step.)
+  let baking = false;
+  function bake() {
+    if (!on || baking || !canvas || innerWidth < 700) return;   // (phones stack the page instead)
+    baking = true;
+    try {
+      let changed = false;
+      for (const e of els) {
+        if (e.style.display === 'none' || (editing && e === editing)) continue;
+        const st = stateOf(e), top = parseFloat(e.style.top);
+        let v = null;
+        if (isText(e) && e.offsetHeight > st.h + 1) v = { ...st, h: e.offsetHeight };
+        if (Number.isFinite(top) && Math.abs(top - st.y) > 0.5) v = { ...(v || st), y: Math.round(top * 2) / 2 };
+        if (!v) continue;
+        apply(e, v);
+        const id = e.dataset.eid, o = orig.get(id), r = entry(e, v);
+        if (same({ ...r, html: r.html !== undefined ? r.html : o.html }, o)) { if (all[KEY]) delete all[KEY][id]; } else page()[id] = r;
+        changed = true;
+      }
+      if (changed) {
+        if (all[KEY] && !Object.keys(all[KEY]).length) delete all[KEY];
+        save(all);
+        try { layoutCanvas(); } catch (err) { /* ignore */ }
+        place(); label();
+      }
+    } finally { baking = false; }
+  }
+
   // ---- layer order: Front / Back (Cmd+Shift+] / [), one step Forward / Backward among overlapping items (Cmd+] / [) ----
   const overlaps = (a, b) => { const A = cur(a), B = cur(b); const ah = a.offsetHeight || A.h, bh = b.offsetHeight || B.h;
     return A.x < B.x + B.w && B.x < A.x + A.w && A.y < B.y + bh && B.y < A.y + ah; };
@@ -889,6 +922,7 @@
     addEventListener('resize', place); addEventListener('scroll', place, { passive: true });
     document.addEventListener('copy', onCopyEv); document.addEventListener('cut', onCutEv); document.addEventListener('paste', onPaste);
     select(null);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { relayout(); }); else relayout();   // fix any hidden push now
   }
   function hide() {
     if (!on) return;
