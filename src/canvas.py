@@ -158,7 +158,7 @@ def render(key, page, img_info, link, docs, hooks=None, edits=None):
             extra += ';left:calc(490px - 50vw);width:100vw'
         grp = f' data-group="{E(ed["g"])}"' if ed and ed.get('g') else ''   # grouped in the Edit tool
         base = (f'class="el el-{it["t"]}" data-eid="{E(eid)}"{grp} data-y="{y2}" data-h="{h}" '
-                f'style="left:{x}px;top:{y2}px;width:{w}px;height:{h}px;z-index:{z + 1};--ar:{w}/{max(h, 1)}{extra}"')
+                f'style="left:{x}px;top:{y2}px;width:{w}px;height:{h}px;z-index:{ed["z"] if ed and "z" in ed else z + 1};--ar:{w}/{max(h, 1)}{extra}"')   # z: layer order set in the Edit tool (Front / Back)
         a = anim_attr(it.get('a'))
         t = it['t']
         if t == 'T':
@@ -258,14 +258,14 @@ def render(key, page, img_info, link, docs, hooks=None, edits=None):
         if ed['new'] == 'text':   # a text box added by pasting in the Edit tool
             if ed.get('html'):
                 out.append(((y2, x), f'<div class="el el-T" data-eid="{E(eid)}"{grp} data-y="{y2}" data-h="{h}" '
-                                     f'style="left:{x}px;top:{y2}px;width:{w}px;z-index:{950 + n};--ar:{w}/{max(h, 1)}" data-text>'
+                                     f'style="left:{x}px;top:{y2}px;width:{w}px;z-index:{ed.get("z", 950 + n)};--ar:{w}/{max(h, 1)}" data-text>'
                                      f'<div class="txt">{clean_html(ed["html"])}</div></div>'))
             continue
         if not ed.get('path'):
             continue
         alt = re.sub(r'^[A-Z0-9]+-\d+_', '', ed['path'].rsplit('/', 1)[-1].rsplit('.', 1)[0]).replace('-', ' ')
         out.append(((y2, x), f'<figure class="el el-I" data-eid="{E(eid)}"{grp} data-y="{y2}" data-h="{h}" '
-                             f'style="left:{x}px;top:{y2}px;width:{w}px;height:{h}px;z-index:{900 + n};--ar:{w}/{max(h, 1)}" data-file="{ed["path"]}">'
+                             f'style="left:{x}px;top:{y2}px;width:{w}px;height:{h}px;z-index:{ed.get("z", 900 + n)};--ar:{w}/{max(h, 1)}" data-file="{ed["path"]}">'
                              f'<img src="{ed["path"]}" alt="{E(alt)}" loading="lazy" decoding="async" '
                              f'style="left:0;top:0;width:100%;height:100%;object-fit:cover"></figure>'))
     out.sort(key=lambda p: p[0])   # reading order for phones; z-index keeps Wix layering on screens

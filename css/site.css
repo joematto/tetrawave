@@ -175,7 +175,7 @@ html:not(.tools-on) .toc .k, html:not(.tools-on) .toc li.todo { display: none; }
 .canvas-wrap { position: relative; width: 100%; max-width: 980px; margin: 0 auto; }
 .canvas-wrap { isolation: isolate; }                 /* page items always stay behind the header when scrolling */
 .canvas > .el-D { z-index: 500 !important; }         /* PDF buttons sit above any text box overlapping them, so they can be clicked */
-.canvas { position: relative; width: 980px; transform-origin: 0 0; }
+.canvas { position: relative; width: 980px; transform-origin: 0 0; isolation: isolate; }   /* own layer stack: items sent to the back stay on the page */
 .canvas > .el { position: absolute; margin: 0; }
 .canvas > figure.el { overflow: hidden; }
 .canvas > figure.el img { position: absolute; max-width: none; display: block; }

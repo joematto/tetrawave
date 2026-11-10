@@ -37,13 +37,14 @@
   const byId = new Map(els.map((e) => [e.dataset.eid, e]));
   const isText = (e) => e.hasAttribute('data-text');
   const isPic = (e) => e.matches('figure.el-I');
+  const zOf = (e) => parseInt(e.style.zIndex, 10) || 0;   // layer order: higher is in front
   const cur = (e) => ({ x: parseFloat(e.style.left) || 0, y: +e.dataset.y || 0, w: parseFloat(e.style.width) || e.offsetWidth, h: +e.dataset.h || e.offsetHeight });
   const orig = new Map(els.map((e) => {
     const img = isPic(e) ? e.querySelector('img') : null, txt = isText(e) ? e.querySelector('.txt') : null;
-    return [e.dataset.eid, { ...cur(e), imgStyle: img ? img.getAttribute('style') : null, html: txt ? txt.innerHTML : undefined, g: e.dataset.group || '' }];
+    return [e.dataset.eid, { ...cur(e), imgStyle: img ? img.getAttribute('style') : null, html: txt ? txt.innerHTML : undefined, g: e.dataset.group || '', z: zOf(e) }];
   }));
   const same = (a, b) => !b.isNew && ['x', 'y', 'w', 'h'].every((k) => Math.abs(a[k] - b[k]) < 0.6) && (a.fit || '') === (b.fit || '')
-    && (a.html === undefined || a.html === b.html) && !a.hide === !b.hide && (a.g === undefined || (a.g || '') === (b.g || ''));
+    && (a.html === undefined || a.html === b.html) && !a.hide === !b.hide && (a.g === undefined || (a.g || '') === (b.g || '')) && (a.z === undefined || b.z === undefined || +a.z === +b.z);
   const entry = (e, v) => {   // what is stored for an item: its position, plus crop / edited text when changed
     const o = orig.get(e.dataset.eid), r = { x: v.x, y: v.y, w: v.w, h: v.h };
     if (v.fit) r.fit = v.fit;
@@ -51,6 +52,7 @@
     if (v.hide) r.hide = true;
     const g = v.g !== undefined ? v.g : o.g;   // its group (kept on every entry so a later save never drops it)
     if (g) r.g = g; else if (o.g) r.g = '';
+    if (v.z !== undefined && (o.isNew || +v.z !== +o.z)) r.z = +v.z;   // moved to the front / back
     if (o.isNew && o.isText) Object.assign(r, { new: 'text', html: v.html !== undefined ? v.html : o.html });
     else if (o.isNew) Object.assign(r, { new: true, name: o.name, pw: o.pw, ph: o.ph });
     r.t = Date.now();   // when it was made: once a saved file containing it has been built in, the browser forgets it
@@ -60,6 +62,7 @@
   function apply(e, v) {
     e.style.display = v.hide ? 'none' : '';
     if (v.g !== undefined) { if (v.g) e.dataset.group = v.g; else delete e.dataset.group; }
+    if (v.z !== undefined) e.style.zIndex = v.z;
     e.style.left = v.x + 'px';
     e.dataset.y = v.y;
     e.style.width = v.w + 'px';
@@ -348,6 +351,7 @@
     const t = panel.querySelector('.e-sel');
     panel.querySelector('[data-a=group]').disabled = !(sels.length > 1 && !(sels[0].dataset.group && sels.every((x) => x.dataset.group === sels[0].dataset.group)));
     panel.querySelector('[data-a=ungroup]').disabled = !sels.some((x) => x.dataset.group);
+    ['front', 'back', 'forward', 'backward'].forEach((k) => { panel.querySelector(`[data-a=${k}]`).disabled = !sel; });
     if (!sel) { t.textContent = 'Click an item to select it.'; return; }
     if (sels.length > 1) {
       const grouped = sels.every((x) => x.dataset.group && x.dataset.group === sels[0].dataset.group);
@@ -419,6 +423,26 @@
     commitMany(list.map((e) => { const st = stateOf(e), v = { ...st, g: '' }; apply(e, v); return [e, v, st]; }));
     const keep = sel; select(null); select(keep); panelTip('Ungrouped: each item can be selected on its own again.');
   }
+  // ---- layer order: Front / Back (Cmd+Shift+] / [), one step Forward / Backward among overlapping items (Cmd+] / [) ----
+  const overlaps = (a, b) => { const A = cur(a), B = cur(b); const ah = a.offsetHeight || A.h, bh = b.offsetHeight || B.h;
+    return A.x < B.x + B.w && B.x < A.x + A.w && A.y < B.y + bh && B.y < A.y + ah; };
+  function layer(how) {
+    if (!sels.length) return;
+    const list = sels.slice().sort((a, b) => zOf(a) - zOf(b)), mine = new Set(list);
+    const others = els.filter((x) => !mine.has(x) && x.style.display !== 'none');
+    let base;
+    if (how === 'front') base = Math.max(0, ...others.map(zOf)) + 1;
+    else if (how === 'back') base = Math.min(1, ...others.map(zOf)) - list.length;
+    else {   // one step past the nearest overlapping item above / below
+      const lo = zOf(list[0]), hi = zOf(list[list.length - 1]);
+      const near = others.filter((x) => list.some((s) => overlaps(s, x)));
+      if (how === 'forward') { const up = near.filter((x) => zOf(x) >= lo).map(zOf).filter((z) => z >= hi); if (!up.length) return panelTip('Already in front of everything it overlaps.'); base = Math.min(...up) + 1; }
+      else { const dn = near.filter((x) => zOf(x) <= hi).map(zOf).filter((z) => z <= lo); if (!dn.length) return panelTip('Already behind everything it overlaps.'); base = Math.max(...dn) - list.length; }
+    }
+    commitMany(list.map((e, i) => { const st = stateOf(e), v = { ...st, z: base + i }; apply(e, v); return [e, v, st]; }));
+    panelTip({ front: 'Brought to the front.', back: 'Sent to the back.', forward: 'Brought forward one step.', backward: 'Sent back one step.' }[how] + ' Cmd+Shift+] / [ for front / back, Cmd+] / [ one step.');
+    label();
+  }
   function commit(e, v, prev) {
     const id = e.dataset.eid, o = orig.get(id);
     undo.push({ id, prev: prev ? { ...prev } : null });
@@ -429,7 +453,7 @@
   }
   const stateOf = (e) => {
     const st = all[KEY] && all[KEY][e.dataset.eid], txt = isText(e) ? e.querySelector('.txt') : null;
-    return { ...cur(e), ...(st && st.fit ? { fit: st.fit } : {}), ...(st && st.hide ? { hide: true } : {}), ...(txt ? { html: txt.innerHTML } : {}), g: e.dataset.group || '' };
+    return { ...cur(e), ...(st && st.fit ? { fit: st.fit } : {}), ...(st && st.hide ? { hide: true } : {}), ...(txt ? { html: txt.innerHTML } : {}), g: e.dataset.group || '', z: zOf(e) };
   };
 
   // ---- snapping ----
@@ -619,6 +643,10 @@
     if (editing) { if (ev.key === 'Escape') { ev.preventDefault(); endText(); } return; }
     if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === 'z') { ev.preventDefault(); doUndo(); return; }
     if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === 'g') { ev.preventDefault(); ev.shiftKey ? ungroupSel() : groupSel(); return; }
+    if ((ev.metaKey || ev.ctrlKey) && sel && (ev.code === 'BracketRight' || ev.code === 'BracketLeft')) {
+      ev.preventDefault(); const up = ev.code === 'BracketRight';
+      layer(ev.shiftKey ? (up ? 'front' : 'back') : (up ? 'forward' : 'backward')); return;
+    }
     if (ev.key === 'Escape') { select(null); return; }
     if (sel && (ev.key === 'Delete' || ev.key === 'Backspace') && !/input|textarea|select/i.test(ev.target.tagName)) {
       ev.preventDefault();
@@ -847,13 +875,14 @@
     panel.innerHTML = `<b>EDIT</b> · ${KEY}<div class="e-sel"></div>
       <p class="e-tip">${TIP}</p>
       <div class="e-row"><button type="button" data-a="snap" title="Snapping to the page centre and to other items' edges (hold Option while dragging to skip it once)">${snapLabel()}</button><button type="button" data-a="several" title="While on, each click adds or removes an item (same as Shift-click)">Select several</button><button type="button" data-a="group" title="Group the selected items (Cmd+G)">Group</button><button type="button" data-a="ungroup" title="Ungroup (Cmd+Shift+G)">Ungroup</button>
+      <button type="button" data-a="front" title="Bring to front, in front of everything (Cmd+Shift+])">To front</button><button type="button" data-a="back" title="Send to back, behind everything (Cmd+Shift+[)">To back</button><button type="button" data-a="forward" title="Forward one step, past the next overlapping item (Cmd+])">Forward</button><button type="button" data-a="backward" title="Back one step, behind the next overlapping item (Cmd+[)">Backward</button>
       <button type="button" data-a="undo">Undo</button><button type="button" data-a="reset">Reset page</button>
       <button type="button" data-a="save">Save</button><button type="button" data-a="close">Done</button></div>`;
     document.body.appendChild(panel);
     panel.querySelector('[data-a=snap]').classList.toggle('off', !snapOn);
     panel.addEventListener('click', (e) => {
       const a = e.target.closest('button'); if (!a) return;
-      ({ snap: () => { snapOn = !snapOn; try { localStorage.setItem('tw-snap', snapOn ? 'on' : 'off'); } catch (err) { /* storage unavailable */ } a.textContent = snapLabel(); a.classList.toggle('off', !snapOn); panelTip(snapOn ? 'Snapping is on: items line up with the page centre and other items. Hold Option while dragging to skip it once.' : 'Snapping is off: items move freely, to the half pixel. Arrow keys nudge 1px (Shift 10px).'); }, several: () => { several = !several; a.classList.toggle('on', several); a.textContent = several ? 'Select several: ON' : 'Select several'; panelTip(several ? 'Click items to add or remove them from the selection. Click the button again to finish.' : TIP); }, group: groupSel, ungroup: ungroupSel, undo: doUndo, reset: resetPage, save: download, close: hide })[a.dataset.a]();
+      ({ snap: () => { snapOn = !snapOn; try { localStorage.setItem('tw-snap', snapOn ? 'on' : 'off'); } catch (err) { /* storage unavailable */ } a.textContent = snapLabel(); a.classList.toggle('off', !snapOn); panelTip(snapOn ? 'Snapping is on: items line up with the page centre and other items. Hold Option while dragging to skip it once.' : 'Snapping is off: items move freely, to the half pixel. Arrow keys nudge 1px (Shift 10px).'); }, several: () => { several = !several; a.classList.toggle('on', several); a.textContent = several ? 'Select several: ON' : 'Select several'; panelTip(several ? 'Click items to add or remove them from the selection. Click the button again to finish.' : TIP); }, group: groupSel, ungroup: ungroupSel, front: () => layer('front'), back: () => layer('back'), forward: () => layer('forward'), backward: () => layer('backward'), undo: doUndo, reset: resetPage, save: download, close: hide })[a.dataset.a]();
     });
     if (innerWidth < 700) panel.querySelector('.e-tip').textContent = 'Widen the window to edit (the page stacks on phones).';
     addEventListener('pointerdown', onDown, true); addEventListener('keydown', onKey); addEventListener('click', blockClick, true); addEventListener('dblclick', onDbl, true);
