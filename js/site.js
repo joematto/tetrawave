@@ -355,9 +355,9 @@ function wordBurst(IN, HOLD, OUT) {
     // once the right-hand column has faded, the subtitle ("A Message within a Message?") fades in quickly (0.8 s)
     const SUB_IN = 800, sub = document.querySelector('.page-title .subtitle');
     const showSub = () => { if (sub && sub.animate) sub.animate([{ opacity: 0 }, { opacity: 1 }], { duration: SUB_IN, delay: ROLL_END + DIM_AFTER + DIM_FOR, easing: 'ease-out', fill: 'backwards' }); };
-    // the right-hand column rolls down in the same white as the left, then slowly turns to its own grey (over 6 s, from
-    // 2 s after the roll-down), arriving just as it starts to fade to half strength
-    const GREY_AFTER = 2000, GREY_FOR = DIM_AFTER - GREY_AFTER;
+    // the right-hand column rolls down in the same white as the left, then slowly turns to its own grey (over 5.5 s, from
+    // 2.5 s after the roll-down), arriving just as it starts to fade to half strength
+    const GREY_AFTER = 2500, GREY_FOR = DIM_AFTER - GREY_AFTER;
     const whiteToGrey = () => { const r = part('R'); if (!r) return; r.querySelectorAll('p').forEach((p) => {
       if (!p.animate) return;
       const grey = getComputedStyle(p).color;
