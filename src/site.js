@@ -168,9 +168,9 @@ const layoutCanvas = () => {
   requestAnimationFrame(() => { if (typeof alignAxis === 'function') alignAxis(); if (typeof alignStar === 'function') alignStar(); });
   for (const c of canvases) {
     const wrap = c.parentElement, phone = innerWidth < 700;
-    const els = [...c.children].filter((e) => e.hasAttribute('data-y'));   // skip the Edit tool's overlays
+    const els = [...c.children].filter((e) => e.hasAttribute('data-y') && e.style.display !== 'none');   // skip the Edit tool's overlays and removed items
     if (phone) { c.style.transform = ''; wrap.style.height = ''; continue; }
-    const order = els.map((e) => ({ e, y: +e.dataset.y, h: +e.dataset.h })).sort((a, b) => a.y - b.y);
+    const order = els.map((e) => ({ e, y: +e.dataset.y || 0, h: +e.dataset.h || 0 })).sort((a, b) => a.y - b.y);   // (a text box added in the Edit tool has no data-h yet)
     const grow = [];   // [wix bottom, extra height]
     let bottom = 0;
     for (const o of order) {
