@@ -433,22 +433,22 @@ function wordBurst(IN, HOLD, OUT) {
     // once the right-hand column has faded, the subtitle ("A Message within a Message?") fades in quickly (0.8 s)
     const SUB_IN = 800, sub = document.querySelector('.page-title .subtitle');
     const showSub = () => { if (sub && sub.animate) sub.animate([{ opacity: 0 }, { opacity: 1 }], { duration: SUB_IN, delay: ROLL_END + DIM_AFTER + DIM_FOR, easing: 'ease-out', fill: 'backwards' }); };
-    // the right-hand column rolls down in the same white as the left, then slowly turns to its own grey (over 5.5 s, from
-    // 4 s after the roll-down), arriving just as it starts to fade to half strength
-    const GREY_AFTER = 4000, GREY_FOR = DIM_AFTER - GREY_AFTER;
+    // the right-hand column rolls down in the same white as the left, then slowly turns to its own grey (over 4.3 s, from
+    // 5.2 s after the roll-down), arriving just as it starts to fade to half strength
+    const GREY_AFTER = 5200, GREY_FOR = DIM_AFTER - GREY_AFTER;
     const whiteToGrey = () => { const r = part('R'); if (!r) return; r.querySelectorAll('p').forEach((p) => {
       if (!p.animate) return;
       const grey = getComputedStyle(p).color;
       p.animate([{ color: '#ffffff' }, { color: grey }], { duration: GREY_FOR, delay: ROLL_END + GREY_AFTER, easing: 'ease-in-out', fill: 'backwards' });
     }); };
-    // at the very end (1 s after the subtitle), a blank line opens slowly (3 s) after lines 4, 8 and 12 of both columns,
+    // at the very end (1 s after the subtitle), half a blank line opens slowly (3 s) after lines 4, 8 and 12 of both columns,
     // so the poem reads as four verses; "Motion" and the initials move down with it
     const VERSE_AT = ROLL_END + DIM_AFTER + DIM_FOR + 1000, VERSE_FOR = 3000;
     const verses = () => setTimeout(() => {
       const box = part('L') || part('R'), col = L.length > 1 ? L : R;
       if (!box || col.length < 2) return;
       const scale = box.getBoundingClientRect().width / box.offsetWidth || 1;
-      const gap = (col[1].getBoundingClientRect().top - col[0].getBoundingClientRect().top) / scale;   // one line, in page pixels
+      const gap = 0.5 * (col[1].getBoundingClientRect().top - col[0].getBoundingClientRect().top) / scale;   // half a line, in page pixels
       const t = { duration: VERSE_FOR, easing: 'ease-in-out', fill: 'forwards' };
       [4, 8, 12].forEach((i) => [L[i], R[i]].forEach((p) => { if (p && p.animate) p.animate([{ paddingTop: '0px' }, { paddingTop: gap + 'px' }], t); }));
       ['motion', 'sig'].forEach((k) => { const e = part(k); if (e && e.animate) e.animate([{ transform: 'translateY(0)' }, { transform: `translateY(${3 * gap}px)` }], t); });
