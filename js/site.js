@@ -54,7 +54,15 @@ window.addEventListener('hashchange', files); files();
 // --bar-h, and mark the page as scrolled so the links get a dark backing over the content.
 {
   const bar = document.querySelector('.bar'), root = document.documentElement;
-  const setH = () => { if (bar) root.style.setProperty('--bar-h', bar.offsetHeight + 'px'); };
+  // the top line (About Me · Sound · Contact) is centred as a group; since "About Me" is a little wider than "Contact",
+  // that puts the Sound button a few pixels right of the page centre (and of the Spinor). Shift the line to centre Sound.
+  const centreSound = () => {
+    const sb = document.querySelector('.topline > .sound'); if (!sb) return;
+    root.style.setProperty('--tl-shift', '0px');
+    const r = sb.getBoundingClientRect(), d = root.clientWidth / 2 - (r.left + r.right) / 2;
+    root.style.setProperty('--tl-shift', (Math.round(d * 10) / 10) + 'px');
+  };
+  const setH = () => { if (bar) root.style.setProperty('--bar-h', bar.offsetHeight + 'px'); centreSound(); };
   const onScroll = () => root.classList.toggle('scrolled', scrollY > 4);
   setH(); onScroll();
   addEventListener('resize', setH); addEventListener('load', setH); addEventListener('scroll', onScroll, { passive: true });

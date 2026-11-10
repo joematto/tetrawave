@@ -85,6 +85,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 .topline { position: relative; display: flex; justify-content: center; align-items: flex-start; gap: clamp(28px, 7vw, 96px);
   padding: 14px max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left)); background: rgba(6,7,12,.92); }
 .home .topline { background: none; }
+.topline > .tl-link, .topline > .sound { position: relative; left: var(--tl-shift, 0px); }   /* nudged so the Sound button sits exactly on the page centre (js/site.js) */
 .tl-link { font: 400 14px/1 var(--display); letter-spacing: .08em; color: #fff; text-decoration: none; padding: 10px 2px; }
 .tl-link:hover, .tl-link[aria-current] { color: var(--gold); }
 .sound { display: grid; justify-items: center; gap: 3px; }
