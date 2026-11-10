@@ -123,3 +123,5 @@ images/SKETCH/SKETCH-13_knapkin-energy-sketch-only.jpg
 images/MODEL/MODEL-12_screenshot-2026-11-08-at-9-01-00-am.png
 images/MODEL/MODEL-13_download.png
 images/MODEL/MODEL-14_model-01-buckys-tetrahelix-oage-1.jpg
+images/MODEL/MODEL-15_screenshot-2026-11-10-at-10-22-57-am.jpg
+images/MODEL/MODEL-16_screenshot-2026-11-10-at-10-22-27-am.jpg
