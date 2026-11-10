@@ -339,10 +339,10 @@ function wordBurst(IN, HOLD, OUT) {
     if (part('sig')) steps.push([part('sig')]);
     // First the explosion of words (wordBurst, below): they burst out of the galaxy's core and fade in (2 s), and the
     // moment they land begin slowly fading out (6.5 s, so they are still fading while the poem rolls down). "Star Coil" fades in from 3.5 s to
-    // 5.5 s, stays 2 s on its own, and the lines roll down from 7.5 s (about 3 s). Without the burst (phones, reduced motion): title after 0.5 s as before.
+    // 5.5 s, stays 1 s on its own, and the lines roll down from 6.5 s (about 3 s). Without the burst (phones, reduced motion): title after 0.5 s as before.
     const burst = innerWidth >= 700 && !matchMedia('(prefers-reduced-motion: reduce)').matches;
     const B_IN = 2000, B_HOLD = 0, B_OUT = 6500, ROLL_AT = 5500;   // the fade-out begins the moment they land and lasts 6.5 s; the lines roll from 5.5 s
-    const TITLE = 2000, WAIT = burst ? ROLL_AT - TITLE : 500, PAUSE = burst ? 2000 : 0, ROLL = 3000, EACH = 675, gap = (ROLL - EACH) / Math.max(1, steps.length - 2);
+    const TITLE = 2000, WAIT = burst ? ROLL_AT - TITLE : 500, PAUSE = burst ? 1000 : 0, ROLL = 3000, EACH = 675, gap = (ROLL - EACH) / Math.max(1, steps.length - 2);
     steps.flat().forEach((el) => el.classList.add('poem-line'));          // hidden until the reveal starts
     // the page title ("First "Download" Transmission") waits until 10 s after the words have all exploded (12 s),
     // then fades in
