@@ -440,18 +440,22 @@ function wordBurst(IN, HOLD, OUT) {
     if (burst && pageTitle && pageTitle.animate) pageTitle.animate([{ opacity: 0 }, { opacity: 1 }], { duration: TITLE_IN, delay: B_IN + 8500, easing: 'ease-in-out', fill: 'backwards' });
     // 13.5 s after the roll-down is complete (20 s), the right-hand column of the poem fades to half strength (over 2 s)
     const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 13500, DIM_FOR = 2000;
-    const dimRight = () => { const r = part('R'); if (r && r.animate) r.animate([{ opacity: 1 }, { opacity: RIGHT_DIM }], { duration: DIM_FOR, delay: ROLL_END + DIM_AFTER, easing: 'ease-in-out', fill: 'forwards' }); };
+    const dimRight = () => [part('R'), part('motion')].forEach((r) => { if (r && r.animate) r.animate([{ opacity: 1 }, { opacity: RIGHT_DIM }], { duration: DIM_FOR, delay: ROLL_END + DIM_AFTER, easing: 'ease-in-out', fill: 'forwards' }); });   // "Motion" dims with the right column
     // once the right-hand column has faded, the subtitle ("A Message within a Message?") fades in quickly (0.8 s)
     const SUB_IN = 800, sub = document.querySelector('.page-title .subtitle');
     const showSub = () => { if (sub && sub.animate) sub.animate([{ opacity: 0 }, { opacity: 1 }], { duration: SUB_IN, delay: ROLL_END + DIM_AFTER + DIM_FOR, easing: 'ease-out', fill: 'backwards' }); };
     // the right-hand column rolls down in the same white as the left, then slowly turns to its own grey (over 4 s, from
     // 9.5 s after the roll-down, i.e. 16 s), arriving just as it starts to fade to half strength
     const GREY_AFTER = 9500, GREY_FOR = DIM_AFTER - GREY_AFTER;
-    const whiteToGrey = () => { const r = part('R'); if (!r) return; r.querySelectorAll('p').forEach((p) => {
+    const whiteToGrey = () => { const r = part('R'); if (!r) return; const rp0 = r.querySelector('p'), rGrey = rp0 ? getComputedStyle(rp0).color : '#d2d2d2'; r.querySelectorAll('p').forEach((p) => {
       if (!p.animate) return;
       const grey = getComputedStyle(p).color;
       p.animate([{ color: '#ffffff' }, { color: grey }], { duration: GREY_FOR, delay: ROLL_END + GREY_AFTER, easing: 'ease-in-out', fill: 'backwards' });
-    }); };
+    });
+    // "Motion" turns to the same grey at the same time
+    const m = part('motion');
+    if (m) m.querySelectorAll('p').forEach((p) => { if (p.animate) p.animate([{ color: '#ffffff' }, { color: rGrey }], { duration: GREY_FOR, delay: ROLL_END + GREY_AFTER, easing: 'ease-in-out', fill: 'both' }); });
+  };
     // at the very end (1 s after the subtitle), half a blank line opens slowly (3 s) after lines 4, 8 and 12 of both columns,
     // so the poem reads as four verses; "Motion" and the initials move down with it
     const VERSE_AT = ROLL_END + DIM_AFTER + DIM_FOR + 1000, VERSE_FOR = 3000;
