@@ -393,25 +393,25 @@ function wordBurst(IN, HOLD, OUT) {
     if (part('motion')) steps.push([part('motion')]);
     if (part('sig')) steps.push([part('sig')]);
     // First the explosion of words (wordBurst, below): they burst out of the galaxy's core and fade in (2 s), and the
-    // moment they land begin slowly fading out (6.5 s, so they are still fading while the poem rolls down). "Star Coil" fades in from 2.0 s to
-    // 4.0 s, stays 1 s on its own, and the lines roll down from 5.0 s (about 3 s). Without the burst (phones, reduced motion): title after 0.5 s as before.
+    // moment they land begin slowly fading out (6.5 s, so they are still fading while the poem rolls down). "Star Coil" fades in from 1.2 s to
+    // 3.0 s, stays 1 s on its own, and the lines roll down from 4.0 s to 7.0 s. Without the burst (phones, reduced motion): title after 0.5 s as before.
     const burst = innerWidth >= 700 && !matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const B_IN = 2000, B_HOLD = 0, B_OUT = 6500, ROLL_AT = 4000;   // the fade-out begins the moment they land and lasts 6.5 s; "Star Coil" is in by 4.0 s
-    const TITLE = 2000, WAIT = burst ? ROLL_AT - TITLE : 500, PAUSE = burst ? 1000 : 0, ROLL = 3000, EACH = 675, gap = (ROLL - EACH) / Math.max(1, steps.length - 2);
+    const B_IN = 2000, B_HOLD = 0, B_OUT = 6500, ROLL_AT = 3000;   // the fade-out begins the moment they land and lasts 6.5 s; "Star Coil" is in by 3.0 s
+    const TITLE = 1800, WAIT = burst ? ROLL_AT - TITLE : 500, PAUSE = burst ? 1000 : 0, ROLL = 3000, EACH = 675, gap = (ROLL - EACH) / Math.max(1, steps.length - 2);
     steps.flat().forEach((el) => el.classList.add('poem-line'));          // hidden until the reveal starts
     // the page title ("First "Download" Transmission") waits until 8.5 s after the words have all exploded (10.5 s),
     // then fades in
     const pageTitle = document.querySelector('.page-title'), TITLE_IN = 3000;
     if (burst && pageTitle && pageTitle.animate) pageTitle.animate([{ opacity: 0 }, { opacity: 1 }], { duration: TITLE_IN, delay: B_IN + 8500, easing: 'ease-in-out', fill: 'backwards' });
-    // 8 s after the roll-down is complete, the right-hand column of the poem fades to half strength (over 2 s)
-    const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 8000, DIM_FOR = 2000;
+    // 9 s after the roll-down is complete, the right-hand column of the poem fades to half strength (over 2 s)
+    const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 9000, DIM_FOR = 2000;
     const dimRight = () => { const r = part('R'); if (r && r.animate) r.animate([{ opacity: 1 }, { opacity: RIGHT_DIM }], { duration: DIM_FOR, delay: ROLL_END + DIM_AFTER, easing: 'ease-in-out', fill: 'forwards' }); };
     // once the right-hand column has faded, the subtitle ("A Message within a Message?") fades in quickly (0.8 s)
     const SUB_IN = 800, sub = document.querySelector('.page-title .subtitle');
     const showSub = () => { if (sub && sub.animate) sub.animate([{ opacity: 0 }, { opacity: 1 }], { duration: SUB_IN, delay: ROLL_END + DIM_AFTER + DIM_FOR, easing: 'ease-out', fill: 'backwards' }); };
     // the right-hand column rolls down in the same white as the left, then slowly turns to its own grey (over 5.5 s, from
-    // 2.5 s after the roll-down), arriving just as it starts to fade to half strength
-    const GREY_AFTER = 2500, GREY_FOR = DIM_AFTER - GREY_AFTER;
+    // 3.5 s after the roll-down), arriving just as it starts to fade to half strength
+    const GREY_AFTER = 3500, GREY_FOR = DIM_AFTER - GREY_AFTER;
     const whiteToGrey = () => { const r = part('R'); if (!r) return; r.querySelectorAll('p').forEach((p) => {
       if (!p.animate) return;
       const grey = getComputedStyle(p).color;
