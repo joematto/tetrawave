@@ -393,16 +393,16 @@ function wordBurst(IN, HOLD, OUT) {
     if (part('motion')) steps.push([part('motion')]);
     if (part('sig')) steps.push([part('sig')]);
     // First the explosion of words (wordBurst, below): they burst out of the galaxy's core and fade in (2 s), and the
-    // moment they land begin slowly fading out (6.5 s, so they are still fading while the poem rolls down). "Star Coil" fades in from 3.0 s to
-    // 5.0 s, stays 1 s on its own, and the lines roll down from 6.0 s (about 3 s). Without the burst (phones, reduced motion): title after 0.5 s as before.
+    // moment they land begin slowly fading out (6.5 s, so they are still fading while the poem rolls down). "Star Coil" fades in from 2.0 s to
+    // 4.0 s, stays 1 s on its own, and the lines roll down from 5.0 s (about 3 s). Without the burst (phones, reduced motion): title after 0.5 s as before.
     const burst = innerWidth >= 700 && !matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const B_IN = 2000, B_HOLD = 0, B_OUT = 6500, ROLL_AT = 5000;   // the fade-out begins the moment they land and lasts 6.5 s; "Star Coil" is in by 5.0 s
+    const B_IN = 2000, B_HOLD = 0, B_OUT = 6500, ROLL_AT = 4000;   // the fade-out begins the moment they land and lasts 6.5 s; "Star Coil" is in by 4.0 s
     const TITLE = 2000, WAIT = burst ? ROLL_AT - TITLE : 500, PAUSE = burst ? 1000 : 0, ROLL = 3000, EACH = 675, gap = (ROLL - EACH) / Math.max(1, steps.length - 2);
     steps.flat().forEach((el) => el.classList.add('poem-line'));          // hidden until the reveal starts
-    // the page title ("First "Download" Transmission") waits until 9.5 s after the words have all exploded (11.5 s),
+    // the page title ("First "Download" Transmission") waits until 8.5 s after the words have all exploded (10.5 s),
     // then fades in
     const pageTitle = document.querySelector('.page-title'), TITLE_IN = 3000;
-    if (burst && pageTitle && pageTitle.animate) pageTitle.animate([{ opacity: 0 }, { opacity: 1 }], { duration: TITLE_IN, delay: B_IN + 9500, easing: 'ease-in-out', fill: 'backwards' });
+    if (burst && pageTitle && pageTitle.animate) pageTitle.animate([{ opacity: 0 }, { opacity: 1 }], { duration: TITLE_IN, delay: B_IN + 8500, easing: 'ease-in-out', fill: 'backwards' });
     // 8 s after the roll-down is complete, the right-hand column of the poem fades to half strength (over 2 s)
     const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 8000, DIM_FOR = 2000;
     const dimRight = () => { const r = part('R'); if (r && r.animate) r.animate([{ opacity: 1 }, { opacity: RIGHT_DIM }], { duration: DIM_FOR, delay: ROLL_END + DIM_AFTER, easing: 'ease-in-out', fill: 'forwards' }); };
