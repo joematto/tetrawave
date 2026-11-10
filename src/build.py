@@ -27,6 +27,7 @@ OUTLINE = [
         ('MODEL', '3D Exploration Models', '3d-exploration-models.html'),
         ('BUILD', 'Tetrawave Build Sequence', 'tetrawave-build-sequence.html'),
         ('TILT', 'TOT Tilt Angle Analysis', 'tilt-angle-analysis.html'),
+        ('GOLD', 'The Golden Section is an Artifact', 'the-golden-section-is-an-artifact.html'),
         ('GRID', '11:11', '11-11-grid.html'),
         ('CAD', '3D Exploration CAD Models', '3d-exploration-cad-models.html'),
         ('HELIX', 'Tetra-Helix 2D Drawing Methods', 'tetra-helix-2d-drawing-methods.html')]),
@@ -524,6 +525,9 @@ def coil_text(it, inner, a):
 
 NO_FADE = {'TETRA', 'P2'}
 # items that are there as the page opens and then fade out: 'fade' or 'stay,fade' in milliseconds
+# Pages made here (not on the Wix site): they start as an empty page, ready for pictures and text added with the Edit tool
+NEW_PAGES = {'GOLD'}
+
 # Extra space (px) between a page's lowest item and the Previous / Next blocks, on top of the usual 40px
 CANVAS_PAD = {'MODEL': 100}
 FADE_OUT = {'COIL': {'NT:mw8fl61pbibu': '1500,7200'}}   # the line 'Words from No-where !!??': stays 1.5 s, fades 7.2 s
@@ -578,8 +582,8 @@ for part, pages in OUTLINE[1:]:
             page = json.loads(json.dumps(page))
             for it in page['items']:
                 it['b'][1] -= SUBHEAD_SHIFT[key]
-        if page and any(it['t'] in 'TI' for it in page['items']):
-            body += CV.render(key, page, MEDIA, link, DOCS, HOOKS.get(key), EDITS.get(key))
+        if (page and any(it['t'] in 'TI' for it in page['items'])) or key in NEW_PAGES:
+            body += CV.render(key, page or {'items': []}, MEDIA, link, DOCS, HOOKS.get(key), EDITS.get(key))
             if key in CANVAS_PAD:   # more room above the Previous / Next blocks (js/site.js reads data-pad)
                 body = re.sub(r'<div class="canvas" style="height:(\d+)px">', lambda m: f'<div class="canvas" data-pad="{CANVAS_PAD[key]}" style="height:{int(m.group(1)) + 40 + CANVAS_PAD[key]}px">', body, count=1)
             for eid, ms in FADE_OUT.get(key, {}).items():   # shown as the page opens, then fades away (js/site.js)
