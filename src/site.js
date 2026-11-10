@@ -132,7 +132,7 @@ if (homeVid) {
   intro.then(() => { const p = homeVid.play(); if (p && p.catch) p.catch(() => {}); });
 }
 
-// Home: the soundtrack ("White Winds") starts one second after the Spinor starts turning, 1 s into the track, and
+// Home: the soundtrack ("White Winds") starts one second after the Spinor starts turning, 1 s into the track, fades in over 1.5 s, and
 // fades out over 3 s: the fade runs from 7.0 s to 10.0 s of the track, i.e. about 7.3–10.3 s after the opening starts. Browsers only allow sound once the visitor has interacted with the page, so if starting
 // at once is refused it starts at the first click, tap or key press instead (and still fades at the same point in the
 // music). Using the Sound button cancels the automatic fade.
@@ -143,7 +143,7 @@ function galaxyStopped() {
   document.dispatchEvent(new Event('tw:galaxy-stopped'));
 }
 if (homeVid && snd) {
-  const SKIP = 1, FADE_END = 10.0, FADE = 3.0;   // seconds of the track: plays 1–10 s, fading over the last 3 s (the drum roll starts at 9.1 s,
+  const SKIP = 1, FADE_IN = 1.5, FADE_END = 10.0, FADE = 3.0;   // seconds of the track: plays 1–10 s, fading over the last 3 s (the drum roll starts at 9.1 s,
   // when the fade is at about 9% volume)
   let auto = true;   // false once the visitor uses the Sound button themselves
   if (sbtn) sbtn.addEventListener('click', () => { auto = false; snd.volume = 1; }, true);
@@ -157,12 +157,13 @@ if (homeVid && snd) {
     if (snd.paused) return;
     const t = snd.currentTime;
     if (t >= FADE_END) { done = true; snd.pause(); snd.volume = 1; return; }
-    const k = Math.max(0, Math.min(1, (FADE_END - t) / FADE));   // 1 before the fade, 0 at the end
-    try { snd.volume = k * k; } catch (e) { /* volume fixed on this device: it simply stops at the end */ }
+    const k = Math.max(0, Math.min(1, (FADE_END - t) / FADE));   // fade-out: 1 before it, 0 at the end
+    const f = Math.max(0, Math.min(1, (t - SKIP) / FADE_IN));     // fade-in: 0 at the start, 1 after FADE_IN
+    try { snd.volume = Math.min(f * f, k * k); } catch (e) { /* volume fixed on this device: it simply stops at the end */ }
     requestAnimationFrame(fade);
   };
   snd.addEventListener('play', () => { if (auto) requestAnimationFrame(fade); });
-  const begin = () => { if (!auto || done || galaxyHasStopped) return; skip(); snd.volume = 1; return snd.play(); };
+  const begin = () => { if (!auto || done || galaxyHasStopped) return; skip(); try { snd.volume = 0; } catch (e) {} return snd.play(); };   // starts silent, then fades in
   const firstTouch = (e) => {
     if (e.target && e.target.closest && e.target.closest('.sound-btn')) return;   // the Sound button does its own thing
     ['pointerdown', 'keydown', 'touchstart'].forEach((t) => removeEventListener(t, firstTouch, true));
