@@ -269,5 +269,7 @@ def render(key, page, img_info, link, docs, hooks=None, edits=None):
                              f'<img src="{ed["path"]}" alt="{E(alt)}" loading="lazy" decoding="async" '
                              f'style="left:0;top:0;width:100%;height:100%;object-fit:cover"></figure>'))
     out.sort(key=lambda p: p[0])   # reading order for phones; z-index keeps Wix layering on screens
-    height = max([ymap(it['b'][1]) + it['b'][3] for it in items] + [200])
+    # the page ends at the lowest item as it is finally placed (moved, resized or added in the Edit tool; hidden ones skipped)
+    bottoms = [float(m.group(1)) + float(m.group(2)) for _, h in out for m in [re.search(r'data-y="([\d.-]+)" data-h="([\d.]+)"', h)] if m]
+    height = round(max(bottoms + [200]))
     return f'<div class="canvas-wrap"><div class="canvas" style="height:{height}px">\n' + '\n'.join(h for _, h in out) + '\n</div></div>'

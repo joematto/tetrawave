@@ -523,6 +523,8 @@ def coil_text(it, inner, a):
 
 NO_FADE = {'TETRA', 'P2'}
 # items that are there as the page opens and then fade out: 'fade' or 'stay,fade' in milliseconds
+# Extra space (px) between a page's lowest item and the Previous / Next blocks, on top of the usual 40px
+CANVAS_PAD = {'MODEL': 100}
 FADE_OUT = {'COIL': {'NT:mw8fl61pbibu': '1500,7200'}}   # the line 'Words from No-where !!??': stays 1.5 s, fades 7.2 s
 # Sub-heading standard (set 5 Nov 2026 from Part II, Section 1): the top of a sub-heading's capitals sits 37px (3/8 inch)
 # below the baseline of the page title. Each value is how far that page's content moves up (negative = down) to meet it.
@@ -577,6 +579,8 @@ for part, pages in OUTLINE[1:]:
                 it['b'][1] -= SUBHEAD_SHIFT[key]
         if page and any(it['t'] in 'TI' for it in page['items']):
             body += CV.render(key, page, MEDIA, link, DOCS, HOOKS.get(key), EDITS.get(key))
+            if key in CANVAS_PAD:   # more room above the Previous / Next blocks (js/site.js reads data-pad)
+                body = re.sub(r'<div class="canvas" style="height:(\d+)px">', lambda m: f'<div class="canvas" data-pad="{CANVAS_PAD[key]}" style="height:{int(m.group(1)) + 40 + CANVAS_PAD[key]}px">', body, count=1)
             for eid, ms in FADE_OUT.get(key, {}).items():   # shown as the page opens, then fades away (js/site.js)
                 body = body.replace(f'data-eid="{eid}"', f'data-eid="{eid}" data-fadeout="{ms}"', 1)
             if key in NO_FADE:   # everything on this page is there as it opens: no fades or delays
