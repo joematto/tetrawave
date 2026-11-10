@@ -122,9 +122,11 @@ if (homeVid) {
   setTimeout(start, 1500);   // fallback if the Spinor's start isn't reported
 }
 
-// Home: the soundtrack ("White Winds") starts (1 s into the track) as the site opens and fades out 3 s after the galaxy stops turning
-// (over 3 s). Browsers only allow sound once the visitor has interacted with the page, so if starting at once is
-// refused it starts at the first click, tap or key press instead. Using the Sound button cancels the automatic fade.
+// Home: the soundtrack ("White Winds") starts (1 s into the track) as the site opens and fades out over 3 s so that it is
+// silent before the drum roll begins (9.1 s into the track): the fade runs from 6.0 s to 9.0 s of the track, i.e. about
+// 5–8 s after the page opens. Browsers only allow sound once the visitor has interacted with the page, so if starting
+// at once is refused it starts at the first click, tap or key press instead (and still fades at the same point in the
+// music). Using the Sound button cancels the automatic fade.
 let galaxyHasStopped = false;
 function galaxyStopped() {
   if (galaxyHasStopped) return;
@@ -132,14 +134,23 @@ function galaxyStopped() {
   document.dispatchEvent(new Event('tw:galaxy-stopped'));
 }
 if (homeVid && snd) {
-  const WAIT = 3000, FADE = 3000;
+  const SKIP = 1, FADE_END = 9.0, FADE = 3.0;   // seconds of the track (the drum roll starts at 9.1 s)
   let auto = true;   // false once the visitor uses the Sound button themselves
   if (sbtn) sbtn.addEventListener('click', () => { auto = false; snd.volume = 1; }, true);
-  // the track starts 1 s into itself, so the music lines up with the end of the Spinor's turn
-  const SKIP = 1;
   const skip = () => { if (snd.currentTime < SKIP) try { snd.currentTime = SKIP; } catch (e) { /* not seekable yet */ } };
   if (snd.readyState >= 1) skip(); else snd.addEventListener('loadedmetadata', skip, { once: true });
-  const begin = () => { if (!auto || galaxyHasStopped) return; skip(); snd.volume = 1; return snd.play(); };
+  let done = false;   // the automatic play has faded out
+  const fade = () => {
+    if (!auto) { snd.volume = 1; return; }
+    if (snd.paused) return;
+    const t = snd.currentTime;
+    if (t >= FADE_END) { done = true; snd.pause(); snd.volume = 1; return; }
+    const k = Math.max(0, Math.min(1, (FADE_END - t) / FADE));   // 1 before the fade, 0 at the end
+    try { snd.volume = k * k; } catch (e) { /* volume fixed on this device: it simply stops at the end */ }
+    requestAnimationFrame(fade);
+  };
+  snd.addEventListener('play', () => { if (auto) requestAnimationFrame(fade); });
+  const begin = () => { if (!auto || done || galaxyHasStopped) return; skip(); snd.volume = 1; return snd.play(); };
   const firstTouch = (e) => {
     if (e.target && e.target.closest && e.target.closest('.sound-btn')) return;   // the Sound button does its own thing
     ['pointerdown', 'keydown', 'touchstart'].forEach((t) => removeEventListener(t, firstTouch, true));
@@ -147,19 +158,6 @@ if (homeVid && snd) {
   };
   const p = begin();
   if (p && p.catch) p.catch(() => ['pointerdown', 'keydown', 'touchstart'].forEach((t) => addEventListener(t, firstTouch, true)));
-  document.addEventListener('tw:galaxy-stopped', () => {
-    setTimeout(() => {
-      if (!auto || snd.paused) return;
-      const v0 = snd.volume, t0 = performance.now();
-      const step = (now) => {
-        if (!auto) { snd.volume = 1; return; }
-        const k = Math.min(1, (now - t0) / FADE);
-        try { snd.volume = v0 * (1 - k) * (1 - k); } catch (e) { /* volume fixed on this device */ }
-        if (k < 1) requestAnimationFrame(step); else { snd.pause(); snd.volume = 1; }
-      };
-      requestAnimationFrame(step);
-    }, WAIT);
-  });
 }
 
 
@@ -350,8 +348,8 @@ function wordBurst(IN, HOLD, OUT) {
     // then fades in
     const pageTitle = document.querySelector('.page-title'), TITLE_IN = 3000;
     if (burst && pageTitle && pageTitle.animate) pageTitle.animate([{ opacity: 0 }, { opacity: 1 }], { duration: TITLE_IN, delay: B_IN + 10000, easing: 'ease-in-out', fill: 'backwards' });
-    // 3 s after the roll-down is complete, the right-hand column of the poem fades to half strength (over 2 s)
-    const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 3000, DIM_FOR = 2000;
+    // 8 s after the roll-down is complete, the right-hand column of the poem fades to half strength (over 2 s)
+    const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 8000, DIM_FOR = 2000;
     const dimRight = () => { const r = part('R'); if (r && r.animate) r.animate([{ opacity: 1 }, { opacity: RIGHT_DIM }], { duration: DIM_FOR, delay: ROLL_END + DIM_AFTER, easing: 'ease-in-out', fill: 'forwards' }); };
     const go = () => { if (burst) wordBurst(B_IN, B_HOLD, B_OUT); reveal(); dimRight(); };
     const reveal = () => steps.forEach((s, i) => s.forEach((el) => {
