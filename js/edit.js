@@ -30,7 +30,8 @@
   const canvas = document.querySelector('.canvas');
   const load = () => { try { return JSON.parse(localStorage.getItem(STORE) || '{}'); } catch (e) { return {}; } };
   const save = (all) => { try { localStorage.setItem(STORE, JSON.stringify(all)); } catch (e) { /* storage unavailable */ } };
-  const relayout = () => { try { if (typeof layoutCanvas === 'function') layoutCanvas(); } catch (e) { /* not on this page */ } if (typeof bake === 'function') bake(); };
+  let editOn = false;   // (set by open / hide; read by bake, which relayout can call while the page is still loading)
+  const relayout = () => { try { if (typeof layoutCanvas === 'function') layoutCanvas(); } catch (e) { /* not on this page */ } if (editOn) bake(); };
 
   // ---- elements and their original (built) positions ----
   const els = canvas ? [...canvas.querySelectorAll(':scope > .el[data-eid]')].filter((e) => !/calc/.test(e.style.left)) : [];
@@ -431,7 +432,7 @@
   // on screen; there is simply no hidden push left. (Saved with the other edits; not an Undo step.)
   let baking = false;
   function bake() {
-    if (!on || baking || !canvas || innerWidth < 700) return;   // (phones stack the page instead)
+    if (!editOn || baking || !canvas || innerWidth < 700) return;   // (phones stack the page instead)
     baking = true;
     try {
       let changed = false;
@@ -898,7 +899,7 @@
 
   function open() {
     if (on || !canvas) { if (!canvas) alert('This page has no movable layout.'); return; }
-    on = true;
+    on = true; editOn = true;
     if (!document.getElementById('tw-edit-css')) { const st = document.createElement('style'); st.id = 'tw-edit-css'; st.textContent = css; document.head.appendChild(st); }
     document.body.classList.add('tw-editing');
     box = document.createElement('div'); box.id = 'tw-sel';
@@ -929,7 +930,7 @@
     endText(); if (bar) { bar.remove(); bar = null; }
     several = false;
     if (sel) sel.classList.remove('tw-selected');
-    on = false; sel = null; clearGuides();
+    on = false; editOn = false; sel = null; clearGuides();
     document.body.classList.remove('tw-editing');
     box && box.remove(); panel && panel.remove(); box = panel = null;
     removeEventListener('pointerdown', onDown, true); removeEventListener('keydown', onKey); removeEventListener('click', blockClick, true); removeEventListener('dblclick', onDbl, true);
