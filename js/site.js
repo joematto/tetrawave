@@ -122,9 +122,8 @@ if (homeVid) {
   setTimeout(start, 1500);   // fallback if the Spinor's start isn't reported
 }
 
-// Home: the soundtrack ("White Winds") starts (1 s into the track) as the site opens and fades out over 3 s so that it is
-// silent before the drum roll begins (9.1 s into the track): the fade runs from 6.0 s to 9.0 s of the track, i.e. about
-// 5–8 s after the page opens. Browsers only allow sound once the visitor has interacted with the page, so if starting
+// Home: the soundtrack ("White Winds") starts 1.5 s into the track as the site opens and fades out over 3 s: the fade
+// runs from 6.5 s to 9.5 s of the track, i.e. about 5–8 s after the page opens. Browsers only allow sound once the visitor has interacted with the page, so if starting
 // at once is refused it starts at the first click, tap or key press instead (and still fades at the same point in the
 // music). Using the Sound button cancels the automatic fade.
 let galaxyHasStopped = false;
@@ -134,7 +133,8 @@ function galaxyStopped() {
   document.dispatchEvent(new Event('tw:galaxy-stopped'));
 }
 if (homeVid && snd) {
-  const SKIP = 1, FADE_END = 9.0, FADE = 3.0;   // seconds of the track (the drum roll starts at 9.1 s)
+  const SKIP = 1.5, FADE_END = 9.5, FADE = 3.0;   // seconds of the track: plays 1.5–9.5 s (8 s, the same length as before), fading over the last 3 s;
+  // the drum roll starts at 9.1 s, where the fade has brought the music down to about 2% (inaudible)
   let auto = true;   // false once the visitor uses the Sound button themselves
   if (sbtn) sbtn.addEventListener('click', () => { auto = false; snd.volume = 1; }, true);
   const skip = () => { if (snd.currentTime < SKIP) try { snd.currentTime = SKIP; } catch (e) { /* not seekable yet */ } };
