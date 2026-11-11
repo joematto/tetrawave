@@ -391,28 +391,28 @@
  "TILT": {
   "I:images/MODEL/MODEL-06_tetrahelix-1st-triangle-orientation-studies-models-good2.jpg": {
    "x": 90.5,
-   "y": 30.5,
+   "y": 81.5,
    "w": 799.5,
    "h": 1100.5,
-   "t": 1794138623330
+   "t": 1794334579639
   },
   "T:RotationAnglefor1stBottomFac": {
-   "x": 131,
-   "y": -33,
-   "w": 749,
-   "h": 52,
-   "html": "<h3 class=\"ph ph-wix\" style=\"text-align:center;font-size:16px\"><span style=\"font-size: 20px;\">Rotation Angle relative to a horizontal plane = \u221a2/3.</span></h3><h3 class=\"ph ph-wix\" style=\"text-align:center;font-size:16px\"><span style=\"font-size: 20px;\">Around Median of Bottom Hedral (Face) of 1st TOT</span></h3><h3 class=\"ph ph-wix\" style=\"text-align:center;font-size:16px\"><span style=\"color: rgb(220, 220, 220); font-family: &quot;Source Sans 3&quot;, &quot;Helvetica Neue&quot;, Arial, sans-serif;\">In Egyptian Mathematics, the fraction 2/3 is considered a special, if not, Sacred Number related to the idea of \"UNITY\" ... \"Zero\" was not used. Quantities would be expressed as some fraction of Unity.</span></h3>",
-   "t": 1794138770997
+   "x": 88,
+   "y": -22,
+   "w": 815,
+   "h": 103,
+   "html": "<h3 class=\"ph ph-wix\" style=\"text-align:center;font-size:16px\"><span style=\"font-size: 22px;\">Rotation Angle around median of Lowest Hedral <span style=\"font-size: 14px;\">(triangular Face)</span></span></h3><h3 class=\"ph ph-wix\" style=\"text-align:center;font-size:16px\"><span style=\"font-size: 20px;\">relative to a horizontal plane&nbsp; =&nbsp; \u221a 2/3</span></h3>",
+   "t": 1794348633356
   }
  },
  "BUILD": {
   "T:TriangletoTetrahedrontoTetra": {
-   "x": 98,
-   "y": -35,
+   "x": 95.5,
+   "y": -25,
    "w": 799,
    "h": 40,
-   "html": "<h3 class=\"ph\" style=\"text-align:center\"><span style=\"font-size: 28px;\">\"TOT\" <span style=\"font-size: 17px;\">(<span style=\"font-size: 20px;\">T</span><span style=\"font-size: 14px;\">etra-helically</span> <span style=\"font-size: 22px;\">o</span><span style=\"font-size: 14px;\">riented</span> <span style=\"font-size: 20px;\">T</span><span style=\"font-size: 14px;\">etrahedron</span>)</span> to Tetra-waveform</span></h3>",
-   "t": 1794317345606
+   "html": "<h3 class=\"ph\" style=\"text-align:center\"><span style=\"font-size: 28px;\">\"TOT<span style=\"font-size: 20px;\">s</span>\" <span style=\"font-size: 17px;\">(<span style=\"font-size: 20px;\">T</span><span style=\"font-size: 14px;\">etra-helically</span> <span style=\"font-size: 22px;\">o</span><span style=\"font-size: 14px;\">riented</span> <span style=\"font-size: 20px;\">T</span><span style=\"font-size: 14px;\">etrahedrons</span>)</span> to Tetra-wave</span></h3>",
+   "t": 1794341592277
   }
  },
  "COIL": {
@@ -500,11 +500,12 @@
    "pw": 492,
    "ph": 650,
    "name": "Screenshot 2026-11-08 at 9.01.00\u202fAM.png",
-   "x": 81.5,
-   "y": 72,
-   "w": 399.5,
-   "h": 525.5,
-   "t": 1794324421424
+   "x": 90,
+   "y": 87.5,
+   "w": 392,
+   "h": 515.5,
+   "hide": true,
+   "t": 1794333883049
   },
   "N:mw9axjoe6mmw": {
    "x": 349.5,
@@ -548,11 +549,11 @@
    "pw": 649,
    "ph": 515,
    "name": "download.png",
-   "x": 88,
-   "y": 958,
-   "w": 393,
-   "h": 294.5,
-   "t": 1794323922416
+   "x": 99.5,
+   "y": 625.5,
+   "w": 387.5,
+   "h": 290,
+   "t": 1794348204837
   },
   "NT:mw9bc9ortenz": {
    "x": 110.5,
@@ -592,11 +593,12 @@
    "pw": 785,
    "ph": 741,
    "name": "MODEL-01_buckys-tetrahelix-oage-1.jpg",
-   "x": 493,
-   "y": 282.5,
+   "x": 499,
+   "y": 602,
    "w": 394,
    "h": 372,
-   "t": 1794324426498
+   "hide": true,
+   "t": 1794334025280
   },
   "I:images/MODEL/MODEL-02_plastic-tetrahelix-w-red-blue-threads.jpg": {
    "x": 91,
@@ -628,29 +630,29 @@
   },
   "NT:mw9c7x9py6n1": {
    "new": "text",
-   "x": 494,
-   "y": 663,
+   "x": 494.5,
+   "y": 754,
    "w": 392,
    "h": 560,
-   "html": "<h3 class=\"ph\" style=\"text-align: justify; line-height: 0.7; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-size: 16px; font-family: var(--body);\">I studied \"Synergetics\" in greater depth in 1984, and became fascinated with his theoretical argument that the traditional X, Y, Z Cartesian coordinate system distorted our understanding of reality. He argued that everything that was alive and existed in Nature, from sub-atomic particals to cosmological structures, whether alive or not, did so based on polyhedral geometry. And that the Tetrahedron was a fundamental form at all scales. He believed that the face-bonded \"Tetra-Helix\", was a special case, an extension of a single tetrahedron that he believed could explain the structure of DNA. At the time of my reading of Synergetics in 1985, other theories prevailed, but still I felt there might be a connection somehow.&nbsp;</span></h3><h3 class=\"ph\" style=\"text-align: justify; line-height: 0.7; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-size: 16px; font-family: var(--body);\">In the photo of his model above you can see an exploration with \"parallel ruled lines\" of warped planes over the exterior surfaces.&nbsp; Because of my experience building&nbsp; kites with internal bracing I decided to do the opposite, to explore the INTERIOR of the Tetra-helix instead. I created the first models using wooden dowels and plastic tubes with colored threads of Red and Blue string crossing through the internal centroids of each tetrahedron from the tetrahedral edges. This created 2 very beautiful hyperbolic-paraboloids that interpenetrated each other, and which in turn created an unexpected \"Center Core Channel\".&nbsp; Although the core looks circular when viewed down the axis of the tetrahelix, at any 90\u00ba cross section the shape proves to actually be two opposite arcs creating an almond shaped center area similar to the \"Vesica Pisces\", a very important and meaningful symbol in Christianity and other spiritual belief systems. The Vesica Pisces is a fundamental shape in Sacred Geometry.</span></h3><h3 class=\"ph\" style=\"text-align: justify; line-height: 0.7; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 16px;\">I began to think that Tetra-Wave was more a model of an eletromagnetic wave or some kind of healing energy form.&nbsp; This is just one of the many correlations that began to emerge.</span></h3>",
-   "t": 1794324431658
+   "html": "<h3 class=\"ph\" style=\"text-align: justify; line-height: 0.7; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 16px;\">In the photo above you can see Bucky's exploration with \"parallel ruled lines\" of warped planes over the exterior surfaces.&nbsp; Because of my experience building&nbsp; kites with internal bracing I decided to do the opposite, to explore the INTERIOR of the Tetra-helix instead. I created the first models using wooden dowels and plastic tubes with colored threads of Red and Blue string crossing through the internal centroids of each tetrahedron from the tetrahedral edges. This created 2 very beautiful hyperbolic-paraboloids that interpenetrated each other, and which in turn created an unexpected \"Center Core Channel\".&nbsp; Although the core looks circular when viewed down the axis of the tetrahelix, at any 90\u00ba cross section the shape proves to actually be two opposite arcs creating an almond shaped center area similar to the \"Vesica Pisces\", a very important and meaningful symbol in Christianity and other spiritual belief systems. The Vesica Pisces is a fundamental shape in Sacred Geometry.&nbsp;</span><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 16px;\">I began to think that Tetra-Wave was more a model of an eletromagnetic wave or some kind of healing energy form.&nbsp; This is just one of the many correlations that began to emerge.</span></h3>",
+   "t": 1794341063353
   },
   "T:MODELS": {
    "x": 302,
    "y": -3.5,
    "w": 377,
    "h": 82,
-   "html": "<span style=\"font-size: 32px; color: rgb(245, 202, 151); font-family: var(--display);\">Kites to Tetra Helices</span>",
-   "t": 1794324413134
+   "html": "<span style=\"font-size: 32px; color: rgb(245, 202, 151); font-family: var(--display);\">Kites to Tetra-Helices</span>",
+   "t": 1794333262356
   },
   "NT:mwaocjg9im2k": {
-   "x": 85.5,
-   "y": 610,
+   "new": "text",
+   "x": 495.5,
+   "y": 76,
    "w": 392,
    "h": 329,
-   "html": "<h3 class=\"ph\" style=\"text-align: justify; line-height: 0.7; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-size: 16px; font-family: var(--body);\">The first time I saw a Tetrahedron was in a biography entitled \"Genius At Work\" about Alexander Graham Bell.&nbsp; Of his many inventions, from the Iron Lung to aircraft wings for the Navy, I loved the large TETRAHEDRON KITES built of metal tubes, some of which were large enough with sufficient force to&nbsp; lift people and animals right off the ground!&nbsp;&nbsp;</span></h3><h3 class=\"ph\" style=\"text-align: justify; line-height: 0.7; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 16px;\">Inspired by his tetrahedral kites I built my own, exploring ways of making them stronger and lighter using internal bracing from opposite outer edges following the natural vectors of edge sub-divisions, what I later learned was called \"cell-frequency\" by Buckminster Fuller&nbsp; in his seminal book \"Synergetics\".... and even more recently a mathenatical function called \"Fractals\".</span></h3>",
-   "new": "text",
-   "t": 1794324433522
+   "html": "<h3 class=\"ph\" style=\"text-align: justify; line-height: 0.7; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-size: 16px; font-family: var(--body);\">The first time I saw a Tetrahedron was in a biography entitled \"Genius At Work\" about Alexander Graham Bell.&nbsp; Of his many inventions, from the Iron Lung to aircraft wings for the Navy, I loved the large TETRAHEDRON KITES built of metal tubes, some of which were large enough with sufficient force to&nbsp; lift people and animals right off the ground...defeating gravity!&nbsp;&nbsp;</span></h3><h3 class=\"ph\" style=\"text-align: justify; line-height: 0.7; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 16px;\">Inspired by his tetrahedral kites I started building my own, exploring ways of making them stronger and lighter using internal bracing from opposite outer edges following the natural vectors of edge sub-divisions, what I later learned was called \"cell-frequency\", and even more recently a mathematical function called \"Fractals\".</span></h3>",
+   "t": 1794341010733
   },
   "N:mwaubz7lzjxb": {
    "x": 543,
@@ -665,28 +667,203 @@
    "t": 1794324257886
   },
   "N:mwauc492e37m": {
-   "x": 493.5,
-   "y": 72,
-   "w": 199.5,
-   "h": 199.5,
    "new": true,
-   "name": "Screenshot 2026-11-10 at 10.22.57\u202fAM.jpg",
+   "path": "images/MODEL/MODEL-15_screenshot-2026-11-10-at-10-22-57-am.jpg",
    "pw": 991,
    "ph": 990,
-   "t": 1794324426498,
-   "path": "images/MODEL/MODEL-15_screenshot-2026-11-10-at-10-22-57-am.jpg"
+   "name": "Screenshot 2026-11-10 at 10.22.57\u202fAM.jpg",
+   "x": 495.5,
+   "y": 395.5,
+   "w": 199.5,
+   "h": 199.5,
+   "t": 1794333799750
   },
   "N:mwaucmnoxrwz": {
-   "x": 701.5,
-   "y": 72,
-   "w": 183,
-   "h": 199.5,
    "new": true,
-   "name": "Screenshot 2026-11-10 at 10.22.27\u202fAM.jpg",
+   "path": "images/MODEL/MODEL-16_screenshot-2026-11-10-at-10-22-27-am.jpg",
    "pw": 982,
    "ph": 1080,
-   "t": 1794324426498,
-   "path": "images/MODEL/MODEL-16_screenshot-2026-11-10-at-10-22-27-am.jpg"
+   "name": "Screenshot 2026-11-10 at 10.22.27\u202fAM.jpg",
+   "x": 703.5,
+   "y": 395.5,
+   "w": 183,
+   "h": 199.5,
+   "t": 1794333799750
+  },
+  "N:mwavf5866uko": {
+   "x": 84.5,
+   "y": 838.5,
+   "w": 390.5,
+   "h": 295.5,
+   "hide": true,
+   "new": true,
+   "name": "Screenshot 2026-11-10 at 10.52.34\u202fAM.jpg",
+   "pw": 645,
+   "ph": 489,
+   "t": 1794326313448
+  },
+  "N:mwavll8pj16p": {
+   "x": 90.5,
+   "y": 927.5,
+   "w": 390.5,
+   "h": 259,
+   "hide": true,
+   "new": true,
+   "name": "Tetrahelix horiz_.png",
+   "pw": 645,
+   "ph": 427,
+   "t": 1794326404819
+  },
+  "N:mwavmqn691tv": {
+   "x": 155,
+   "y": 940,
+   "w": 300,
+   "h": 214,
+   "hide": true,
+   "new": true,
+   "name": "Tetrahelix horiz_.png",
+   "pw": 600,
+   "ph": 427,
+   "t": 1794326446446
+  },
+  "N:mwavoa79qmq8": {
+   "x": 891,
+   "y": 563,
+   "w": 241.5,
+   "h": 151.5,
+   "hide": true,
+   "z": 974,
+   "new": true,
+   "name": "Screenshot 2026-11-10 at 10.52.34\u202fAM.png",
+   "pw": 645,
+   "ph": 407,
+   "t": 1794334043985
+  },
+  "N:mwazri3xug1c": {
+   "x": 554,
+   "y": 656,
+   "w": 300,
+   "h": 214,
+   "hide": true,
+   "new": true,
+   "name": "Tetrahelix horiz_.png",
+   "pw": 600,
+   "ph": 427,
+   "t": 1794333380379
+  },
+  "N:mwazrn5boap2": {
+   "x": 512,
+   "y": 424.5,
+   "w": 322.5,
+   "h": 230.5,
+   "hide": true,
+   "z": 975,
+   "new": true,
+   "name": "Tetrahelix horiz_.png",
+   "pw": 600,
+   "ph": 427,
+   "t": 1794333419318
+  },
+  "N:mwazvun7icfl": {
+   "x": 932,
+   "y": 401,
+   "w": 243.5,
+   "h": 196,
+   "hide": true,
+   "z": 975,
+   "new": true,
+   "name": "Screenshot 2026-11-10 at 12.58.37\u202fPM.jpg",
+   "pw": 360,
+   "ph": 290,
+   "t": 1794333968070
+  },
+  "N:mwb02erwsfy4": {
+   "x": 94,
+   "y": 88,
+   "w": 389.5,
+   "h": 507.5,
+   "hide": true,
+   "z": 900,
+   "new": true,
+   "name": "MODEL-12_screenshot-2026-11-08-at-9-01-00-am.png",
+   "pw": 492,
+   "ph": 641,
+   "t": 1794347854779
+  },
+  "N:mwb05g27n3wg": {
+   "x": 495,
+   "y": 603.5,
+   "w": 391.5,
+   "h": 150,
+   "z": 900,
+   "new": true,
+   "name": "MODEL-14_model-01-buckys-tetrahelix-oage-1.png",
+   "pw": 635,
+   "ph": 244,
+   "t": 1794334322138,
+   "path": "images/MODEL/MODEL-17_model-14-model-01-buckys-tetrahelix-oage-1.png"
+  },
+  "NT:mwb06a6oiyyg": {
+   "x": 93.5,
+   "y": 922.5,
+   "w": 392,
+   "h": 329,
+   "html": "<h3 class=\"ph\" style=\"text-align: justify; line-height: 0.7; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-size: 16px; font-family: var(--body);\">I studied \"Synergetics\" in greater depth in 1984, and became fascinated with his theoretical argument that the traditional X, Y, Z Cartesian coordinate system distorted our understanding of reality. He argued that everything that was alive and existed in Nature, from sub-atomic particals to cosmological structures, whether alive or not, did so based on polyhedral geometry. And that the Tetrahedron was a fundamental form at all scales. He believed that the face-bonded \"Tetra-Helix\", was a special case, an extension of a single tetrahedron that he believed could explain the structure of DNA. At the time of my reading of Synergetics in 1985, other theories prevailed, but still I felt there might be a connection somehow.&nbsp;</span></h3><h3 class=\"ph\" style=\"text-align: justify; line-height: 0.7; text-wrap: wrap;\"><br></h3>",
+   "z": 950,
+   "new": "text",
+   "t": 1794348183907
+  },
+  "N:mwb08w7vbpnl": {
+   "x": 240.5,
+   "y": 398.5,
+   "w": 242.5,
+   "h": 195.5,
+   "hide": true,
+   "z": 900,
+   "new": true,
+   "name": "Screenshot 2026-11-10 at 12.58.37\u202fPM.jpg",
+   "pw": 360,
+   "ph": 290,
+   "t": 1794347858648
+  },
+  "N:mwb43xpxktj4": {
+   "x": 929,
+   "y": 517,
+   "w": 239.5,
+   "h": 167.5,
+   "z": 900,
+   "new": true,
+   "name": "Screenshot 2026-11-10 at 2.56.14\u202fPM.jpg",
+   "pw": 626,
+   "ph": 438,
+   "t": 1794346578927,
+   "path": "images/MODEL/MODEL-18_screenshot-2026-11-10-at-2-56-14-pm.jpg"
+  },
+  "N:mwb48qvox4q5": {
+   "x": 248,
+   "y": 398,
+   "w": 239,
+   "h": 197,
+   "hide": true,
+   "z": 900,
+   "new": true,
+   "name": "Screenshot 2026-11-10 at 2.59.13\u202fPM.jpg",
+   "pw": 623,
+   "ph": 513,
+   "t": 1794347856939
+  },
+  "N:mwb8k8aczajb": {
+   "x": 99,
+   "y": 81.5,
+   "w": 386.5,
+   "h": 535.5,
+   "z": 900,
+   "new": true,
+   "name": "Bucky & Bell for TW wesite.png",
+   "pw": 382,
+   "ph": 528,
+   "t": 1794348206943,
+   "path": "images/MODEL/MODEL-19_bucky-bell-for-tw-wesite.png"
   }
  }
 }

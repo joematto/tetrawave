@@ -125,3 +125,6 @@ images/MODEL/MODEL-13_download.png
 images/MODEL/MODEL-14_model-01-buckys-tetrahelix-oage-1.jpg
 images/MODEL/MODEL-15_screenshot-2026-11-10-at-10-22-57-am.jpg
 images/MODEL/MODEL-16_screenshot-2026-11-10-at-10-22-27-am.jpg
+images/MODEL/MODEL-17_model-14-model-01-buckys-tetrahelix-oage-1.png
+images/MODEL/MODEL-18_screenshot-2026-11-10-at-2-56-14-pm.jpg
+images/MODEL/MODEL-19_bucky-bell-for-tw-wesite.png
