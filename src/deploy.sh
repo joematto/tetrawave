@@ -5,6 +5,8 @@ D=/tmp/claude-0/-home-claude/4e332f19-7fff-5dc8-91d8-0263face8284/scratchpad/dep
 rm -rf $D && mkdir -p $D/src $D/js $D/css
 cp $S/*.py $S/*.json $S/*.js $S/*.html $S/*.css $S/*.sh $S/images_on_disk.txt $D/src/
 cp $O/*.html $O/IMAGE-INDEX.csv $D/ && cp $O/js/*.js $D/js/ && cp $O/css/*.css $D/css/
+# " index.html" (leading space, sorts first in Finder) is the copy opened from the folder: keep it identical to index.html
+cp $O/index.html "$D/ index.html"
 # pictures added with the Edit tool (written by import_edits.py), then cleared
 if [ -d $S/newimages/images ]; then cp -r $S/newimages/images $D/ && rm -rf $S/newimages; fi
 NAME=tw-deploy-$(date +%s).tgz
