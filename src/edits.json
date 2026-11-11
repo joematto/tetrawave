@@ -883,8 +883,8 @@
    "t": 1794408095810
   },
   "N:mwc8czvntknx": {
-   "x": 360,
-   "y": 116.5,
+   "x": 96,
+   "y": 115,
    "w": 260,
    "h": 283.5,
    "z": 901,
@@ -896,8 +896,8 @@
    "path": "images/PRE/PRE-02_bethlehem-solar-observatory-addition.png"
   },
   "N:mwc8d2xqztuo": {
-   "x": 630,
-   "y": 441.5,
+   "x": 624,
+   "y": 984.5,
    "w": 260,
    "h": 177.5,
    "z": 900,
@@ -909,8 +909,8 @@
    "path": "images/PRE/PRE-03_chain-trail-elevation-on-trace.jpg"
   },
   "N:mwc8d6hcfz6j": {
-   "x": 90,
-   "y": 423.0,
+   "x": 624,
+   "y": 650.0,
    "w": 260,
    "h": 330.5,
    "z": 900,
@@ -922,8 +922,8 @@
    "path": "images/PRE/PRE-04_house-on-a-cliff-sketch.jpg"
   },
   "N:mwc8de7n1iq1": {
-   "x": 90,
-   "y": 115.5,
+   "x": 360,
+   "y": 115,
    "w": 260,
    "h": 140.5,
    "z": 900,
@@ -935,8 +935,8 @@
    "path": "images/PRE/PRE-05_insurance-building-in-shelton-ct.png"
   },
   "N:mwc8dgqa1z0k": {
-   "x": 90,
-   "y": 265,
+   "x": 96,
+   "y": 402.5,
    "w": 260,
    "h": 150.0,
    "z": 900,
@@ -948,7 +948,7 @@
    "path": "images/PRE/PRE-06_odonell-poolhouse-elevations.png"
   },
   "N:mwc8dm0dr05k": {
-   "x": 630,
+   "x": 624,
    "y": 115,
    "w": 260,
    "h": 311.0,
@@ -961,8 +961,8 @@
    "path": "images/PRE/PRE-07_odonnell-addition-cross-section.png"
   },
   "N:mwc8eijk8ziu": {
-   "x": 360,
-   "y": 408.0,
+   "x": 624,
+   "y": 430.0,
    "w": 260,
    "h": 216.0,
    "z": 900,
@@ -974,8 +974,8 @@
    "path": "images/PRE/PRE-08_passive-solar-house-cross-section.png"
   },
   "N:mwc8eqacbmc2": {
-   "x": 360,
-   "y": 632.0,
+   "x": 624,
+   "y": 1166.0,
    "w": 260,
    "h": 384.0,
    "z": 900,
@@ -987,8 +987,8 @@
    "path": "images/PRE/PRE-09_streeet-scene-cafe-entry.jpg"
   },
   "N:mwc8eyim9l82": {
-   "x": 630,
-   "y": 627.0,
+   "x": 624,
+   "y": 1554.0,
    "w": 260,
    "h": 391.0,
    "z": 900,
@@ -1008,8 +1008,8 @@
    "t": 1794408924012
   },
   "N:mwc8uqelms7v": {
-   "x": 630,
-   "y": 1029,
+   "x": 360,
+   "y": 634.5,
    "w": 260,
    "h": 363.5,
    "z": 900,
@@ -1021,8 +1021,8 @@
    "path": "images/PRE/PRE-11_anatomy-fanstasy-dancer-1.png"
   },
   "N:mwc8uzq703me": {
-   "x": 360,
-   "y": 1024.0,
+   "x": 96,
+   "y": 556.5,
    "w": 260,
    "h": 274.5,
    "z": 900,
@@ -1034,8 +1034,8 @@
    "path": "images/PRE/PRE-12_anatomy-fantast-skull.jpg"
   },
   "N:mwc8v7yxqt0p": {
-   "x": 90,
-   "y": 2458,
+   "x": 96,
+   "y": 2033.5,
    "w": 260,
    "h": 453.0,
    "z": 900,
@@ -1047,8 +1047,8 @@
    "path": "images/PRE/PRE-13_anatomy-fantasy-1.jpg"
   },
   "N:mwc8vfs23fxf": {
-   "x": 90,
-   "y": 767.5,
+   "x": 360,
+   "y": 259.5,
    "w": 260,
    "h": 371.0,
    "z": 900,
@@ -1061,7 +1061,7 @@
   },
   "N:mwc8vnk819j9": {
    "x": 360,
-   "y": 1306.5,
+   "y": 1270.5,
    "w": 260,
    "h": 424.5,
    "z": 900,
@@ -1073,8 +1073,8 @@
    "path": "images/PRE/PRE-15_anatomy-fantasy-2.jpg"
   },
   "N:mwc8vvb4xhhz": {
-   "x": 630,
-   "y": 1408.5,
+   "x": 624,
+   "y": 1949.0,
    "w": 260,
    "h": 215.5,
    "z": 900,
@@ -1086,8 +1086,8 @@
    "path": "images/PRE/PRE-16_anatomy-fantasy-back-bend.jpg"
   },
   "N:mwc8wyhql5lt": {
-   "x": 90,
-   "y": 1154.5,
+   "x": 360,
+   "y": 1002.0,
    "w": 260,
    "h": 264.5,
    "z": 900,
@@ -1099,8 +1099,8 @@
    "path": "images/PRE/PRE-17_anatomy-fantasy-back-of-arm.jpg"
   },
   "N:mwc8x5kxapp4": {
-   "x": 360,
-   "y": 1739.0,
+   "x": 624,
+   "y": 2168.5,
    "w": 260,
    "h": 326.5,
    "z": 900,
@@ -1112,8 +1112,8 @@
    "path": "images/PRE/PRE-18_anatomy-fantasy-blue-man.jpg"
   },
   "N:mwc8xervpy82": {
-   "x": 90,
-   "y": 1429.5,
+   "x": 96,
+   "y": 835.0,
    "w": 260,
    "h": 438.0,
    "z": 900,
@@ -1125,8 +1125,8 @@
    "path": "images/PRE/PRE-19_anatomy-fantasy-man-climbing-stairs.jpg"
   },
   "N:mwc8xpscv20z": {
-   "x": 630,
-   "y": 2425,
+   "x": 360,
+   "y": 1699.0,
    "w": 260,
    "h": 312.5,
    "z": 900,
@@ -1138,8 +1138,8 @@
    "path": "images/PRE/PRE-20_anatomy-fantasy-reflected-nude.jpg"
   },
   "N:mwc8xyi5bleu": {
-   "x": 360,
-   "y": 2073.5,
+   "x": 96,
+   "y": 1654.5,
    "w": 260,
    "h": 375.0,
    "z": 900,
@@ -1151,8 +1151,8 @@
    "path": "images/PRE/PRE-21_anatomy-fantasy-rock-climber.jpg"
   },
   "N:mwc8ycff2bvq": {
-   "x": 630,
-   "y": 1633.5,
+   "x": 96,
+   "y": 1277.0,
    "w": 260,
    "h": 373.5,
    "z": 900,
@@ -1165,7 +1165,7 @@
   },
   "N:mwc8yox4ka4a": {
    "x": 360,
-   "y": 2762.5,
+   "y": 2015.5,
    "w": 260,
    "h": 470.5,
    "z": 900,
