@@ -19,7 +19,7 @@ for p in PLAN:
 # (key, title, file or None, wix slug for pages not yet moved)
 OUTLINE = [
     ('Front', [('HOME', 'Home', 'index.html'), ('ABOUT', 'About Me', 'about-me.html'), ('CONTACT', 'Contact', 'contact.html')]),
-    ('Part I · The Awakening', [('P1', 'Kundalini Crisis', 'part-1-kundalini-crisis.html'), ('PRE', 'Pre-Kundalini Drawings/Sketches', 'pre-kundalini-artwork.html'),
+    ('Part I · The Awakening', [('PRE', 'Pre-Kundalini Drawings/Sketches', 'pre-kundalini-artwork.html'), ('P1', 'Kundalini Crisis', 'part-1-kundalini-crisis.html'),
         ('POST', 'Post-Kundalini Drawings/Sketches', 'post-kundalini-artwork.html'), ('COIL', 'StarCoil-1st Download Transmission', 'starcoil-1st-download-message.html'),
         ('SKETCH', '2D Exploratory & Inception Sketches', '2d-exploratory-inception-sketches.html')]),
     ('Part II · The Geometry', [('P2', 'Geometry Unified across Dimensions', 'part-2-the-geometry.html'),
@@ -614,7 +614,7 @@ home = f'''<section class="hero">
   <a class="hero-mark" id="mark" href="part-2-the-geometry.html" aria-label="Enter: Part II, The Geometry" data-anim="spin" data-file="{hp}">
     <img src="{hp}" width="{hw}" height="{hh}" alt="TetraWave symbol: a tetrahelix framework inside a circle and triangle">
   </a>
-  <a class="hero-enter" href="part-1-kundalini-crisis.html" data-anim="fade" style="--d:1600ms">Enter</a>
+  <a class="hero-enter" href="pre-kundalini-artwork.html" data-anim="fade" style="--d:1600ms">Enter</a>
 </section>'''
 open(os.path.join(OUT, 'index.html'), 'w').write(shell('HOME', 'Discoveries in Tetrahedral Geometry', home, home=True))
 
