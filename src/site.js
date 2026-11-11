@@ -161,7 +161,7 @@ if (homeVid) {
 }
 
 // Home: the soundtrack ("White Winds") starts one second after the Spinor starts turning, 1 s into the track, fades in over 1.5 s, and
-// from 6.0 s to 9.0 s of the track eases down to 40% volume (just before the drums at 9.1 s), then plays on quietly (drums and all) to the end of the
+// from 6.0 s to 9.0 s of the track eases down to 40% volume, then at the quiet dip just before the drums (9.0 s) drops to 20% and plays on (drums and all) to the end of the
 // track, or until another page is opened. Browsers only allow sound once the visitor has interacted with the page,
 // so if starting at once is refused the opening screen asks for a click. Using the Sound button cancels the automatic
 // volume changes (full volume, repeating, as before).
@@ -172,6 +172,7 @@ function galaxyStopped() {
   document.dispatchEvent(new Event('tw:galaxy-stopped'));
 }
 if (homeVid && snd) {
+  const CUT_AT = 9.0, CUT_FOR = 0.08, CUT = 0.5;   // at the quiet dip just before the drum roll (9.0 s) the volume halves again (40% -> 20%) for the rest of the track
   const SKIP = 1, FADE_IN = 1.5, FADE_END = 9.0, FADE = 3.0, BG = 0.4;   // BG: the volume it settles at, reached just before the drums (9.1 s)   // seconds of the track: plays 1–10 s, fading over the last 3 s (the drum roll starts at 9.1 s,
   // when the fade is at about 9% volume)
   let auto = true;   // false once the visitor uses the Sound button themselves
@@ -185,7 +186,12 @@ if (homeVid && snd) {
     if (!auto) { snd.volume = 1; return; }
     if (snd.paused) return;
     const t = snd.currentTime;
-    if (t >= FADE_END) { try { snd.volume = BG; } catch (e) {} return; }   // from here it plays on quietly to the end of the track
+    if (t >= FADE_END) {   // from here it plays on quietly to the end of the track, halved once more at CUT_AT (over 0.08 s, so no click)
+      const c = Math.max(0, Math.min(1, (t - CUT_AT) / CUT_FOR));
+      try { snd.volume = BG * Math.pow(CUT, c); } catch (e) {}
+      if (c < 1) requestAnimationFrame(fade);
+      return;
+    }
     const k = Math.max(0, Math.min(1, (FADE_END - t) / FADE));   // 1 before the fade-down, 0 at its end
     const f = Math.max(0, Math.min(1, (t - SKIP) / FADE_IN));     // fade-in: 0 at the start, 1 after FADE_IN
     // fade-down to half volume: smooth at both ends, even in loudness through the middle
