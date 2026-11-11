@@ -1,9 +1,9 @@
-// TetraWave margins guide: fixed lines on the 980px page — a centre line at page x 493.0 and a light-blue
-// dotted line 400px to either side of it (page x 93 and 893, a span of 800), the full height of the window.
+// TetraWave margins guide: fixed lines on the 980px page — a centre line at page x 490.0 (the page's true centre) and a light-blue
+// dotted line 400px to either side of it (page x 90 and 890, a span of 800), the full height of the window.
 // Shown from the ToolBox (or #margins). The lines are fixed to the page: they cannot be dragged, and they stay
 // on the same page positions when the window is resized (scaled with the page on narrower windows).
 (() => {
-  const CENTRE = 493.0, SIDE = 400;   // on the 980px page
+  const CENTRE = 490.0, SIDE = 400;   // on the 980px page
   const css = `
 #tw-mar { position: fixed; inset: 0; z-index: 2147483080; pointer-events: none; }
 #tw-mar .m-line { position: absolute; top: 0; bottom: 0; width: 15px; margin-left: -7px; }

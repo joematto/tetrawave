@@ -12,7 +12,13 @@
 #tw-sym .s-read { position: absolute; top: 100px; white-space: nowrap; padding: 2px 5px; pointer-events: auto; transform: translateX(-50%);
   font: 600 10px/1.2 ui-monospace, Menlo, monospace; color: #fff; background: rgba(10,90,120,.9); border-radius: 2px; }
 #tw-sym .s-read button { margin-left: 6px; font: inherit; color: #fff; background: none; border: 1px solid rgba(255,255,255,.6); padding: 0 4px; cursor: pointer; }`;
-  let el = null, cx = Math.round(innerWidth / 2), d = 200;
+  // the page's true centre on screen: page x 490 on the 980px page (the window's middle, not counting the scrollbar)
+  const pageCentre = () => {
+    const c = document.querySelector('.canvas');
+    if (c) { const r = c.getBoundingClientRect(); return r.left + 490 * (r.width / 980 || 1); }
+    return document.documentElement.clientWidth / 2;
+  };
+  let el = null, cx = pageCentre(), d = 200;
   const place = () => {
     d = Math.max(0, d);
     el.querySelector('.s-mid').style.left = cx + 'px';
@@ -21,7 +27,7 @@
     const c = document.querySelector('.canvas');
     let page = '';
     if (c) { const r = c.getBoundingClientRect(), s = r.width / 980 || 1; page = ' · page centre ' + ((cx - r.left) / s).toFixed(1); }
-    el.querySelector('.s-txt').textContent = 'centre ' + cx + ' px · each side ' + d + ' px (span ' + 2 * d + ')' + page;
+    el.querySelector('.s-txt').textContent = 'centre ' + (+cx.toFixed(1)) + ' px · each side ' + d + ' px (span ' + 2 * d + ')' + page;
     el.querySelector('.s-read').style.left = cx + 'px';
   };
   const drag = (e, fn) => {
@@ -33,6 +39,7 @@
   function open() {
     if (el) return;
     const st = document.createElement('style'); st.id = 'tw-sym-css'; st.textContent = css; document.head.appendChild(st);
+    cx = pageCentre();   // always open on the page centre, where the margins guide's centre line is
     el = document.createElement('div'); el.id = 'tw-sym';
     el.innerHTML = '<div class="s-line s-l" tabindex="0"></div><div class="s-line s-mid" tabindex="0"></div><div class="s-line s-r" tabindex="0"></div>' +
       '<span class="s-read"><span class="s-txt"></span><button type="button" data-a="close">Close</button></span>';
