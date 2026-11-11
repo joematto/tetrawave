@@ -26,7 +26,7 @@ OUTLINE = [
         ('TETRA', 'Tetrahedron Fascination', 'tetrahedron-fascination.html'),
         ('MODEL', '3D Exploration Models', '3d-exploration-models.html'),
         ('BUILD', 'Tetrawave Build Sequence', 'tetrawave-build-sequence.html'),
-        ('TILT', 'TOT Tilt Angle Analysis', 'tilt-angle-analysis.html'),
+        ('TILT', '“TOT” Tilt Angle & Cylindrical Analysis', 'tilt-angle-analysis.html'),
         ('GOLD', 'PHI is an Artifact', 'the-golden-section-is-an-artifact.html'),
         ('GRID', '11:11', '11-11-grid.html'),
         ('CAD', '3D Exploration CAD Models', '3d-exploration-cad-models.html'),
