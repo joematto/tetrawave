@@ -403,6 +403,19 @@
    "h": 103,
    "html": "<h3 class=\"ph ph-wix\" style=\"text-align:center;font-size:16px\"><span style=\"font-size: 22px;\">Rotation Angle around median of Lowest Hedral <span style=\"font-size: 14px;\">(triangular Face)</span></span></h3><h3 class=\"ph ph-wix\" style=\"text-align:center;font-size:16px\"><span style=\"font-size: 20px;\">relative to a horizontal plane&nbsp; =&nbsp; \u221a 2/3</span></h3>",
    "t": 1794348633356
+  },
+  "N:mwcaho7j3w80": {
+   "x": 90.5,
+   "y": 1198.5,
+   "w": 797,
+   "h": 1055,
+   "z": 900,
+   "new": true,
+   "name": "TW Cylindar Analysis.jpg",
+   "pw": 628,
+   "ph": 831,
+   "t": 1794411890759,
+   "path": "images/TILT/TILT-01_tw-cylindar-analysis.jpg"
   }
  },
  "BUILD": {
@@ -444,6 +457,20 @@
    "html": "<h3 class=\"ph\" style=\"text-align: center; font-size: 28px; color: rgb(255, 255, 255);\">Words from No-where !!??</h3>",
    "new": "text",
    "t": 1794178619230
+  },
+  "T:MOTIONinTheMetaphysicsofMich": {
+   "x": 700,
+   "y": 1030,
+   "w": 264,
+   "h": 140,
+   "t": 1794414304644
+  },
+  "T:NewtonsPrincipiaandLaterMeta": {
+   "x": 722,
+   "y": 1239,
+   "w": 219,
+   "h": 66,
+   "t": 1794414304644
   }
  },
  "MODEL": {
@@ -889,10 +916,10 @@
    "ph": 266,
    "name": "Bethlehem Solar Observatory addition.png",
    "x": 360,
-   "y": 88,
+   "y": 81,
    "w": 260,
    "h": 283.5,
-   "t": 1794410065401
+   "t": 1794416456538
   },
   "N:mwc8d2xqztuo": {
    "new": true,
@@ -900,11 +927,11 @@
    "pw": 1466,
    "ph": 1004,
    "name": "Chain Trail Elevation on trace.jpg",
-   "x": 96,
-   "y": 2455.5,
+   "x": 624,
+   "y": 81,
    "w": 260,
    "h": 178.0,
-   "t": 1794410065401
+   "t": 1794416457723
   },
   "N:mwc8d6hcfz6j": {
    "new": true,
@@ -913,10 +940,10 @@
    "ph": 1620,
    "name": "House on a cliff Sketch.jpg",
    "x": 624,
-   "y": 836.0,
+   "y": 636.5,
    "w": 260,
    "h": 330.5,
-   "t": 1794410065401
+   "t": 1794416471227
   },
   "N:mwc8de7n1iq1": {
    "new": true,
@@ -925,10 +952,10 @@
    "ph": 190,
    "name": "Insurance Building in Shelton Ct.png",
    "x": 96,
-   "y": 400.0,
+   "y": 81,
    "w": 260,
    "h": 140.5,
-   "t": 1794410065401
+   "t": 1794415762244
   },
   "N:mwc8dgqa1z0k": {
    "new": true,
@@ -937,10 +964,10 @@
    "ph": 182,
    "name": "Odonell Poolhouse elevations.png",
    "x": 624,
-   "y": 462.5,
+   "y": 263.0,
    "w": 260,
    "h": 149.5,
-   "t": 1794410065401
+   "t": 1794416460111
   },
   "N:mwc8dm0dr05k": {
    "new": true,
@@ -949,10 +976,10 @@
    "ph": 377,
    "name": "ODonnell Addition Cross section.png",
    "x": 96,
-   "y": 3290.0,
+   "y": 225.5,
    "w": 260,
    "h": 311.0,
-   "t": 1794410065401
+   "t": 1794415955058
   },
   "N:mwc8eijk8ziu": {
    "new": true,
@@ -961,10 +988,10 @@
    "ph": 202,
    "name": "Passive solar house cross section.png",
    "x": 624,
-   "y": 616.0,
+   "y": 416.5,
    "w": 260,
    "h": 216.0,
-   "t": 1794410065401
+   "t": 1794415894288
   },
   "N:mwc8eqacbmc2": {
    "new": true,
@@ -972,11 +999,11 @@
    "pw": 1095,
    "ph": 1612,
    "name": "Streeet scene cafe entry.jpg",
-   "x": 624,
-   "y": 1375.5,
+   "x": 360,
+   "y": 368.5,
    "w": 260,
    "h": 383.0,
-   "t": 1794410079639
+   "t": 1794416461607
   },
   "N:mwc8eyim9l82": {
    "new": true,
@@ -984,11 +1011,11 @@
    "pw": 1075,
    "ph": 1612,
    "name": "Street sccene table sketch.jpg",
-   "x": 624,
-   "y": 1762.5,
+   "x": 96,
+   "y": 540.5,
    "w": 260,
    "h": 390.0,
-   "t": 1794410079639
+   "t": 1794416464463
   },
   "T:AwakeningArtwork": {
    "x": 101,
@@ -1004,11 +1031,11 @@
    "pw": 729,
    "ph": 1016,
    "name": "Anatomy fanstasy dancer 1.png",
-   "x": 360,
-   "y": 375.5,
+   "x": 624,
+   "y": 1950.0,
    "w": 260,
    "h": 362.5,
-   "t": 1794410065401
+   "t": 1794416502556
   },
   "N:mwc8uzq703me": {
    "new": true,
@@ -1017,10 +1044,10 @@
    "ph": 845,
    "name": "Anatomy fantast skull.jpg",
    "x": 360,
-   "y": 1500.5,
+   "y": 1563.0,
    "w": 260,
    "h": 274.5,
-   "t": 1794410065401
+   "t": 1794416484833
   },
   "N:mwc8v7yxqt0p": {
    "new": true,
@@ -1028,11 +1055,11 @@
    "pw": 1212,
    "ph": 2112,
    "name": "Anatomy Fantasy 1.jpg",
-   "x": 96,
-   "y": 1998.5,
+   "x": 624,
+   "y": 971.0,
    "w": 260,
    "h": 453.0,
-   "t": 1794410079639
+   "t": 1794416474707
   },
   "N:mwc8vfs23fxf": {
    "new": true,
@@ -1040,11 +1067,11 @@
    "pw": 733,
    "ph": 1045,
    "name": "anatomy fantasy 2 celebratory nudes.jpg",
-   "x": 624,
-   "y": 88,
+   "x": 96,
+   "y": 2334.5,
    "w": 260,
    "h": 370.5,
-   "t": 1794410065401
+   "t": 1794416048351
   },
   "N:mwc8vnk819j9": {
    "new": true,
@@ -1052,11 +1079,11 @@
    "pw": 416,
    "ph": 679,
    "name": "Anatomy Fantasy 2.jpg",
-   "x": 96,
-   "y": 813.0,
+   "x": 360,
+   "y": 1134.5,
    "w": 260,
    "h": 424.5,
-   "t": 1794410079639
+   "t": 1794416476750
   },
   "N:mwc8vvb4xhhz": {
    "new": true,
@@ -1065,10 +1092,10 @@
    "ph": 708,
    "name": "Anatomy fantasy back bend.jpg",
    "x": 624,
-   "y": 2156.5,
+   "y": 2316.5,
    "w": 260,
    "h": 214.5,
-   "t": 1794410079639
+   "t": 1794416503524
   },
   "N:mwc8wyhql5lt": {
    "new": true,
@@ -1077,10 +1104,10 @@
    "ph": 1829,
    "name": "Anatomy fantasy back of arm.jpg",
    "x": 96,
-   "y": 544.5,
+   "y": 2066.0,
    "w": 260,
    "h": 264.5,
-   "t": 1794410065401
+   "t": 1794416107099
   },
   "N:mwc8x5kxapp4": {
    "new": true,
@@ -1088,11 +1115,11 @@
    "pw": 670,
    "ph": 841,
    "name": "Anatomy fantasy blue man.jpg",
-   "x": 624,
-   "y": 2375.0,
+   "x": 96,
+   "y": 2709.0,
    "w": 260,
    "h": 326.5,
-   "t": 1794410116385
+   "t": 1794416514391
   },
   "N:mwc8xervpy82": {
    "new": true,
@@ -1100,11 +1127,11 @@
    "pw": 416,
    "ph": 700,
    "name": "Anatomy fantasy Man climbing stairs.jpg",
-   "x": 360,
-   "y": 1059.0,
+   "x": 96,
+   "y": 934.5,
    "w": 260,
    "h": 437.5,
-   "t": 1794410065401
+   "t": 1794416480035
   },
   "N:mwc8xpscv20z": {
    "new": true,
@@ -1112,11 +1139,11 @@
    "pw": 841,
    "ph": 1012,
    "name": "Anatomy fantasy reflected nude.jpg",
-   "x": 360,
-   "y": 742.0,
+   "x": 624,
+   "y": 1633.0,
    "w": 260,
    "h": 313.0,
-   "t": 1794410079639
+   "t": 1794416494645
   },
   "N:mwc8xyi5bleu": {
    "new": true,
@@ -1124,11 +1151,11 @@
    "pw": 991,
    "ph": 1429,
    "name": "anatomy fantasy rock climber.jpg",
-   "x": 96,
-   "y": 1241.5,
+   "x": 360,
+   "y": 755.5,
    "w": 260,
    "h": 375.0,
-   "t": 1794410079639
+   "t": 1794416466717
   },
   "N:mwc8ycff2bvq": {
    "new": true,
@@ -1137,10 +1164,10 @@
    "ph": 791,
    "name": "Anatomy fantasy Runner thru rocks.jpg",
    "x": 96,
-   "y": 1620.5,
+   "y": 1688.0,
    "w": 260,
    "h": 374.0,
-   "t": 1794410079639
+   "t": 1794416488905
   },
   "N:mwc8yox4ka4a": {
    "new": true,
@@ -1149,114 +1176,106 @@
    "ph": 2087,
    "name": "Anatomy fantasy running thru Planes.jpg",
    "x": 360,
-   "y": 1779.0,
+   "y": 1841.5,
    "w": 260,
    "h": 470.0,
-   "t": 1794410079639
+   "t": 1794416495745
   },
   "N:mwc99qikm0fk": {
-   "x": 96,
-   "y": 88,
-   "w": 260,
-   "h": 308.0,
-   "z": 900,
    "new": true,
-   "name": "Anatomy fantasy Uplooking head.jpg",
+   "path": "images/PRE/PRE-24_anatomy-fantasy-uplooking-head.jpg",
    "pw": 499,
    "ph": 591,
-   "t": 1794410131134,
-   "path": "images/PRE/PRE-24_anatomy-fantasy-uplooking-head.jpg"
+   "name": "Anatomy fantasy Uplooking head.jpg",
+   "x": 96,
+   "y": 1376.0,
+   "w": 260,
+   "h": 308.0,
+   "t": 1794416486947
   },
   "N:mwc9aghivpnk": {
-   "x": 96,
-   "y": 2637.5,
-   "w": 260,
-   "h": 648.5,
-   "z": 900,
    "new": true,
-   "name": "Anatomy fantasy Woman \"Phone\" silhoette.jpg",
+   "path": "images/PRE/PRE-25_anatomy-fantasy-woman-phone-silhoette.jpg",
    "pw": 404,
    "ph": 1008,
-   "t": 1794410131134,
-   "path": "images/PRE/PRE-25_anatomy-fantasy-woman-phone-silhoette.jpg"
+   "name": "Anatomy fantasy Woman \"Phone\" silhoette.jpg",
+   "x": 96,
+   "y": 3039.5,
+   "w": 260,
+   "h": 648.5,
+   "t": 1794416517901
   },
   "N:mwc9avixzqbb": {
-   "x": 624,
-   "y": 2705.5,
-   "w": 260,
-   "h": 204.0,
-   "z": 900,
    "new": true,
-   "name": "Gesture Sketch Nude 1.png",
+   "path": "images/PRE/PRE-26_gesture-sketch-nude-1.png",
    "pw": 1550,
    "ph": 1216,
-   "t": 1794410131134,
-   "path": "images/PRE/PRE-26_gesture-sketch-nude-1.png"
+   "name": "Gesture Sketch Nude 1.png",
+   "x": 624,
+   "y": 2535.0,
+   "w": 260,
+   "h": 204.0,
+   "t": 1794416508421
   },
   "N:mwc9b4oyy10i": {
-   "x": 360,
-   "y": 2253.0,
-   "w": 260,
-   "h": 364.0,
-   "z": 900,
    "new": true,
-   "name": "Gesture Sketch Nude 2.jpg",
+   "path": "images/PRE/PRE-27_gesture-sketch-nude-2.jpg",
    "pw": 991,
    "ph": 1387,
-   "t": 1794410131134,
-   "path": "images/PRE/PRE-27_gesture-sketch-nude-2.jpg"
+   "name": "Gesture Sketch Nude 2.jpg",
+   "x": 360,
+   "y": 2315.5,
+   "w": 260,
+   "h": 364.0,
+   "t": 1794416498352
   },
   "N:mwc9bk8tm9is": {
-   "x": 624,
-   "y": 1170.5,
-   "w": 260,
-   "h": 201.0,
-   "z": 900,
    "new": true,
-   "name": "Gesture Sketch Nude 3.png",
+   "path": "images/PRE/PRE-28_gesture-sketch-nude-3.png",
    "pw": 811,
    "ph": 627,
-   "t": 1794410131134,
-   "path": "images/PRE/PRE-28_gesture-sketch-nude-3.png"
+   "name": "Gesture Sketch Nude 3.png",
+   "x": 624,
+   "y": 1428.0,
+   "w": 260,
+   "h": 201.0,
+   "t": 1794416493451
   },
   "N:mwc9bt1jqxed": {
-   "x": 360,
-   "y": 2621.0,
-   "w": 260,
-   "h": 480.5,
-   "z": 900,
    "new": true,
-   "name": "Gesture Sketch Nude 4.jpg",
+   "path": "images/PRE/PRE-29_gesture-sketch-nude-4.jpg",
    "pw": 433,
    "ph": 800,
-   "t": 1794410131134,
-   "path": "images/PRE/PRE-29_gesture-sketch-nude-4.jpg"
+   "name": "Gesture Sketch Nude 4.jpg",
+   "x": 360,
+   "y": 2683.5,
+   "w": 260,
+   "h": 480.5,
+   "t": 1794416512323
   },
   "N:mwc9c0ec6o8g": {
-   "x": 624,
-   "y": 2913.5,
-   "w": 260,
-   "h": 685.5,
-   "z": 900,
    "new": true,
-   "name": "Gesture sketch nude 5.jpg",
+   "path": "images/PRE/PRE-30_gesture-sketch-nude-5.jpg",
    "pw": 300,
    "ph": 791,
-   "t": 1794410131134,
-   "path": "images/PRE/PRE-30_gesture-sketch-nude-5.jpg"
+   "name": "Gesture sketch nude 5.jpg",
+   "x": 624,
+   "y": 2743.0,
+   "w": 260,
+   "h": 685.5,
+   "t": 1794416510309
   },
   "N:mwc9c7jmdb52": {
-   "x": 360,
-   "y": 3105.5,
-   "w": 260,
-   "h": 497.0,
-   "z": 900,
    "new": true,
-   "name": "Gesture Sketch Nude 6.jpg",
+   "path": "images/PRE/PRE-31_gesture-sketch-nude-6.jpg",
    "pw": 416,
    "ph": 795,
-   "t": 1794410131134,
-   "path": "images/PRE/PRE-31_gesture-sketch-nude-6.jpg"
+   "name": "Gesture Sketch Nude 6.jpg",
+   "x": 360,
+   "y": 3168.0,
+   "w": 260,
+   "h": 497.0,
+   "t": 1794416519421
   },
   "N:mwc9cfhpwugw": {
    "x": 102.5,
@@ -1300,30 +1319,29 @@
    "t": 1794410599342
   },
   "N:mwc9qzpihfxq": {
-   "x": 96,
-   "y": 72,
-   "w": 205,
-   "h": 211,
-   "z": 900,
    "new": true,
-   "name": "Alien Architectture 1.png",
+   "path": "images/POST/POST-01_alien-architectture-1.png",
    "pw": 383,
    "ph": 394,
-   "t": 1794411034760,
-   "path": "images/POST/POST-01_alien-architectture-1.png"
+   "name": "Alien Architectture 1.png",
+   "x": 436,
+   "y": 1255,
+   "w": 456,
+   "h": 464,
+   "fit": "cover",
+   "t": 1794415340710
   },
   "N:mwc9r5ohjfem": {
-   "x": 364,
-   "y": 918,
-   "w": 221,
-   "h": 198,
-   "z": 900,
    "new": true,
-   "name": "Alien Architecture 2.png",
+   "path": "images/POST/POST-02_alien-architecture-2.png",
    "pw": 247,
    "ph": 221,
-   "t": 1794411127403,
-   "path": "images/POST/POST-02_alien-architecture-2.png"
+   "name": "Alien Architecture 2.png",
+   "x": 436,
+   "y": 2159.5,
+   "w": 250,
+   "h": 224.5,
+   "t": 1794415647033
   },
   "N:mwc9rd7ambzv": {
    "x": 670,
@@ -1339,211 +1357,199 @@
    "t": 1794410963318
   },
   "N:mwc9rkjiqx78": {
-   "x": 364,
-   "y": 1120,
-   "w": 202,
-   "h": 207,
-   "z": 900,
    "new": true,
-   "name": "Alien Head in template.jpg",
+   "path": "images/POST/POST-03_alien-head-in-template.jpg",
    "pw": 633,
    "ph": 650,
-   "t": 1794411077331,
-   "path": "images/POST/POST-03_alien-head-in-template.jpg"
+   "name": "Alien Head in template.jpg",
+   "x": 95.5,
+   "y": 339,
+   "w": 209.5,
+   "h": 214.5,
+   "t": 1794415550411
   },
   "N:mwc9yin2stog": {
-   "x": 761,
-   "y": 1331,
-   "w": 123,
-   "h": 204,
-   "z": 900,
    "new": true,
-   "name": "Android Head.png",
+   "path": "images/POST/POST-04_android-head.png",
    "pw": 117,
    "ph": 191,
-   "t": 1794411264412,
-   "path": "images/POST/POST-04_android-head.png"
+   "name": "Android Head.png",
+   "x": 102,
+   "y": 561,
+   "w": 199,
+   "h": 330,
+   "t": 1794415579923
   },
   "N:mwc9yp5s31wl": {
-   "x": 96,
-   "y": 287,
-   "w": 184,
-   "h": 211,
-   "z": 900,
    "new": true,
-   "name": "Antenna Head.jpg",
+   "path": "images/POST/POST-05_antenna-head.jpg",
    "pw": 991,
    "ph": 1137,
-   "t": 1794411070245,
-   "path": "images/POST/POST-05_antenna-head.jpg"
+   "name": "Antenna Head.jpg",
+   "x": 95.5,
+   "y": 89,
+   "w": 211.5,
+   "h": 242,
+   "t": 1794415536494
   },
   "N:mwc9yzq0gxrg": {
-   "x": 431,
-   "y": 1539,
-   "w": 182,
-   "h": 201,
-   "z": 900,
    "new": true,
-   "name": "CHI ball in MY hands.png",
+   "path": "images/POST/POST-06_chi-ball-in-my-hands.png",
    "pw": 124,
    "ph": 137,
-   "t": 1794411062815,
-   "path": "images/POST/POST-06_chi-ball-in-my-hands.png"
+   "name": "CHI ball in MY hands.png",
+   "x": 373.5,
+   "y": 524.5,
+   "w": 335,
+   "h": 370,
+   "hide": true,
+   "t": 1794414324918
   },
   "N:mwc9z4dadfh6": {
-   "x": 96,
-   "y": 1539,
-   "w": 174,
-   "h": 201,
-   "z": 900,
    "new": true,
-   "name": "Craft Landed 3 gravity Spheres.png",
+   "path": "images/POST/POST-07_craft-landed-3-gravity-spheres.png",
    "pw": 329,
    "ph": 379,
-   "t": 1794411125351,
-   "path": "images/POST/POST-07_craft-landed-3-gravity-spheres.png"
+   "name": "Craft Landed 3 gravity Spheres.png",
+   "x": 95.5,
+   "y": 1503.5,
+   "w": 334.5,
+   "h": 387,
+   "t": 1794415603108
   },
   "N:mwc9zaq8ml7b": {
-   "x": 787,
-   "y": 287,
-   "w": 97,
-   "h": 211,
-   "z": 900,
    "new": true,
-   "name": "Fairy fantasy .jpg",
+   "path": "images/POST/POST-08_fairy-fantasy.jpg",
    "pw": 575,
    "ph": 1254,
-   "t": 1794411006092,
-   "path": "images/POST/POST-08_fairy-fantasy.jpg"
+   "name": "Fairy fantasy .jpg",
+   "x": 101.5,
+   "y": 903.5,
+   "w": 199.5,
+   "h": 356.5,
+   "fit": "cover",
+   "z": 951,
+   "t": 1794415586849
   },
   "N:mwc9zg45f7rs": {
-   "x": 305,
-   "y": 72,
-   "w": 226,
-   "h": 211,
-   "z": 900,
    "new": true,
-   "name": "Geodesics in the landsacaps.jpg",
+   "path": "images/POST/POST-09_geodesics-in-the-landsacaps.jpg",
    "pw": 1345,
    "ph": 1258,
-   "t": 1794411118827,
-   "path": "images/POST/POST-09_geodesics-in-the-landsacaps.jpg"
+   "name": "Geodesics in the landsacaps.jpg",
+   "x": 436,
+   "y": 1730,
+   "w": 450.5,
+   "h": 420,
+   "t": 1794415643677
   },
   "N:mwc9zkbjfj5t": {
-   "x": 720,
-   "y": 711,
-   "w": 164,
-   "h": 203,
-   "z": 900,
    "new": true,
-   "name": "Healer 1.jpg",
+   "path": "images/POST/POST-10_healer-1.jpg",
    "pw": 916,
    "ph": 1129,
-   "t": 1794411082153,
-   "path": "images/POST/POST-10_healer-1.jpg"
+   "name": "Healer 1.jpg",
+   "x": 309,
+   "y": 374.5,
+   "w": 170,
+   "h": 210.5,
+   "t": 1794415552139
   },
   "N:mwca0g5a34rd": {
-   "x": 274,
-   "y": 1539,
-   "w": 153,
-   "h": 201,
-   "z": 900,
    "new": true,
-   "name": "Alien Head w Transmission.png",
+   "path": "images/POST/POST-11_alien-head-w-transmission.png",
    "pw": 156,
    "ph": 205,
-   "t": 1794411271162,
-   "path": "images/POST/POST-11_alien-head-w-transmission.png"
+   "name": "Alien Head w Transmission.png",
+   "x": 690.5,
+   "y": 374.5,
+   "w": 198.5,
+   "h": 261,
+   "t": 1794415563367
   },
   "N:mwca17e2qswd": {
-   "x": 96,
-   "y": 1120,
-   "w": 186,
-   "h": 207,
-   "z": 900,
    "new": true,
-   "name": "Healer 2.png",
+   "path": "images/POST/POST-12_healer-2.png",
    "pw": 879,
    "ph": 979,
-   "t": 1794411095725,
-   "path": "images/POST/POST-12_healer-2.png"
+   "name": "Healer 2.png",
+   "x": 490.5,
+   "y": 374.5,
+   "w": 189,
+   "h": 210.5,
+   "t": 1794415554693
   },
   "N:mwca1ibwkcby": {
-   "x": 286,
-   "y": 1120,
-   "w": 74,
-   "h": 207,
-   "z": 900,
    "new": true,
-   "name": "Insect lecturing on Fibonacci series.png",
+   "path": "images/POST/POST-13_insect-lecturing-on-fibonacci-series.png",
    "pw": 105,
    "ph": 292,
-   "t": 1794411239927,
-   "path": "images/POST/POST-13_insect-lecturing-on-fibonacci-series.png"
+   "name": "Insect lecturing on Fibonacci series.png",
+   "x": 693.5,
+   "y": 642,
+   "w": 195.5,
+   "h": 547,
+   "t": 1794415561167
   },
   "N:mwca1vmjpblg": {
-   "x": 96,
-   "y": 711,
-   "w": 308,
-   "h": 203,
-   "z": 900,
    "new": true,
-   "name": "Levitating car in jungle.png",
+   "path": "images/POST/POST-14_levitating-car-in-jungle.png",
    "pw": 264,
    "ph": 174,
-   "t": 1794411129003,
-   "path": "images/POST/POST-14_levitating-car-in-jungle.png"
+   "name": "Levitating car in jungle.png",
+   "x": 91.5,
+   "y": 1272,
+   "w": 339.5,
+   "h": 223.5,
+   "t": 1794415597825
   },
   "N:mwca23tdcc1m": {
-   "x": 589,
-   "y": 918,
-   "w": 295,
-   "h": 198,
-   "z": 900,
    "new": true,
-   "name": "Light is MAtrix Grid sketch:rendering.jpg",
+   "path": "images/POST/POST-15_light-is-matrix-grid-sketch-rendering.jpg",
    "pw": 1291,
    "ph": 870,
-   "t": 1794411136980,
-   "path": "images/POST/POST-15_light-is-matrix-grid-sketch-rendering.jpg"
+   "name": "Light is MAtrix Grid sketch:rendering.jpg",
+   "x": 105.5,
+   "y": 2580,
+   "w": 594,
+   "h": 399,
+   "t": 1794415653583
   },
   "N:mwca28ucp2yy": {
-   "x": 96,
-   "y": 1331,
-   "w": 661,
-   "h": 204,
-   "z": 900,
    "new": true,
-   "name": "Mind Field 1.png",
+   "path": "images/POST/POST-16_mind-field-1.png",
    "pw": 447,
    "ph": 138,
-   "t": 1794411146257,
-   "path": "images/POST/POST-16_mind-field-1.png"
+   "name": "Mind Field 1.png",
+   "x": 393.5,
+   "y": 3175.5,
+   "w": 498.5,
+   "h": 154,
+   "t": 1794415369810
   },
   "N:mwca2cie2nbf": {
-   "x": 535,
-   "y": 72,
-   "w": 349,
-   "h": 211,
    "new": true,
-   "name": "Mind Field 3.jpg",
+   "path": "images/POST/POST-17_mind-field-3.jpg",
    "pw": 1237,
    "ph": 745,
-   "t": 1794411144667,
-   "path": "images/POST/POST-17_mind-field-3.jpg"
+   "name": "Mind Field 3.jpg",
+   "x": 452,
+   "y": 3336,
+   "w": 349,
+   "h": 211,
+   "t": 1794415401384
   },
   "N:mwca2fwd9zvl": {
-   "x": 358,
-   "y": 502,
-   "w": 360,
-   "h": 205,
-   "z": 900,
    "new": true,
-   "name": "Mind Field 4.png",
+   "path": "images/POST/POST-18_mind-field-4.png",
    "pw": 295,
    "ph": 168,
-   "t": 1794411150353,
-   "path": "images/POST/POST-18_mind-field-4.png"
+   "name": "Mind Field 4.png",
+   "x": 101.5,
+   "y": 3166,
+   "w": 276,
+   "h": 157,
+   "t": 1794415371815
   },
   "N:mwca2jcgzygu": {
    "x": 407,
@@ -1559,134 +1565,138 @@
    "t": 1794411170309
   },
   "N:mwca2v42mjhp": {
-   "x": 284,
-   "y": 287,
-   "w": 342,
-   "h": 211,
-   "z": 900,
    "new": true,
-   "name": "Mind Fields.png",
+   "path": "images/POST/POST-19_mind-fields.png",
    "pw": 580,
    "ph": 358,
-   "t": 1794411196204,
-   "path": "images/POST/POST-19_mind-fields.png"
+   "name": "Mind Fields.png",
+   "x": 105.5,
+   "y": 3336,
+   "w": 342.5,
+   "h": 211,
+   "t": 1794415399426
   },
   "N:mwca31thvi66": {
-   "x": 660,
-   "y": 711,
-   "w": 56,
-   "h": 203,
-   "z": 900,
    "new": true,
-   "name": "Monk hands clasped.jpg",
+   "path": "images/POST/POST-20_monk-hands-clasped.jpg",
    "pw": 77,
    "ph": 277,
-   "t": 1794411179001,
-   "path": "images/POST/POST-20_monk-hands-clasped.jpg"
+   "name": "Monk hands clasped.jpg",
+   "x": 452,
+   "y": 977.5,
+   "w": 66,
+   "h": 239,
+   "t": 1794415568087
   },
   "N:mwca38ie433f": {
-   "x": 96,
-   "y": 918,
-   "w": 264,
-   "h": 198,
-   "z": 900,
    "new": true,
-   "name": "Samorran Assistant.jpg",
+   "path": "images/POST/POST-21_samorran-assistant.jpg",
    "pw": 3000,
    "ph": 2250,
-   "t": 1794411188211,
-   "path": "images/POST/POST-21_samorran-assistant.jpg"
+   "name": "Samorran Assistant.jpg",
+   "x": 309,
+   "y": 89,
+   "w": 370.5,
+   "h": 278,
+   "t": 1794415532413
   },
   "N:mwca3cwdqmve": {
-   "x": 546,
-   "y": 711,
-   "w": 110,
-   "h": 203,
-   "z": 900,
    "new": true,
-   "name": "Shell Head man.jpg",
+   "path": "images/POST/POST-22_shell-head-man.jpg",
    "pw": 454,
    "ph": 841,
-   "t": 1794411199667,
-   "path": "images/POST/POST-22_shell-head-man.jpg"
+   "name": "Shell Head man.jpg",
+   "x": 547,
+   "y": 949.5,
+   "w": 144.5,
+   "h": 267,
+   "t": 1794415517077
   },
   "N:mwca3lcfb9iy": {
-   "x": 617,
-   "y": 1539,
-   "w": 267,
-   "h": 201,
-   "z": 900,
    "new": true,
-   "name": "Space Needle Station.png",
+   "path": "images/POST/POST-23_space-needle-station.png",
    "pw": 309,
    "ph": 234,
-   "t": 1794411204616,
-   "path": "images/POST/POST-23_space-needle-station.png"
+   "name": "Space Needle Station.png",
+   "x": 106.5,
+   "y": 2116.5,
+   "w": 304,
+   "h": 201,
+   "fit": "cover",
+   "t": 1794415608489
   },
   "N:mwca3oxx867h": {
-   "x": 722,
-   "y": 502,
-   "w": 162,
-   "h": 205,
-   "z": 900,
    "new": true,
-   "name": "Space Strutcure.png",
+   "path": "images/POST/POST-24_space-strutcure.png",
    "pw": 133,
    "ph": 170,
-   "t": 1794411212872,
-   "path": "images/POST/POST-24_space-strutcure.png"
+   "name": "Space Strutcure.png",
+   "x": 710,
+   "y": 2580,
+   "w": 179,
+   "h": 226.5,
+   "t": 1794415387542
   },
   "N:mwca3xrkcx7t": {
-   "x": 570,
-   "y": 1120,
-   "w": 314,
-   "h": 207,
-   "z": 900,
    "new": true,
-   "name": "Star Hopper.png",
+   "path": "images/POST/POST-25_star-hopper.png",
    "pw": 216,
    "ph": 142,
-   "t": 1794411287486,
-   "path": "images/POST/POST-25_star-hopper.png"
+   "name": "Star Hopper.png",
+   "x": 102,
+   "y": 1900,
+   "w": 308.5,
+   "h": 203.5,
+   "t": 1794415613600
   },
   "N:mwca41l1gylg": {
-   "x": 96,
-   "y": 502,
-   "w": 258,
-   "h": 205,
-   "z": 900,
    "new": true,
-   "name": "Subatomic Lattice.jpg",
+   "path": "images/POST/POST-26_subatomic-lattice.jpg",
    "pw": 262,
    "ph": 208,
-   "t": 1794411226764,
-   "path": "images/POST/POST-26_subatomic-lattice.jpg"
+   "name": "Subatomic Lattice.jpg",
+   "x": 108.5,
+   "y": 2997.5,
+   "w": 189.5,
+   "h": 151,
+   "t": 1794415373874
   },
   "N:mwca46glgsbr": {
-   "x": 630,
-   "y": 287,
-   "w": 153,
-   "h": 211,
-   "z": 900,
    "new": true,
-   "name": "Vibrate his filament CONTACT.jpg",
+   "path": "images/POST/POST-27_vibrate-his-filament-contact.jpg",
    "pw": 280,
    "ph": 387,
-   "t": 1794411257102,
-   "path": "images/POST/POST-27_vibrate-his-filament-contact.jpg"
+   "name": "Vibrate his filament CONTACT.jpg",
+   "x": 688.5,
+   "y": 90.5,
+   "w": 200.5,
+   "h": 276.5,
+   "t": 1794415544747
   },
   "N:mwca57dyr0xt": {
-   "x": 408,
-   "y": 711,
-   "w": 134,
-   "h": 203,
-   "z": 900,
    "new": true,
-   "name": "WArped Space-time metric.png",
+   "path": "images/POST/POST-28_warped-space-time-metric.png",
    "pw": 883,
    "ph": 1341,
-   "t": 1794411288640,
-   "path": "images/POST/POST-28_warped-space-time-metric.png"
+   "name": "WArped Space-time metric.png",
+   "x": 706.5,
+   "y": 2816.5,
+   "w": 186,
+   "h": 282,
+   "t": 1794415389704
+  },
+  "N:mwcbyk2k6j73": {
+   "x": 311,
+   "y": 591.5,
+   "w": 367,
+   "h": 358,
+   "z": 900,
+   "new": true,
+   "name": "Chi Ball In Hands.jpg",
+   "pw": 1090,
+   "ph": 1066,
+   "t": 1794415565517,
+   "path": "images/POST/POST-29_chi-ball-in-hands.jpg"
   }
  }
 }

@@ -186,3 +186,5 @@ images/POST/POST-25_star-hopper.png
 images/POST/POST-26_subatomic-lattice.jpg
 images/POST/POST-27_vibrate-his-filament-contact.jpg
 images/POST/POST-28_warped-space-time-metric.png
+images/TILT/TILT-01_tw-cylindar-analysis.jpg
+images/POST/POST-29_chi-ball-in-hands.jpg
