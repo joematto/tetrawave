@@ -531,7 +531,7 @@ NO_FADE = {'TETRA', 'P2'}
 NEW_PAGES = {'GOLD'}
 
 # Extra space (px) between a page's lowest item and the Previous / Next blocks, on top of the usual 40px
-CANVAS_PAD = {'MODEL': 100}
+CANVAS_PAD = {'MODEL': 100, 'PRE': 1000}
 FADE_OUT = {'COIL': {'NT:mw8fl61pbibu': '1500,7200'}}   # the line 'Words from No-where !!??': stays 1.5 s, fades 7.2 s
 # Sub-heading standard (set 5 Nov 2026 from Part II, Section 1): the top of a sub-heading's capitals sits 37px (3/8 inch)
 # below the baseline of the page title. Each value is how far that page's content moves up (negative = down) to meet it.
