@@ -20,7 +20,7 @@ for p in PLAN:
 OUTLINE = [
     ('Front', [('HOME', 'Home', 'index.html'), ('ABOUT', 'About Me', 'about-me.html'), ('CONTACT', 'Contact', 'contact.html')]),
     ('Part I · The Awakening', [('P1', 'Kundalini Crisis', 'part-1-kundalini-crisis.html'), ('PRE', 'Pre-Kundalini Drawings/Sketches', 'pre-kundalini-artwork.html'),
-        ('POST', 'Post-Kundalini Artwork', 'post-kundalini-artwork.html'), ('COIL', 'StarCoil-1st Download Transmission', 'starcoil-1st-download-message.html'),
+        ('POST', 'Post-Kundalini Drawings/Sketches', 'post-kundalini-artwork.html'), ('COIL', 'StarCoil-1st Download Transmission', 'starcoil-1st-download-message.html'),
         ('SKETCH', '2D Exploratory & Inception Sketches', '2d-exploratory-inception-sketches.html')]),
     ('Part II · The Geometry', [('P2', 'Geometry Unified across Dimensions', 'part-2-the-geometry.html'),
         ('TETRA', 'Tetrahedron Fascination', 'tetrahedron-fascination.html'),
