@@ -160,7 +160,7 @@ if (homeVid) {
   intro.then(() => { const p = homeVid.play(); if (p && p.catch) p.catch(() => {}); });
 }
 
-// Home: the soundtrack ("White Winds") starts one second after the Spinor starts turning, 1 s into the track, fades up from very soft to 50% over 3 s, and
+// Home: the soundtrack ("White Winds") starts as the Spinor starts turning, 1 s into the track, fades up from very soft to 50% over 3 s, and
 // from 5.5 s to 8.5 s of the track fades gently from 50% down to 20% (settling just before the drums at 9.1 s), and plays on at 20% (drums and all) to the end of the
 // track, or until another page is opened. Browsers only allow sound once the visitor has interacted with the page,
 // so if starting at once is refused the opening screen asks for a click. Using the Sound button cancels the automatic
@@ -209,8 +209,8 @@ if (homeVid && snd) {
     ['pointerdown', 'keydown', 'touchstart'].forEach((t) => removeEventListener(t, firstTouch, true));
     if (snd.paused) begin();
   };
-  // the music starts one second after the Spinor starts to turn
-  const AFTER_SPINOR = 1000;
+  // the music starts as the Spinor starts to turn (was 1 s after)
+  const AFTER_SPINOR = 0;
   let started = false;
   const startMusic = () => {
     if (started) return; started = true;
