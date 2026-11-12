@@ -161,7 +161,7 @@ if (homeVid) {
 }
 
 // Home: the soundtrack ("White Winds") starts as the Spinor starts turning, 1 s into the track, fades up from very soft to 50% over 3 s, and
-// from 5.5 s to 8.5 s of the track fades gently from 50% down to 20% (settling just before the drums at 9.1 s), then ramps down to silence and stops as the drums would start (9.1 s): nothing after that plays; this happens once per visit to the
+// from 5.5 s to 8.5 s of the track fades gently from 50% down to 20% (settling just before the drums at 9.1 s), then fades almost out just before the drums (9.08 s), and the rest of the track (drums, watery sounds) plays on at 10% to the end of the
 // track, or until another page is opened. Browsers only allow sound once the visitor has interacted with the page,
 // so if starting at once is refused the opening screen asks for a click. Using the Sound button cancels the automatic
 // volume changes (full volume, repeating, as before).
@@ -172,7 +172,7 @@ function galaxyStopped() {
   document.dispatchEvent(new Event('tw:galaxy-stopped'));
 }
 if (homeVid && snd) {
-  const STOP = 9.1;   // the track ends here, right at the drums (9.1 s): from FADE_END it ramps from 20% down to silence, then stops
+  const DIP_AT = 9.08, DIP = 0.01, RISE = 0.3, LOW = 0.1;   // the wind fades almost out (1%) just before the drums, then the rest of the track (drums, watery sounds) plays on at 10%
   const SKIP = 1, FADE_IN = 3.0, PEAK = 0.5, IN_FROM = 0.0158, FADE_END = 8.5, FADE = 3.0, BG = 0.2;   // BG: the volume it settles at, reached just before the drums (9.1 s)   // seconds of the track: plays 1–10 s, fading over the last 3 s (the drum roll starts at 9.1 s,
   // when the fade is at about 9% volume)
   let auto = true;   // false once the visitor uses the Sound button themselves
@@ -186,11 +186,14 @@ if (homeVid && snd) {
     if (!auto) { snd.volume = 1; return; }
     if (snd.paused) return;
     const t = snd.currentTime;
-    if (t >= FADE_END) {   // the last stretch: 20% down to silence by STOP, eased at both ends, then the music stops (nothing after it plays)
-      // falls evenly in loudness (decibels), slow at first, to about -54 dB (inaudible) at STOP, so there is no last little drop to silence
-      const c = Math.max(0, Math.min(1, (t - FADE_END) / (STOP - FADE_END)));
-      try { snd.volume = c >= 1 ? 0 : BG * Math.pow(10, -54 * Math.pow(c, 1.6) / 20); } catch (e) {}
-      if (c >= 1) { done = true; snd.pause(); return; }
+    if (t >= FADE_END) {   // the last stretch: the wind fades almost out, then the drums and the rest play on quietly
+      // the wind falls evenly in loudness (decibels), slow at first, to almost nothing (DIP) by DIP_AT;
+      // then, as the drums come in, the volume rises smoothly over RISE to LOW and stays there to the end of the track
+      let v;
+      if (t < DIP_AT) { const c = (t - FADE_END) / (DIP_AT - FADE_END); v = BG * Math.pow(DIP / BG, Math.pow(c, 1.6)); }
+      else { const c = Math.min(1, (t - DIP_AT) / RISE), sm = c * c * (3 - 2 * c); v = DIP * Math.pow(LOW / DIP, sm); }
+      try { snd.volume = v; } catch (e) {}
+      if (t >= DIP_AT + RISE) return;   // settled at LOW: plays on to the end of the track
       requestAnimationFrame(fade);
       return;
     }
