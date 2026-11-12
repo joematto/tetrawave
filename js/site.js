@@ -161,7 +161,7 @@ if (homeVid) {
 }
 
 // Home: the soundtrack ("White Winds") starts one second after the Spinor starts turning, 1 s into the track, fades up from very soft to 50% over 3 s, and
-// from 6.0 s to 9.0 s of the track eases down from 50% to 40% volume, then at the quiet dip just before the drums (9.0 s) drops to 20% and plays on (drums and all) to the end of the
+// from 6.0 s to 9.0 s of the track eases down from 50% to 40% volume, then at the quiet dip just before the drums (9.0 s) drops to 10% and plays on (drums and all) to the end of the
 // track, or until another page is opened. Browsers only allow sound once the visitor has interacted with the page,
 // so if starting at once is refused the opening screen asks for a click. Using the Sound button cancels the automatic
 // volume changes (full volume, repeating, as before).
@@ -172,7 +172,7 @@ function galaxyStopped() {
   document.dispatchEvent(new Event('tw:galaxy-stopped'));
 }
 if (homeVid && snd) {
-  const CUT_AT = 9.0, CUT_FOR = 0.08, CUT = 0.5;   // at the quiet dip just before the drum roll (9.0 s) the volume halves again (40% -> 20%) for the rest of the track
+  const CUT_AT = 9.0, CUT_FOR = 0.08, CUT = 0.25;   // at the quiet dip just before the drum roll (9.0 s) the volume drops to a quarter (40% -> 10%) for the rest of the track
   const SKIP = 1, FADE_IN = 3.0, PEAK = 0.5, IN_FROM = 0.0158, FADE_END = 9.0, FADE = 3.0, BG = 0.4;   // BG: the volume it settles at, reached just before the drums (9.1 s)   // seconds of the track: plays 1–10 s, fading over the last 3 s (the drum roll starts at 9.1 s,
   // when the fade is at about 9% volume)
   let auto = true;   // false once the visitor uses the Sound button themselves
