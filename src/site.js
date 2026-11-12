@@ -160,7 +160,7 @@ if (homeVid) {
   intro.then(() => { const p = homeVid.play(); if (p && p.catch) p.catch(() => {}); });
 }
 
-// Home: the soundtrack ("White Winds") starts one second after the Spinor starts turning, 1 s into the track, fades in over 1.5 s, and
+// Home: the soundtrack ("White Winds") starts one second after the Spinor starts turning, 1 s into the track, fades up from very soft over 2 s, and
 // from 6.0 s to 9.0 s of the track eases down to 40% volume, then at the quiet dip just before the drums (9.0 s) drops to 20% and plays on (drums and all) to the end of the
 // track, or until another page is opened. Browsers only allow sound once the visitor has interacted with the page,
 // so if starting at once is refused the opening screen asks for a click. Using the Sound button cancels the automatic
@@ -173,7 +173,7 @@ function galaxyStopped() {
 }
 if (homeVid && snd) {
   const CUT_AT = 9.0, CUT_FOR = 0.08, CUT = 0.5;   // at the quiet dip just before the drum roll (9.0 s) the volume halves again (40% -> 20%) for the rest of the track
-  const SKIP = 1, FADE_IN = 1.5, FADE_END = 9.0, FADE = 3.0, BG = 0.4;   // BG: the volume it settles at, reached just before the drums (9.1 s)   // seconds of the track: plays 1–10 s, fading over the last 3 s (the drum roll starts at 9.1 s,
+  const SKIP = 1, FADE_IN = 2.0, IN_FROM_DB = -30, FADE_END = 9.0, FADE = 3.0, BG = 0.4;   // BG: the volume it settles at, reached just before the drums (9.1 s)   // seconds of the track: plays 1–10 s, fading over the last 3 s (the drum roll starts at 9.1 s,
   // when the fade is at about 9% volume)
   let auto = true;   // false once the visitor uses the Sound button themselves
   if (sbtn) sbtn.addEventListener('click', () => { auto = false; snd.volume = 1; snd.loop = true; }, true);
@@ -193,10 +193,12 @@ if (homeVid && snd) {
       return;
     }
     const k = Math.max(0, Math.min(1, (FADE_END - t) / FADE));   // 1 before the fade-down, 0 at its end
-    const f = Math.max(0, Math.min(1, (t - SKIP) / FADE_IN));     // fade-in: 0 at the start, 1 after FADE_IN
+    const f = Math.max(0, Math.min(1, (t - SKIP) / FADE_IN));     // fade-in: 0 at the start, 1 after FADE_IN (2 s)
+    // fade-in from very soft (-30 dB, about 3%) up to full, rising evenly in loudness, eased at both ends
+    const fs = f * f * (3 - 2 * f), vin = f >= 1 ? 1 : Math.pow(10, IN_FROM_DB * (1 - fs) / 20);
     // fade-down to half volume: smooth at both ends, even in loudness through the middle
     const p = 1 - k, sm = p * p * (3 - 2 * p), out = Math.pow(10, 20 * Math.log10(BG) * sm / 20);
-    try { snd.volume = Math.min(f * f, out); } catch (e) { /* volume fixed on this device */ }
+    try { snd.volume = Math.min(vin, out); } catch (e) { /* volume fixed on this device */ }
     requestAnimationFrame(fade);
   };
   snd.addEventListener('play', () => { if (auto) requestAnimationFrame(fade); });
