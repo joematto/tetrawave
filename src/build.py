@@ -1,5 +1,6 @@
 """Build the TetraWave prototype site from content.json (extracted from the live Wix pages)."""
-import json, os, re, html
+import json, os, re, html, time
+VER = time.strftime('%Y%m%d%H%M%S')   # stamped on css/js links so browsers always load the newest copy
 
 V = json.load(open('content.json'))
 PLAN = json.load(open('plan.json'))
@@ -194,7 +195,7 @@ def toc(current):
 DEV_LINKS = ('<span class="tl-dev"><button type="button" class="tb-btn" aria-expanded="false" title="ToolBox (Ctrl+Option+T turns it on and off)">ToolBox ▾</button><span class="tb-menu"><a href="#edit" data-edit-toggle title="Edit: drag pictures and text boxes, resize pictures by their handles, then Save">Edit</a><a href="#upload" data-upload-toggle title="Upload: a tray to drop pictures and PDFs onto, then drag them onto the page">Upload</a><a href="#guide" data-guide-toggle title="Vertical alignment guide">Guide</a><a href="#symmetry" data-sym-toggle title="Symmetry guides: a centre line and two lines equally either side">Symmetry</a><a href="#margins" data-margins-toggle title="Margins: fixed lines on the page, centre at 490 (the page centre) and dotted margins 400 either side (span 800)">Margins</a><a href="#grid" data-grid-toggle title="Sorting grid: every picture on the site, by page and picture number">Grid</a><a href="#type" data-typepal-toggle title="Fonts: floating palette of every lettering style">Fonts</a><a href="#ruler" data-ruler-toggle>Ruler</a>'
              '<a href="#" data-tools-off class="tb-off" title="Hide the ToolBox in this browser (Ctrl+Option+T brings it back)">Turn ToolBox off</a></span></span>')
 # Before the page draws: show the ToolBox only if it was turned on in this browser (see js/toolbox.js)
-TOOLS_FLAG = "<script>try{if(localStorage.getItem('tw-tools')==='on')document.documentElement.classList.add('tools-on')}catch(e){}</script>"
+TOOLS_FLAG = "<script>document.documentElement.classList.add('js');try{if(localStorage.getItem('tw-tools')==='on')document.documentElement.classList.add('tools-on')}catch(e){}</script>"   # 'js' set before anything draws, so timed fade-ins never flash
 
 def address(key):
     """Part / Section label for a page, e.g. 'Part II · Section 5'."""
@@ -220,7 +221,7 @@ def shell(key, title, body, home=False, bgvideo='video/background.mp4', bgposter
 <!-- Page key: {key}  ·  this page's images live in images/{key}/  -->
 <title>{E(title)} · TetraWave</title>
 {FONTS}
-<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/site.css?v={VER}">
 {TOOLS_FLAG}
 </head>
 <body class="{'home' if home else 'inner'}" data-key="{key}" data-edits-saved="{EDITS_SAVED}"{' data-image-numbers' if IMAGE_NUMBERS == 'ALL' or key in IMAGE_NUMBERS else ''}>
@@ -258,7 +259,7 @@ def shell(key, title, body, home=False, bgvideo='video/background.mp4', bgposter
             (f'<a class="next" href="{FILES[nxt]}" title="Next: {E(TITLES[nxt])}">{E(TITLES[nxt])}<span class="arw">›</span></a>' if nxt else '') + '</nav>'
         header += topnav
     foot = '' if home else f'<footer class="foot"><p>Joseph Matto Architect AIA · TetraWave</p><p class="hint">Tip: add <code>#files</code> to this page’s address to see every image’s file name.</p></footer>'
-    return head + header + toc(key) + f'\n<main class="page">\n{body}\n</main>\n{nav}\n{foot}\n<script src="js/toolbox.js" defer></script>\n<script src="js/site.js" defer></script>\n<script src="js/ruler.js" defer></script>\n<script src="js/typepal.js" defer></script>\n<script src="js/guide.js" defer></script>\n<script src="js/symmetry.js" defer></script>\n<script src="js/margins.js" defer></script>\n<script src="js/sortgrid.js" defer></script>\n<script src="js/edit.js" defer></script>\n</body>\n</html>\n'
+    return head + header + toc(key) + f'\n<main class="page">\n{body}\n</main>\n{nav}\n{foot}\n<script src="js/toolbox.js?v={VER}" defer></script>\n<script src="js/site.js?v={VER}" defer></script>\n<script src="js/ruler.js?v={VER}" defer></script>\n<script src="js/typepal.js?v={VER}" defer></script>\n<script src="js/guide.js?v={VER}" defer></script>\n<script src="js/symmetry.js?v={VER}" defer></script>\n<script src="js/margins.js?v={VER}" defer></script>\n<script src="js/sortgrid.js?v={VER}" defer></script>\n<script src="js/edit.js?v={VER}" defer></script>\n</body>\n</html>\n'
 
 # ---- Pages --------------------------------------------------------------
 os.makedirs(OUT, exist_ok=True)
