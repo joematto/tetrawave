@@ -161,8 +161,8 @@ if (homeVid) {
 }
 
 // Home: the soundtrack ("White Winds") starts as the Spinor starts turning, 1 s into the track, fades up from very soft to 50% over 3 s,
-// holds, then just before the drums (8.55 s) cross-fades straight into the water lapping against a boat (28 s of the track, so the
-// drums are left out), which plays to the end of its section and fades gently away (46-48.5 s). Browsers only allow sound once the visitor has
+// holds, and fades down over the last 3 s before the drums (6.1-9.1 s); the drums are left out and the quieter sounds after them
+// (the water lapping against a boat, from 28 s of the track) start at once, fade up over 3 s and play on to the end of the track. Browsers only allow sound once the visitor has
 // interacted with the page, so if starting at once is refused the opening screen asks for a click. Using the Sound button cancels
 // the automatic volume changes (full volume, repeating, as before).
 let galaxyHasStopped = false;
@@ -173,15 +173,17 @@ function galaxyStopped() {
 }
 if (homeVid && snd) {
   const SKIP = 1, FADE_IN = 3.0, PEAK = 0.5, IN_FROM = 0.0158;   // fade-in: from about 1.6% up to 50% over 3 s
-  // the drums (9.1-27 s of the track) are left out: just before them the wind cross-fades straight into the water lapping
-  // against a boat (from 28 s), which plays to the end of its section and then fades gently away before the next part (49 s)
-  const XF_AT = 8.55, XF = 0.5, WATER_AT = 28.0, W_OUT_AT = 46.0, W_END = 48.5;
+  // The wind (1-9.1 s of the track) fades up over 3 s and down over 3 s, symmetrically (PEAK in between); at its end the
+  // drums (9.1-27 s) are left out: the quieter sounds that follow them (the water lapping against a boat, from 28 s) start
+  // straight away, fading up over 3 s the same way, and play on to the end of the track.
+  const WIND_END = 9.08, FADE_OUT = 3.0, WATER_AT = 28.0;
   let water = null, crossed = false;   // a second copy of the track, started at the water
   const loadWater = () => {
     if (water) return;
     water = new Audio(); window.twWater = water; water.preload = 'auto'; water.src = snd.currentSrc || (snd.querySelector('source') || {}).src || '';
     water.addEventListener('loadedmetadata', () => { try { water.currentTime = WATER_AT; } catch (e) {} }, { once: true });
   };
+  const rise = (s) => { const f = Math.max(0, Math.min(1, s / FADE_IN)), fs = f * f * (3 - 2 * f); return f >= 1 ? PEAK : PEAK * Math.pow(IN_FROM / PEAK, 1 - fs); };   // the 3 s fade-up curve
   let auto = true;   // false once the visitor uses the Sound button themselves
   if (sbtn) sbtn.addEventListener('click', () => { auto = false; snd.volume = 1; snd.loop = true; if (water) water.pause(); }, true);
   const skip = () => { if (snd.currentTime < SKIP) try { snd.currentTime = SKIP; } catch (e) { /* not seekable yet */ } };
@@ -193,30 +195,22 @@ if (homeVid && snd) {
     if (!auto) { snd.volume = 1; return; }
     if (snd.paused) return;
     const t = snd.currentTime;
-    if (t >= XF_AT) {   // the bridge: wind out, water in (equal-power cross-fade), then the wind copy stops before the drums
-      loadWater();
-      if (!crossed) { crossed = true; try { water.volume = 0; } catch (e) {} const p = water.play(); if (p && p.catch) p.catch(() => {}); }
-      const c = Math.min(1, (t - XF_AT) / XF);
-      try { snd.volume = PEAK * Math.cos(c * Math.PI / 2); water.volume = PEAK * Math.sin(c * Math.PI / 2); } catch (e) {}
-      if (c >= 1) { snd.pause(); requestAnimationFrame(waterFade); return; }
-      requestAnimationFrame(fade);
+    if (t >= WIND_END) {   // the wind is done: stop it and start the water (skipping the drums)
+      snd.pause(); done = true; loadWater();
+      if (!crossed) { crossed = true; try { water.volume = IN_FROM; } catch (e) {} const p = water.play(); if (p && p.catch) p.catch(() => {}); requestAnimationFrame(waterFade); }
       return;
     }
-    if (t > XF_AT - 3) loadWater();   // get the water copy ready a few seconds ahead
-    const f = Math.max(0, Math.min(1, (t - SKIP) / FADE_IN));     // fade-in: 0 at the start, 1 after FADE_IN (3 s)
-    // fade-in from very soft (IN_FROM) up to PEAK over FADE_IN, rising evenly in loudness, eased at both ends
-    const fs = f * f * (3 - 2 * f), vin = f >= 1 ? PEAK : PEAK * Math.pow(IN_FROM / PEAK, 1 - fs);
-    try { snd.volume = vin; } catch (e) { /* volume fixed on this device */ }
+    if (t > WIND_END - 4) loadWater();   // get the water copy ready a few seconds ahead
+    // fade-up over the first 3 s and, mirror-image, fade-down over the last 3 s of the wind
+    try { snd.volume = Math.min(rise(t - SKIP), rise(WIND_END - t)); } catch (e) { /* volume fixed on this device */ }
     requestAnimationFrame(fade);
   };
-  // the water plays at 50%, then over its last 2.5 s fades away (quickest at first, lingering at the end) and stops
+  // the water fades up over 3 s (the same curve) and then plays on at PEAK to the end of the track
   const waterFade = () => {
-    if (!auto || !water || water.paused) return;
-    const t = water.currentTime;
-    if (t >= W_END) { try { water.volume = 0; } catch (e) {} water.pause(); done = true; return; }
-    const c = Math.max(0, Math.min(1, (t - W_OUT_AT) / (W_END - W_OUT_AT)));
-    try { water.volume = PEAK * Math.pow(10, -45 * (1 - Math.pow(1 - Math.pow(c, 1.25), 1.6)) / 20); } catch (e) {}
-    requestAnimationFrame(waterFade);
+    if (!auto || !water) return;
+    const t = water.currentTime - WATER_AT;
+    try { water.volume = rise(t); } catch (e) {}
+    if (t < FADE_IN) requestAnimationFrame(waterFade);
   };
   snd.addEventListener('play', () => { if (auto) requestAnimationFrame(fade); });
   const begin = () => { if (!auto || done || galaxyHasStopped) return; skip(); snd.loop = false; try { snd.volume = 0; } catch (e) {} return snd.play(); };   // starts silent, fades in, plays once
