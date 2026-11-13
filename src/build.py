@@ -608,7 +608,7 @@ hp, hw, hh = IMG[canon('9c79f0_2e6f0d49e6d44dbdadb504a7e448352e~mv2.png')]
 hp, hw, hh = 'images/HOME/HOME-04_spinor-tetrahelix-phi.jpg', 1400, 1394
 home = f'''<section class="hero">
   <div class="hero-text" id="heroText">
-  <p class="hero-small" data-anim="fade" style="--d:250ms"><span class="hs-big">TetraWave</span><span>&amp;</span><span>The StarGate Poems</span></p>
+  <p class="hero-small" data-anim="fade" style="--d:250ms"><span class="hs-big"><b class="cap">T</b>etra<b class="cap">W</b>ave</span><span>&amp;</span><span>The StarGate Poems</span></p>
   <h1 class="hero-title"><span data-anim="fade" style="--d:2100ms;--dur:1500ms">Discoveries</span><span class="ht-2" data-anim="fade" style="--d:3950ms;--dur:2550ms">In Tetrahedral Geometry</span></h1>
   <p class="hero-credit" data-anim="fade" style="--d:7100ms">Joseph Matto Architect AIA</p>
   </div>

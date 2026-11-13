@@ -247,6 +247,7 @@ html.scrolled .pager-top a { background: rgba(6, 7, 12, .72); -webkit-backdrop-f
 .hero-small span:not(.hs-big) { font-size: 19.5px; }   /* "&" and "The StarGate Poems": 50% larger than 13px */
 .hero-small span:last-child:not(.hs-big) { font-size: 24px; }        /* "The StarGate Poems": 18 pt Cinzel */
 .hero-small .hs-big { font-size: 33px; letter-spacing: .14em; line-height: 32.8px; }   /* "TetraWave": enlarged 10% twice; line height held at 32.8px */
+.hero-small .hs-big .cap { font-size: 35.67px; font-weight: inherit; }   /* the T and the W of "TetraWave": 2 pt larger (26.75 pt against 24.75 pt) */
 .hero-title { margin: 0; display: grid; justify-items: center; gap: 6px; font: 400 clamp(34px, 6.6vw, 64px)/1.08 var(--display); color: var(--gold); letter-spacing: .04em; text-wrap: balance; }
 .hero-title .ht-2 { font-size: .75em; margin-top: -.29em; }   /* 25% smaller, 20px closer to "Discoveries" */
 .hero-text { display: grid; justify-items: center; gap: 10px; transform: translateY(calc(-1 * var(--up, 0px))); }

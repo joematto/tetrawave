@@ -188,3 +188,8 @@ images/POST/POST-27_vibrate-his-filament-contact.jpg
 images/POST/POST-28_warped-space-time-metric.png
 images/TILT/TILT-01_tw-cylindar-analysis.jpg
 images/POST/POST-29_chi-ball-in-hands.jpg
+images/PRE/PRE-32_screenshot-2026-11-12-at-11-28-15-am.jpg
+images/PRE/PRE-33_orb-over-head-1.jpg
+images/PRE/PRE-34_screenshot-2026-11-12-at-5-15-12-pm.jpg
+images/PRE/PRE-35_screenshot-2026-11-12-at-5-15-24-pm.jpg
+images/PRE/PRE-36_screenshot-2026-11-12-at-4-58-39-pm.jpg
