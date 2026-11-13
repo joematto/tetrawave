@@ -606,10 +606,12 @@ for part, pages in OUTLINE[1:]:
             for pg, pic, over, first, rest in STAGED:
                 if pg != key: continue
                 body = re.sub(rf'(<figure class="el el-I"[^>]*data-file="{re.escape(pic)}")(>)(<img [^>]*>)',
-                              lambda m: f'{m.group(1)} data-stage="{rest}"{m.group(2)}{m.group(3)}<img class="stage-1" src="{over}" alt="" data-stage-1="{first}" decoding="async" style="left:0;top:0;width:100%;height:100%;object-fit:cover">', body, count=1)
+                              lambda m: f'{m.group(1)} data-stage="{rest}"{m.group(2)}' + m.group(3).replace('style="', 'style="--at:{}s;--dur:{}s;--to:{};'.format(*(lambda r: (int(r[0]) / 1000, int(r[1]) / 1000, r[2] if len(r) > 2 else 1))(rest.split(','))), 1) + f'<img class="stage-1" src="{over}" alt="" data-stage-1="{first}" decoding="async" style="left:0;top:0;width:100%;height:100%;object-fit:cover">', body, count=1)
             if key in LATE_PICTURES:   # every picture but the first (top-left) fades in later, all together (js/site.js reads data-late)
                 figs = [(float(m.group(2)), float(m.group(3)), m.group(1)) for m in re.finditer(r'<figure class="el el-I" data-eid="([^"]*)"[^>]*data-y="([-\d.]+)"[^>]*style="left:([-\d.]+)px', body)]
                 for _, _, eid in sorted(figs)[1:]:
+                    at, dur = LATE_PICTURES[key].split(',')
+                    body = re.sub(rf'(data-eid="{re.escape(eid)}"[^>]*?style=")', lambda m: m.group(1) + f'--at:{int(at)/1000}s;--dur:{int(dur)/1000}s;', body, count=1)
                     body = body.replace(f'data-eid="{eid}"', f'data-eid="{eid}" data-late="{LATE_PICTURES[key]}"', 1)
             if key in NO_FADE:   # everything on this page is there as it opens: no fades or delays
                 body = re.sub(r' data-(?:anim|seq)="[^"]*"', '', body)

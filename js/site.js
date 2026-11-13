@@ -513,20 +513,3 @@ function wordBurst(IN, HOLD, OUT) {
   }
 }
 
-// Pictures marked data-late="start,duration" (ms): hidden as the page opens, then fade in together
-// (e.g. on Inception every drawing but the first fades in over 2 s, 10 s into the page)
-document.querySelectorAll('[data-late]').forEach((e) => {
-  const [at, dur] = e.dataset.late.split(',').map(Number);
-  if (e.animate) e.animate([{ opacity: 0 }, { opacity: 1 }], { duration: dur, delay: at, easing: 'ease-in-out', fill: 'both' });
-  else e.style.opacity = 1;
-});
-
-// A picture shown in two stages (data-stage="start,fade" ms for the picture, data-stage-1 on its overlay): first the overlay
-// (e.g. the words "Sound", "Light" and "Frequency" on the napkin), then the rest of the picture fades in around it
-document.querySelectorAll('figure[data-stage]').forEach((f) => {
-  const base = f.querySelector('img:not(.stage-1)'), over = f.querySelector('img.stage-1');
-  const [at, dur, to = 1] = f.dataset.stage.split(',').map(Number);   // to: the strength the rest of the picture settles at
-  if (base && base.animate) base.animate([{ opacity: 0 }, { opacity: to }], { duration: dur, delay: at, easing: 'ease-in-out', fill: 'both' });
-  else if (base) base.style.opacity = to;
-  if (over && over.animate) { const [a1, d1] = (over.getAttribute('data-stage-1') || '0,0').split(',').map(Number); if (d1 > 0) over.animate([{ opacity: 0 }, { opacity: 1 }], { duration: d1, delay: a1, easing: 'ease-in-out', fill: 'backwards' }); }
-});
