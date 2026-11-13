@@ -459,20 +459,18 @@
    "t": 1794178619230
   },
   "T:MOTIONinTheMetaphysicsofMich": {
-   "x": 516,
-   "y": 631,
+   "x": 601.5,
+   "y": 538.5,
    "w": 264,
    "h": 146,
-   "html": "<h3 class=\"ph ph-wix\" style=\"text-align:center;font-size:18px\"><span style=\"font-size: 17px;\">\"MOTION\"&nbsp;</span></h3><h3 class=\"ph ph-wix\" style=\"text-align:center;font-size:18px\"><span style=\"font-size: 13px;\">in ...The Metaphysics of Michael Faraday<br>AP David - Natural Philosophy Alliance<br>(EU2015)</span></h3>",
-   "t": 1794437677879
+   "t": 1794593665680
   },
   "T:NewtonsPrincipiaandLaterMeta": {
-   "x": 541,
-   "y": 792,
+   "x": 621,
+   "y": 732.5,
    "w": 219,
    "h": 66,
-   "html": "<h3 class=\"ph ph-wix\" style=\"text-align:center;font-size:16px\"><a href=\"https://plato.stanford.edu/entries/newton-principia/\" target=\"_blank\" rel=\"noopener\"><span style=\"font-size: 13px;\">Newton's Principia and Later Metaphysics<br>(Link)</span></a></h3>",
-   "t": 1794437682376
+   "t": 1794593670776
   },
   "T:Jrm1986": {
    "x": 317,
@@ -1528,11 +1526,11 @@
    "pw": 383,
    "ph": 394,
    "name": "Alien Architectture 1.png",
-   "x": 315,
-   "y": 326.5,
+   "x": 314.5,
+   "y": 325.5,
    "w": 350,
    "h": 356,
-   "t": 1794575286762
+   "t": 1794593598258
   },
   "N:mwc9r5ohjfem": {
    "new": true,
@@ -1844,10 +1842,10 @@
    "ph": 142,
    "name": "Star Hopper.png",
    "x": 313.5,
-   "y": 87,
+   "y": 89.5,
    "w": 350,
    "h": 231,
-   "t": 1794575320647
+   "t": 1794593592785
   },
   "N:mwca41l1gylg": {
    "new": true,

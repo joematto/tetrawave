@@ -365,3 +365,6 @@ html.scrolled .pager-top a { background: rgba(6, 7, 12, .72); -webkit-backdrop-f
   animation: g-pulse 2.4s ease-in-out infinite; }
 @keyframes g-pulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { #tw-gate .g-enter { animation: none; opacity: .8; } }
+
+/* StarCoil: "Star" and "Coil" in the poem title closer together, matching the columns below */
+[data-poem="title"] .txt { word-spacing: -4px; }

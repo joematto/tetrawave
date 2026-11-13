@@ -408,6 +408,9 @@ def coil_adjust(page):
         if it.get('poem') or first.startswith(('Star', 'Motion', 'Jrm')):
             it['b'][0] = round(it['b'][0] + dx, 1)
             it['a'] = None                  # the poem is revealed line by line instead (coil_text + js/site.js)
+        # the two columns 15px closer together (gap 29px -> 14px), each moving half way, so the centre line stays put
+        if it.get('poem') == 'L': it['b'][0] = round(it['b'][0] + 7.5, 1)
+        if it.get('poem') == 'R': it['b'][0] = round(it['b'][0] - 7.5, 1)
     return page
 
 def tetra_adjust(page):
