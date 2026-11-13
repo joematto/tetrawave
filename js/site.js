@@ -160,9 +160,9 @@ if (homeVid) {
   intro.then(() => { const p = homeVid.play(); if (p && p.catch) p.catch(() => {}); });
 }
 
-// Home: the soundtrack ("White Winds") starts as the Spinor starts turning, 1 s into the track, fades up from very soft to 50% over 3 s,
-// holds, and fades down over the last 3 s before the drums (6.1-9.1 s); the drums are left out and the quieter sounds after them
-// (the water lapping against a boat, from 28 s of the track) start at once, fade up over 3 s and play on to the end of the track. Browsers only allow sound once the visitor has
+// Home: the soundtrack ("White Winds") starts 0.92 s after the Spinor starts turning, 1 s into the track, fades up from very soft to 50% over 2 s,
+// holds, and fades down over the last 2 s before the drums (7.1-9.1 s), ending as the Spinor stops; the drums are left out and the quieter
+// sounds after them (the water lapping against a boat, from 28 s of the track) start at once, fade up over 2 s and play on to the end of the track. Browsers only allow sound once the visitor has
 // interacted with the page, so if starting at once is refused the opening screen asks for a click. Using the Sound button cancels
 // the automatic volume changes (full volume, repeating, as before).
 let galaxyHasStopped = false;
@@ -172,18 +172,18 @@ function galaxyStopped() {
   document.dispatchEvent(new Event('tw:galaxy-stopped'));
 }
 if (homeVid && snd) {
-  const SKIP = 1, FADE_IN = 3.0, PEAK = 0.5, IN_FROM = 0.0158;   // fade-in: from about 1.6% up to 50% over 3 s
-  // The wind (1-9.1 s of the track) fades up over 3 s and down over 3 s, symmetrically (PEAK in between); at its end the
+  const SKIP = 1, FADE_IN = 2.0, PEAK = 0.5, IN_FROM = 0.0158;   // fade-in: from about 1.6% up to 50% over 2 s
+  // The wind (1-9.1 s of the track) fades up over 2 s and down over 2 s, symmetrically (PEAK in between); at its end the
   // drums (9.1-27 s) are left out: the quieter sounds that follow them (the water lapping against a boat, from 28 s) start
-  // straight away, fading up over 3 s the same way, and play on to the end of the track.
-  const WIND_END = 9.08, FADE_OUT = 3.0, WATER_AT = 28.0;
+  // straight away, fading up over 2 s the same way, and play on to the end of the track.
+  const WIND_END = 9.08, FADE_OUT = 2.0, WATER_AT = 28.0;
   let water = null, crossed = false;   // a second copy of the track, started at the water
   const loadWater = () => {
     if (water) return;
     water = new Audio(); window.twWater = water; water.preload = 'auto'; water.src = snd.currentSrc || (snd.querySelector('source') || {}).src || '';
     water.addEventListener('loadedmetadata', () => { try { water.currentTime = WATER_AT; } catch (e) {} }, { once: true });
   };
-  const rise = (s) => { const f = Math.max(0, Math.min(1, s / FADE_IN)), fs = f * f * (3 - 2 * f); return f >= 1 ? PEAK : PEAK * Math.pow(IN_FROM / PEAK, 1 - fs); };   // the 3 s fade-up curve
+  const rise = (s) => { const f = Math.max(0, Math.min(1, s / FADE_IN)), fs = f * f * (3 - 2 * f); return f >= 1 ? PEAK : PEAK * Math.pow(IN_FROM / PEAK, 1 - fs); };   // the 2 s fade-up curve
   let auto = true;   // false once the visitor uses the Sound button themselves
   if (sbtn) sbtn.addEventListener('click', () => { auto = false; snd.volume = 1; snd.loop = true; if (water) water.pause(); }, true);
   const skip = () => { if (snd.currentTime < SKIP) try { snd.currentTime = SKIP; } catch (e) { /* not seekable yet */ } };
@@ -201,11 +201,11 @@ if (homeVid && snd) {
       return;
     }
     if (t > WIND_END - 4) loadWater();   // get the water copy ready a few seconds ahead
-    // fade-up over the first 3 s and, mirror-image, fade-down over the last 3 s of the wind
+    // fade-up over the first 2 s and, mirror-image, fade-down over the last 2 s of the wind
     try { snd.volume = Math.min(rise(t - SKIP), rise(WIND_END - t)); } catch (e) { /* volume fixed on this device */ }
     requestAnimationFrame(fade);
   };
-  // the water fades up over 3 s (the same curve) and then plays on at PEAK to the end of the track
+  // the water fades up over 2 s (the same curve) and then plays on at PEAK to the end of the track
   const waterFade = () => {
     if (!auto || !water) return;
     const t = water.currentTime - WATER_AT;
@@ -220,8 +220,8 @@ if (homeVid && snd) {
     ['pointerdown', 'keydown', 'touchstart'].forEach((t) => removeEventListener(t, firstTouch, true));
     if (snd.paused) begin();
   };
-  // the music starts as the Spinor starts to turn (was 1 s after)
-  const AFTER_SPINOR = 0;
+  // the music starts 0.92 s after the Spinor starts to turn, so the wind (8.08 s long) ends as the Spinor comes to a stop (9 s)
+  const AFTER_SPINOR = 920;
   let started = false;
   const startMusic = () => {
     if (started) return; started = true;
