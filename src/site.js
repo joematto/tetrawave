@@ -458,7 +458,7 @@ function wordBurst(IN, HOLD, OUT) {
     const pageTitle = document.querySelector('.page-title'), TITLE_IN = 3000;
     if (burst && pageTitle && pageTitle.animate) pageTitle.animate([{ opacity: 0 }, { opacity: 1 }], { duration: TITLE_IN, delay: B_IN + 8500, easing: 'ease-in-out', fill: 'backwards' });
     // 13.5 s after the roll-down is complete (20 s), the right-hand column of the poem fades to half strength (over 2 s)
-    const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 13500, DIM_FOR = 2000;
+    const ROLL_END = WAIT + TITLE + PAUSE + Math.max(0, steps.length - 2) * gap + EACH, RIGHT_DIM = 0.5, DIM_AFTER = 12500, DIM_FOR = 2000;   // see-through from 19 to 21 s (was 20-22)
     const dimRight = () => [part('R'), part('motion')].forEach((r) => { if (r && r.animate) r.animate([{ opacity: 1 }, { opacity: RIGHT_DIM }], { duration: DIM_FOR, delay: ROLL_END + DIM_AFTER, easing: 'ease-in-out', fill: 'forwards' }); });   // "Motion" dims with the right column
     // once the right-hand column has faded, the subtitle ("A Message within a Message?") fades in quickly (0.8 s)
     const SUB_IN = 800, sub = document.querySelector('.page-title .subtitle');
