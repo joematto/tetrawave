@@ -161,7 +161,7 @@ if (homeVid) {
 }
 
 // Home: the soundtrack ("White Winds") starts as the Spinor starts turning, 1 s into the track, fades up from very soft to 50% over 3 s, and
-// from 5.5 s to 8.5 s of the track fades gently from 50% down to 20% (settling just before the drums at 9.1 s), then fades almost out just before the drums (9.08 s), and the rest of the track (drums, watery sounds) plays on at 10% to the end of the
+// from 5.5 s to 8.5 s of the track fades gently from 50% down to 20% (settling just before the drums at 9.1 s), then fades almost out just before the drums (9.08 s); the drums play at 5%, and as they die away (20-24 s) it rises to 10% for the watery sounds and the rest of the
 // track, or until another page is opened. Browsers only allow sound once the visitor has interacted with the page,
 // so if starting at once is refused the opening screen asks for a click. Using the Sound button cancels the automatic
 // volume changes (full volume, repeating, as before).
@@ -172,7 +172,8 @@ function galaxyStopped() {
   document.dispatchEvent(new Event('tw:galaxy-stopped'));
 }
 if (homeVid && snd) {
-  const DIP_AT = 9.08, DIP = 0.01, RISE = 0.3, LOW = 0.1;   // the wind fades almost out (1%) just before the drums, then the rest of the track (drums, watery sounds) plays on at 10%
+  const DIP_AT = 9.08, DIP = 0.01, RISE = 0.3, LOW = 0.05;   // the wind fades almost out (1%) just before the drums, then the drums play at 5%
+  const NEXT_AT = 20.0, NEXT_FOR = 4.0, NEXT = 0.1;   // as the drums die away (20-24 s) the volume rises gently to 10% for the next part (the watery sounds) and the rest of the track
   const SKIP = 1, FADE_IN = 3.0, PEAK = 0.5, IN_FROM = 0.0158, FADE_END = 8.5, FADE = 3.0, BG = 0.2;   // BG: the volume it settles at, reached just before the drums (9.1 s)   // seconds of the track: plays 1–10 s, fading over the last 3 s (the drum roll starts at 9.1 s,
   // when the fade is at about 9% volume)
   let auto = true;   // false once the visitor uses the Sound button themselves
@@ -191,9 +192,10 @@ if (homeVid && snd) {
       // then, as the drums come in, the volume rises smoothly over RISE to LOW and stays there to the end of the track
       let v;
       if (t < DIP_AT) { const c = (t - FADE_END) / (DIP_AT - FADE_END); v = BG * Math.pow(DIP / BG, Math.pow(c, 1.6)); }
-      else { const c = Math.min(1, (t - DIP_AT) / RISE), sm = c * c * (3 - 2 * c); v = DIP * Math.pow(LOW / DIP, sm); }
+      else if (t < NEXT_AT) { const c = Math.min(1, (t - DIP_AT) / RISE), sm = c * c * (3 - 2 * c); v = DIP * Math.pow(LOW / DIP, sm); }
+      else { const c = Math.min(1, (t - NEXT_AT) / NEXT_FOR), sm = c * c * (3 - 2 * c); v = LOW * Math.pow(NEXT / LOW, sm); }
       try { snd.volume = v; } catch (e) {}
-      if (t >= DIP_AT + RISE) return;   // settled at LOW: plays on to the end of the track
+      if (t >= NEXT_AT + NEXT_FOR) return;   // settled at NEXT: plays on to the end of the track
       requestAnimationFrame(fade);
       return;
     }
