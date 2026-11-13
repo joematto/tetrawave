@@ -512,3 +512,10 @@ function wordBurst(IN, HOLD, OUT) {
     v.addEventListener('timeupdate', () => { if (v.duration && v.currentTime >= v.duration - 0.08) hold(); });
   }
 }
+
+// Pictures marked data-late="start,duration" (ms): hidden as the page opens, then fade in together
+// (e.g. on Inception every drawing but the first fades in over 2 s, 10 s into the page)
+document.querySelectorAll('[data-late]').forEach((e) => {
+  const [at, dur] = e.dataset.late.split(',').map(Number);
+  if (e.animate) e.animate([{ opacity: 0 }, { opacity: 1 }], { duration: dur, delay: at, easing: 'ease-in-out', fill: 'backwards' });
+});

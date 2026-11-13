@@ -534,6 +534,7 @@ NO_FADE = {'TETRA', 'P2'}
 NEW_PAGES = {'GOLD'}
 
 # Extra space (px) between a page's lowest item and the Previous / Next blocks, on top of the usual 40px
+LATE_PICTURES = {'SKETCH': '10000,2000'}   # page: 'start ms, fade ms' after the page opens
 CANVAS_PAD = {'MODEL': 100, 'POST': 1000}
 FADE_OUT = {'COIL': {'NT:mw8fl61pbibu': '1500,7200'}}   # the line 'Words from No-where !!??': stays 1.5 s, fades 7.2 s
 # Sub-heading standard (set 5 Nov 2026 from Part II, Section 1): the top of a sub-heading's capitals sits 37px (3/8 inch)
@@ -599,6 +600,10 @@ for part, pages in OUTLINE[1:]:
                 body = re.sub(r'<div class="canvas" style="height:(\d+)px">', lambda m: f'<div class="canvas" data-pad="{CANVAS_PAD[key]}" style="height:{int(m.group(1)) + 40 + CANVAS_PAD[key]}px">', body, count=1)
             for eid, ms in FADE_OUT.get(key, {}).items():   # shown as the page opens, then fades away (js/site.js)
                 body = body.replace(f'data-eid="{eid}"', f'data-eid="{eid}" data-fadeout="{ms}"', 1)
+            if key in LATE_PICTURES:   # every picture but the first (top-left) fades in later, all together (js/site.js reads data-late)
+                figs = [(float(m.group(2)), float(m.group(3)), m.group(1)) for m in re.finditer(r'<figure class="el el-I" data-eid="([^"]*)"[^>]*data-y="([-\d.]+)"[^>]*style="left:([-\d.]+)px', body)]
+                for _, _, eid in sorted(figs)[1:]:
+                    body = body.replace(f'data-eid="{eid}"', f'data-eid="{eid}" data-late="{LATE_PICTURES[key]}"', 1)
             if key in NO_FADE:   # everything on this page is there as it opens: no fades or delays
                 body = re.sub(r' data-(?:anim|seq)="[^"]*"', '', body)
         else:
