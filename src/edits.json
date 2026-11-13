@@ -924,12 +924,11 @@
    "pw": 244,
    "ph": 266,
    "name": "Bethlehem Solar Observatory addition.png",
-   "x": 623.5,
-   "y": 93.5,
+   "x": 622,
+   "y": 134.5,
    "w": 243,
    "h": 265.5,
-   "g": "",
-   "t": 1794518809419
+   "t": 1794592190368
   },
   "N:mwc8d2xqztuo": {
    "new": true,
@@ -937,12 +936,11 @@
    "pw": 1466,
    "ph": 1004,
    "name": "Chain Trail Elevation on trace.jpg",
-   "x": 351.5,
-   "y": 94.5,
+   "x": 350,
+   "y": 135.5,
    "w": 266.5,
    "h": 182,
-   "g": "",
-   "t": 1794518809419
+   "t": 1794592190368
   },
   "N:mwc8d6hcfz6j": {
    "new": true,
@@ -950,12 +948,11 @@
    "pw": 1275,
    "ph": 1620,
    "name": "House on a cliff Sketch.jpg",
-   "x": 532.5,
-   "y": 1214.5,
+   "x": 534.5,
+   "y": 1269.5,
    "w": 335.5,
    "h": 426.5,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc8de7n1iq1": {
    "new": true,
@@ -963,12 +960,11 @@
    "pw": 352,
    "ph": 190,
    "name": "Insurance Building in Shelton Ct.png",
-   "x": 113,
-   "y": 95.5,
+   "x": 111.5,
+   "y": 136.5,
    "w": 232.5,
    "h": 125.5,
-   "g": "",
-   "t": 1794518809419
+   "t": 1794592190368
   },
   "N:mwc8dgqa1z0k": {
    "new": true,
@@ -976,12 +972,11 @@
    "pw": 316,
    "ph": 182,
    "name": "Odonell Poolhouse elevations.png",
-   "x": 623,
-   "y": 362.5,
+   "x": 621.5,
+   "y": 403.5,
    "w": 241,
    "h": 138.5,
-   "g": "",
-   "t": 1794518809419
+   "t": 1794592190368
   },
   "N:mwc8dm0dr05k": {
    "new": true,
@@ -989,12 +984,11 @@
    "pw": 315,
    "ph": 377,
    "name": "ODonnell Addition Cross section.png",
-   "x": 112.5,
-   "y": 226,
+   "x": 111,
+   "y": 267,
    "w": 233,
    "h": 279,
-   "g": "",
-   "t": 1794518809419
+   "t": 1794592190368
   },
   "N:mwc8eijk8ziu": {
    "new": true,
@@ -1002,12 +996,11 @@
    "pw": 243,
    "ph": 202,
    "name": "Passive solar house cross section.png",
-   "x": 352.5,
-   "y": 282.5,
+   "x": 351,
+   "y": 323.5,
    "w": 266,
    "h": 220.5,
-   "g": "",
-   "t": 1794518809419
+   "t": 1794592190368
   },
   "N:mwc8eqacbmc2": {
    "new": true,
@@ -1015,12 +1008,11 @@
    "pw": 1095,
    "ph": 1612,
    "name": "Streeet scene cafe entry.jpg",
-   "x": 111.5,
-   "y": 704,
+   "x": 113.5,
+   "y": 759,
    "w": 414.5,
    "h": 610.5,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc8eyim9l82": {
    "new": true,
@@ -1028,20 +1020,19 @@
    "pw": 1075,
    "ph": 1612,
    "name": "Street sccene table sketch.jpg",
-   "x": 531.5,
-   "y": 705.5,
+   "x": 533.5,
+   "y": 760.5,
    "w": 334.5,
    "h": 502,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "T:AwakeningArtwork": {
    "x": 117,
    "y": -2.5,
    "w": 751.5,
    "h": 413,
-   "html": "<h3 class=\"ph\" style=\"text-align: justify; line-height: 0.7; text-wrap: wrap;\"><span style=\"font-size: 14px; color: rgb(255, 255, 255); font-family: var(--body);\"><span style=\"font-size: 23px;\"></span><span style=\"font-size: 20px;\"><span>In 1985...I needed to create an \"Artist's Portfolio\"</span>&nbsp;<span>for applications to architecture schools</span></span><span style=\"font-size: 15px;\">. <span style=\"font-size: 16px;\">Most of the drawings and artwork I had at that time were hard-lined drawings typical of what a draftsman might produce with basic floor plans, exterior views and Section cuts of buildings.&nbsp;</span></span></span></h3>",
-   "t": 1794590096180
+   "html": "<h3 class=\"ph\" style=\"text-align: justify; line-height: 0.7; text-wrap: wrap;\"><span style=\"font-size: 14px; color: rgb(255, 255, 255); font-family: var(--body);\"><span style=\"font-size: 23px;\"></span><span style=\"font-size: 20px;\"><span style=\"font-size: 24px;\">In 1985...I needed to create an \"Artist's Portfolio\"</span>&nbsp;<span></span></span><span style=\"font-size: 16px;\"><span><span>for applications to architecture schools</span></span><span>.</span></span><span style=\"font-size: 15px;\"> <span style=\"font-size: 16px;\">Most of the drawings and artwork I had at that time were hard-lined technical drawings typical of what a draftsman might produce...+ with basic floor plans, exterior views and Section cuts of buildings.&nbsp;</span></span></span></h3>",
+   "t": 1794592348493
   },
   "N:mwc8uqelms7v": {
    "new": true,
@@ -1049,12 +1040,11 @@
    "pw": 729,
    "ph": 1016,
    "name": "Anatomy fanstasy dancer 1.png",
-   "x": 536,
-   "y": 2997.5,
+   "x": 538,
+   "y": 3052.5,
    "w": 329.5,
    "h": 459,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc8uzq703me": {
    "new": true,
@@ -1062,12 +1052,11 @@
    "pw": 800,
    "ph": 845,
    "name": "Anatomy fantast skull.jpg",
-   "x": 213.5,
-   "y": 4463,
+   "x": 215.5,
+   "y": 4518,
    "w": 315.5,
    "h": 332.5,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc8v7yxqt0p": {
    "new": true,
@@ -1075,12 +1064,11 @@
    "pw": 1212,
    "ph": 2112,
    "name": "Anatomy Fantasy 1.jpg",
-   "x": 109.5,
-   "y": 1925.5,
+   "x": 111.5,
+   "y": 1980.5,
    "w": 415.5,
    "h": 724,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc8vfs23fxf": {
    "new": true,
@@ -1088,12 +1076,11 @@
    "pw": 733,
    "ph": 1045,
    "name": "anatomy fantasy 2 celebratory nudes.jpg",
-   "x": 538,
-   "y": 3737.5,
+   "x": 540,
+   "y": 3792.5,
    "w": 323.5,
    "h": 460.5,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc8vnk819j9": {
    "new": true,
@@ -1101,12 +1088,11 @@
    "pw": 416,
    "ph": 679,
    "name": "Anatomy Fantasy 2.jpg",
-   "x": 534,
-   "y": 2044.5,
+   "x": 536,
+   "y": 2099.5,
    "w": 333.5,
    "h": 544.5,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc8vvb4xhhz": {
    "new": true,
@@ -1114,12 +1100,11 @@
    "pw": 858,
    "ph": 708,
    "name": "Anatomy fantasy back bend.jpg",
-   "x": 537,
-   "y": 3462,
+   "x": 539,
+   "y": 3517,
    "w": 325.5,
    "h": 268.5,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc8wyhql5lt": {
    "new": true,
@@ -1127,12 +1112,11 @@
    "pw": 1799,
    "ph": 1829,
    "name": "Anatomy fantasy back of arm.jpg",
-   "x": 105,
-   "y": 3413.5,
+   "x": 107,
+   "y": 3468.5,
    "w": 421,
    "h": 428.5,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc8x5kxapp4": {
    "new": true,
@@ -1140,12 +1124,11 @@
    "pw": 670,
    "ph": 841,
    "name": "Anatomy fantasy blue man.jpg",
-   "x": 538.5,
-   "y": 4203.5,
+   "x": 540.5,
+   "y": 4258.5,
    "w": 323.5,
    "h": 406,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc8xervpy82": {
    "new": true,
@@ -1153,12 +1136,11 @@
    "pw": 416,
    "ph": 700,
    "name": "Anatomy fantasy Man climbing stairs.jpg",
-   "x": 621,
-   "y": 6002,
+   "x": 623,
+   "y": 6057,
    "w": 245.5,
    "h": 412.5,
-   "g": "",
-   "t": 1794590417982
+   "t": 1794592569015
   },
   "N:mwc8xpscv20z": {
    "new": true,
@@ -1166,12 +1148,11 @@
    "pw": 841,
    "ph": 1012,
    "name": "Anatomy fantasy reflected nude.jpg",
-   "x": 535.5,
-   "y": 2594.5,
+   "x": 537.5,
+   "y": 2649.5,
    "w": 330.5,
    "h": 398,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc8xyi5bleu": {
    "new": true,
@@ -1179,12 +1160,11 @@
    "pw": 991,
    "ph": 1429,
    "name": "anatomy fantasy rock climber.jpg",
-   "x": 110.5,
-   "y": 1321.5,
+   "x": 112.5,
+   "y": 1376.5,
    "w": 415,
    "h": 598.5,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc8ycff2bvq": {
    "new": true,
@@ -1192,12 +1172,11 @@
    "pw": 550,
    "ph": 791,
    "name": "Anatomy fantasy Runner thru rocks.jpg",
-   "x": 107.5,
-   "y": 3850,
+   "x": 109.5,
+   "y": 3905,
    "w": 420.5,
    "h": 604.5,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc8yox4ka4a": {
    "new": true,
@@ -1205,12 +1184,11 @@
    "pw": 1154,
    "ph": 2087,
    "name": "Anatomy fantasy running thru Planes.jpg",
-   "x": 108.5,
-   "y": 2654,
+   "x": 110.5,
+   "y": 2709,
    "w": 416.5,
    "h": 753.5,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc99qikm0fk": {
    "new": true,
@@ -1218,12 +1196,11 @@
    "pw": 499,
    "ph": 591,
    "name": "Anatomy fantasy Uplooking head.jpg",
-   "x": 534.5,
-   "y": 1650,
+   "x": 536.5,
+   "y": 1705,
    "w": 329.5,
    "h": 390,
-   "g": "",
-   "t": 1794521076492
+   "t": 1794592569015
   },
   "N:mwc9aghivpnk": {
    "new": true,
@@ -1231,12 +1208,11 @@
    "pw": 404,
    "ph": 1008,
    "name": "Anatomy fantasy Woman \"Phone\" silhoette.jpg",
-   "x": 112.5,
-   "y": 5777,
+   "x": 114.5,
+   "y": 5832,
    "w": 239,
    "h": 595.5,
-   "g": "",
-   "t": 1794590417982
+   "t": 1794592569015
   },
   "N:mwc9avixzqbb": {
    "new": true,
@@ -1244,12 +1220,11 @@
    "pw": 1550,
    "ph": 1216,
    "name": "Gesture Sketch Nude 1.png",
-   "x": 104,
-   "y": 5366,
+   "x": 106,
+   "y": 5421,
    "w": 513,
    "h": 402.5,
-   "g": "",
-   "t": 1794590417982
+   "t": 1794592569015
   },
   "N:mwc9b4oyy10i": {
    "new": true,
@@ -1257,12 +1232,11 @@
    "pw": 991,
    "ph": 1387,
    "name": "Gesture Sketch Nude 2.jpg",
-   "x": 598,
-   "y": 4980.5,
+   "x": 600,
+   "y": 5035.5,
    "w": 270.5,
    "h": 378.5,
-   "g": "",
-   "t": 1794590417982
+   "t": 1794592569015
   },
   "N:mwc9bk8tm9is": {
    "new": true,
@@ -1270,12 +1244,11 @@
    "pw": 811,
    "ph": 627,
    "name": "Gesture Sketch Nude 3.png",
-   "x": 104.5,
-   "y": 4979,
+   "x": 106.5,
+   "y": 5034,
    "w": 491,
    "h": 380.5,
-   "g": "",
-   "t": 1794590417982
+   "t": 1794592569015
   },
   "N:mwc9bt1jqxed": {
    "new": true,
@@ -1283,12 +1256,11 @@
    "pw": 433,
    "ph": 800,
    "name": "Gesture Sketch Nude 4.jpg",
-   "x": 356.5,
-   "y": 5775.5,
+   "x": 358.5,
+   "y": 5830.5,
    "w": 260,
    "h": 480.5,
-   "g": "",
-   "t": 1794590417982
+   "t": 1794592569015
   },
   "N:mwc9c0ec6o8g": {
    "new": true,
@@ -1296,13 +1268,11 @@
    "pw": 300,
    "ph": 791,
    "name": "Gesture sketch nude 5.jpg",
-   "x": 620,
-   "y": 5364.5,
+   "x": 622,
+   "y": 5419.5,
    "w": 247,
    "h": 633,
-   "fit": "cover",
-   "g": "",
-   "t": 1794590417982
+   "t": 1794592569015
   },
   "N:mwc9c7jmdb52": {
    "new": true,
@@ -1310,12 +1280,11 @@
    "pw": 416,
    "ph": 795,
    "name": "Gesture Sketch Nude 6.jpg",
-   "x": 359.5,
-   "y": 6260.5,
+   "x": 361.5,
+   "y": 6315.5,
    "w": 255.5,
    "h": 489,
-   "g": "",
-   "t": 1794590417982
+   "t": 1794592569015
   },
   "N:mwc9cfhpwugw": {
    "x": 102.5,
@@ -1343,25 +1312,24 @@
   },
   "NT:mwcqcagkqear": {
    "new": "text",
-   "x": 88,
-   "y": 7439,
+   "x": 98.5,
+   "y": 7448.5,
    "w": 807.5,
    "h": 296,
-   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; text-wrap: wrap;\"><span style=\"font-size: 18px; color: rgb(255, 255, 255); font-family: var(--body); text-align: justify;\">As the deadline approached I decided to increase my meditations from 15-30 Minutes a day...&nbsp;</span></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; text-wrap: wrap;\"><span style=\"font-size: 18px; color: rgb(255, 255, 255); font-family: var(--body); text-align: justify;\">up to </span><u style=\"font-size: 18px; color: rgb(255, 255, 255); font-family: var(--body); text-align: justify;\">2-3 hours.</u></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 17px;\">I thought this might boost my creativity and intuition. After a month of these extended sessions my meditation experience started to change significantly. I would find my self in a mind-space of a silent vast void with a new kind of awareness....</span></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 17px;\">&nbsp;I was witnessing my thoughts and my mind from some place other than my normal place of consciousness.</span></h3>",
-   "t": 1794590417982
+   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; text-wrap: wrap;\"><span style=\"font-size: 18px; color: rgb(255, 255, 255); font-family: var(--body); text-align: justify;\">As the deadline approached I decided to increase my meditations from 15-30 Minutes a day...&nbsp;</span></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; text-wrap: wrap;\"><span style=\"font-size: 18px; color: rgb(255, 255, 255); font-family: var(--body); text-align: justify;\">up to </span><u style=\"font-size: 18px; color: rgb(255, 255, 255); font-family: var(--body); text-align: justify;\">2-3 hours.</u></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 17px;\">I thought this might increase my creativity and intuition. After a month of these extended sessions my meditation experience changed significantly. I would often find my self in an absolutely STILL mind-space of a silent vast void with a new kind of awareness....</span></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 17px;\">&nbsp;I was witnessing my thoughts and my mind from some place other than my normal place of consciousness.</span></h3>",
+   "t": 1794592871538
   },
   "N:mwdslgg5rnm7": {
-   "x": 326,
-   "y": 6853.5,
-   "w": 315.5,
-   "h": 430,
-   "z": 0,
    "new": true,
-   "name": "Screenshot 2026-11-12 at 11.28.15\u202fAM.jpg",
+   "path": "images/PRE/PRE-32_screenshot-2026-11-12-at-11-28-15-am.jpg",
    "pw": 704,
    "ph": 1009,
-   "t": 1794590417982,
-   "path": "images/PRE/PRE-32_screenshot-2026-11-12-at-11-28-15-am.jpg"
+   "name": "Screenshot 2026-11-12 at 11.28.15\u202fAM.jpg",
+   "x": 337.5,
+   "y": 7052.5,
+   "w": 315.5,
+   "h": 430,
+   "t": 1794592575013
   },
   "NT:mwe06gop6jeq": {
    "x": 439,
@@ -1374,24 +1342,21 @@
    "t": 1794515474207
   },
   "NT:mwe06n8xry3t": {
-   "x": 114,
-   "y": 510,
+   "new": "text",
+   "x": 113,
+   "y": 549,
    "w": 751.5,
    "h": 390,
-   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 0.7;\"><span style=\"font-size: 14px; color: rgb(255, 255, 255); font-family: var(--body);\"></span><span style=\"font-size: 20px;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body);\">I wanted to show greater breadth of subject and more creativity/artistic flair.&nbsp; &nbsp;</span></span></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.7;\"><span style=\"font-size: 22px;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body);\"><u><br></u></span></span></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.7;\"><span style=\"font-size: 22px;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body);\"><u>\"OPEN MIND SKETCHING\"</u>&nbsp;</span></span></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; text-wrap: wrap;\"><span style=\"font-size: 18px;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body);\"><span>So I started a daily practice of </span><span>drawing scenes or objects as they would spontaneously come into my mind and evolve before my eyes as I started drawing them. I focused on developing sketching techniques and methods for conveying 3-dimensionality, spatial depth and a sense of realism.&nbsp;</span></span></span><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 14px;\"></span></h3>",
-   "z": 950,
-   "new": "text",
-   "t": 1794590229910
+   "t": 1794592348626
   },
   "NT:mwe0osgt3ugd": {
-   "x": 111.5,
-   "y": 4907.5,
+   "new": "text",
+   "x": 113.5,
+   "y": 4962.5,
    "w": 741.5,
    "h": 67,
-   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; text-wrap: wrap;\"><font face=\"var(--body)\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 23px;\"></span></font><span style=\"color: rgb(255, 255, 255); font-family: var(--body);\"><span style=\"font-size: 23px;\">I also experimented with ...</span><span style=\"font-size: 24px;\"><span>\"</span><span>Gesture Sketches</span><span>\"</span></span><span style=\"font-size: 23px;\"></span><span style=\"font-size: 20px;\">...</span><span style=\"font-size: 20px;\"><span>very quick sketches intended to capture the \"GESTALT\" or \"FEELING\"</span><span>&nbsp; or a subject</span></span><span style=\"font-size: 23px;\"></span></span><font face=\"var(--body)\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 23px;\"></span></font></h3>",
-   "z": 950,
-   "new": "text",
-   "t": 1794590810320
+   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; text-wrap: wrap;\"><font face=\"var(--body)\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 23px;\"></span></font><span style=\"color: rgb(255, 255, 255); font-family: var(--body);\"><span style=\"font-size: 18px;\">I also explored a technique called...</span><span style=\"font-size: 26px;\"><span>\"</span><span>Gesture Sketches</span><span>\"</span></span><span style=\"font-size: 23px;\"></span><span style=\"font-size: 20px;\">...</span><span style=\"font-size: 18px;\"><span>very quick drawings intended to capture the \"GESTALT\" or \"FEELING\"</span><span>&nbsp; or a subject</span></span><span style=\"font-size: 23px;\"></span></span><font face=\"var(--body)\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 23px;\"></span></font></h3>",
+   "t": 1794592569015
   },
   "N:mwe2u11xg7pg": {
    "x": 238,
@@ -1420,116 +1385,115 @@
    "t": 1794520419366
   },
   "N:mwe357m3rhvy": {
-   "x": 293.5,
-   "y": 7701.5,
-   "w": 394.5,
-   "h": 520.5,
-   "z": 900,
    "new": true,
-   "name": "orb over head 1.jpg",
+   "path": "images/PRE/PRE-33_orb-over-head-1.jpg",
    "pw": 429,
    "ph": 566,
-   "t": 1794590417982,
-   "path": "images/PRE/PRE-33_orb-over-head-1.jpg"
+   "name": "orb over head 1.jpg",
+   "x": 295.5,
+   "y": 7756.5,
+   "w": 394.5,
+   "h": 520.5,
+   "t": 1794592569015
   },
   "NT:mwe3mx44iv01": {
-   "x": 200.5,
-   "y": 7340,
-   "w": 591,
-   "h": 221,
-   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 0.8; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 14px;\"><span style=\"font-size: 22px;\"><span style=\"font-size: 24px;\">Meditation &amp; Sketching&nbsp;</span></span></span></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.8; text-wrap: wrap;\"><span style=\"font-size: 18px;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body);\"><span><span></span></span></span></span><span style=\"font-size: 19px;\"><span><span style=\"color: rgb(255, 255, 255); font-family: var(--body);\"><span><span>I had been practicing Transcendental Meditation since 1970. It became an integral part of&nbsp; my practice of&nbsp;</span></span></span></span><span style=\"color: rgb(255, 255, 255); font-family: var(--body);\">\"Open Mind Sketching\".&nbsp;</span></span><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 17px;\"></span></h3>",
-   "z": 950,
    "new": "text",
-   "t": 1794590417982
+   "x": 121,
+   "y": 6941.5,
+   "w": 745.5,
+   "h": 221,
+   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 0.8; text-wrap: wrap;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 14px;\"><span style=\"font-size: 22px;\"><span style=\"font-size: 24px;\">Meditation &amp; Sketching&nbsp;</span></span></span></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.8; text-wrap: wrap;\"><span style=\"font-size: 18px;\"><span style=\"color: rgb(255, 255, 255); font-family: var(--body);\"><span><span></span></span></span></span><span style=\"font-size: 19px;\"><span><span style=\"color: rgb(255, 255, 255); font-family: var(--body);\"><span><span>I had been practicing Transcendental Meditation since 1970, and would usually draw after a meditation session. It became an integral part of&nbsp; my practice of&nbsp;</span></span></span></span><span style=\"color: rgb(255, 255, 255); font-family: var(--body);\">\"Open Mind Sketching\".&nbsp;</span></span><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 17px;\"></span></h3>",
+   "t": 1794592823738
   },
   "NT:mwe3slabkqsi": {
-   "x": 114.5,
-   "y": 7629.5,
+   "new": "text",
+   "x": 116.5,
+   "y": 7684.5,
    "w": 758,
    "h": 150,
-   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; font-size: 18px;\"><font color=\"#ffffff\" face=\"Source Sans 3, Helvetica Neue, Arial, sans-serif\"><span>...And then I became aware of an</span></font></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; font-size: 18px;\"><font color=\"#ffffff\" face=\"Source Sans 3, Helvetica Neue, Arial, sans-serif\"><span><span></span></span></font><span style=\"font-size: 26px;\"><font color=\"#ffffff\" face=\"Source Sans 3, Helvetica Neue, Arial, sans-serif\"><span><span>&nbsp;</span></span></font><span style=\"color: rgb(255, 255, 255); text-wrap-mode: initial;\">ORB&nbsp;</span></span></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; font-size: 18px;\"><span style=\"color: rgb(255, 255, 255); text-wrap-mode: initial;\">of Energy above my head</span></h3>",
-   "z": 950,
-   "new": "text",
-   "t": 1794590417982
+   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; font-size: 18px;\"><font color=\"#ffffff\" face=\"Source Sans 3, Helvetica Neue, Arial, sans-serif\"><span>...And then I became aware that</span></font></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; font-size: 18px;\"><font color=\"#ffffff\" face=\"Source Sans 3, Helvetica Neue, Arial, sans-serif\"><span><span></span></span></font><span style=\"font-size: 26px;\"><font color=\"#ffffff\" face=\"Source Sans 3, Helvetica Neue, Arial, sans-serif\"><span><span>&nbsp;</span></span></font><span style=\"color: rgb(255, 255, 255); text-wrap-mode: initial;\">ORB of energy</span></span></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; font-size: 18px;\"><span style=\"color: rgb(255, 255, 255); text-wrap-mode: initial;\">had emerged over my head</span></h3>",
+   "t": 1794592933528
   },
   "N:mwe3wmmbbjge": {
-   "x": 295.5,
-   "y": 8270.5,
-   "w": 385.5,
-   "h": 456,
-   "z": 900,
    "new": true,
-   "name": "Screenshot 2026-11-12 at 5.15.12\u202fPM.jpg",
+   "path": "images/PRE/PRE-34_screenshot-2026-11-12-at-5-15-12-pm.jpg",
    "pw": 538,
    "ph": 637,
-   "t": 1794590417982,
-   "path": "images/PRE/PRE-34_screenshot-2026-11-12-at-5-15-12-pm.jpg"
+   "name": "Screenshot 2026-11-12 at 5.15.12\u202fPM.jpg",
+   "x": 297.5,
+   "y": 8325.5,
+   "w": 385.5,
+   "h": 456,
+   "t": 1794592569015
   },
   "N:mwe3x04s4hy6": {
-   "x": 296,
-   "y": 8829,
-   "w": 383,
-   "h": 594,
-   "z": 900,
    "new": true,
-   "name": "Screenshot 2026-11-12 at 5.15.24\u202fPM.jpg",
+   "path": "images/PRE/PRE-35_screenshot-2026-11-12-at-5-15-24-pm.jpg",
    "pw": 405,
    "ph": 628,
-   "t": 1794590417982,
-   "path": "images/PRE/PRE-35_screenshot-2026-11-12-at-5-15-24-pm.jpg"
+   "name": "Screenshot 2026-11-12 at 5.15.24\u202fPM.jpg",
+   "x": 298,
+   "y": 8884,
+   "w": 383,
+   "h": 594,
+   "t": 1794592569015
   },
   "N:mwe48aomat7f": {
-   "x": 291,
-   "y": 9508,
-   "w": 385,
-   "h": 396.5,
-   "z": 900,
    "new": true,
-   "name": "Screenshot 2026-11-12 at 4.58.39\u202fPM.jpg",
+   "path": "images/PRE/PRE-36_screenshot-2026-11-12-at-4-58-39-pm.jpg",
    "pw": 345,
    "ph": 355,
-   "t": 1794590417982,
-   "path": "images/PRE/PRE-36_screenshot-2026-11-12-at-4-58-39-pm.jpg"
+   "name": "Screenshot 2026-11-12 at 4.58.39\u202fPM.jpg",
+   "x": 297,
+   "y": 9609,
+   "w": 385,
+   "h": 396.5,
+   "t": 1794593109613
   },
   "NT:mwe4a0nbn05q": {
-   "x": 111,
-   "y": 9448,
-   "w": 758,
-   "h": 90,
-   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; font-size: 18px;\"><font color=\"#ffffff\"><span style=\"font-size: 35px;\">Then...</span></font></h3>",
-   "z": 950,
    "new": "text",
-   "t": 1794590417982
+   "x": 113,
+   "y": 9503,
+   "w": 758,
+   "h": 98,
+   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; font-size: 18px;\"><font color=\"#ffffff\"><span style=\"font-size: 35px;\">But Then...</span></font></h3><div style=\"text-align: center; text-wrap: wrap;\"><font color=\"#ffffff\"><span style=\"font-size: 20px;\">after 4 days of virtually no sleep and a mind that felt like it was on fire, I admitted myself, with my concerned wife's help, into the local hospital.&nbsp;</span></font></div>",
+   "t": 1794593169454
   },
   "NT:mwe4fdqpkjn4": {
-   "x": 107.5,
-   "y": 9986,
-   "w": 758,
-   "h": 91,
-   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 0.7; font-size: 18px;\"><font color=\"#ffffff\"><span style=\"font-size: 35px;\">KUNDALINI CRISIS !!</span></font></h3>",
-   "z": 950,
    "new": "text",
-   "t": 1794590417982
+   "x": 116,
+   "y": 10064.5,
+   "w": 758,
+   "h": 143,
+   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 1; font-size: 18px; text-wrap: wrap;\"><font color=\"#ffffff\"><span style=\"font-size: 21px;\">What followed ...</span></font></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 1; font-size: 18px; text-wrap: wrap;\"><font color=\"#ffffff\"><span style=\"font-size: 21px;\"><span style=\"font-family: var(--body); font-size: 20px;\">Two weeks in a psych ward and then many months of debriefing from the Universe through synchronicities and serendipitous meetings about something called&nbsp;</span></span></font></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 1; font-size: 18px; text-wrap: wrap;\"><font color=\"#ffffff\"><span style=\"font-size: 31px;\"><span style=\"font-family: var(--body);\">Kundalini Energy...</span></span></font></h3><h3 class=\"ph\" style=\"text-align: center; line-height: 1; font-size: 18px; text-wrap: wrap;\"><font color=\"#ffffff\"><span style=\"font-size: 21px;\"><span style=\"font-family: var(--body); font-size: 20px;\">and am explanation of what had happened to me.</span></span></font></h3>",
+   "t": 1794593431471
   },
   "NT:mwf2xp550kia": {
-   "x": 111,
-   "y": 8231,
+   "new": "text",
+   "x": 109,
+   "y": 8278.5,
    "w": 758,
    "h": 60,
-   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 1.15; font-size: 18px;\"><font color=\"#ffffff\" face=\"Source Sans 3, Helvetica Neue, Arial, sans-serif\"><span>... Suddenly the orb of energy lost its shape and flooded down through my body</span></font></h3>",
-   "z": 950,
-   "new": "text",
-   "t": 1794590417982
+   "t": 1794592964867
   },
   "NT:mwf30ncgneuq": {
-   "x": 103.5,
-   "y": 8736,
+   "new": "text",
+   "x": 105.5,
+   "y": 8791,
    "w": 758,
    "h": 87,
-   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 1.15; font-size: 18px;\"><font color=\"#ffffff\" face=\"Source Sans 3, Helvetica Neue, Arial, sans-serif\"><span>... A short time later energy entered my feet and rose up through my back</span></font></h3><div style=\"text-align: center;\"><font color=\"#ffffff\"><span style=\"font-family: var(--display);\">The energy seemed to come from the earth. I was filled with energy throughout my body for 3 days and 2 nights, non-stop.</span></font></div>",
+   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 1.15; font-size: 18px;\"><font color=\"#ffffff\" face=\"Source Sans 3, Helvetica Neue, Arial, sans-serif\"><span>... A short time later energy entered my feet and rose up through my back</span></font></h3><div style=\"text-align: center; text-wrap: wrap;\"><font color=\"#ffffff\"><span style=\"font-family: var(--display);\">The energy seemed to come from the earth. I was filled with energy throughout my body for 3 days and 2 nights, non-stop. I felt \"Electrified\"</span></font></div>",
+   "t": 1794593005764
+  },
+  "NT:mwf9tqcm1c3m": {
+   "x": 110.5,
+   "y": 97,
+   "w": 751.5,
+   "h": 182,
+   "html": "<h3 class=\"ph\" style=\"text-align: center; line-height: 0.7;\"><u style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 22px; text-wrap-mode: initial;\"></u><span style=\"font-size: 22px;\"><u style=\"color: rgb(255, 255, 255); font-family: var(--body); text-wrap-mode: initial;\">\"TECHNICAL DRAWINGS\"</u><span style=\"color: rgb(255, 255, 255); font-family: var(--body); text-wrap-mode: initial;\">&nbsp;</span></span><span style=\"color: rgb(255, 255, 255); font-family: var(--body); font-size: 22px; text-wrap-mode: initial;\"></span><span style=\"font-size: 14px; color: rgb(255, 255, 255); font-family: var(--body);\"></span></h3>",
    "z": 950,
    "new": "text",
-   "t": 1794590417982
+   "t": 1794592385865
   }
  },
  "POST": {
