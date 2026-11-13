@@ -519,3 +519,12 @@ document.querySelectorAll('[data-late]').forEach((e) => {
   const [at, dur] = e.dataset.late.split(',').map(Number);
   if (e.animate) e.animate([{ opacity: 0 }, { opacity: 1 }], { duration: dur, delay: at, easing: 'ease-in-out', fill: 'backwards' });
 });
+
+// A picture shown in two stages (data-stage="start,fade" ms for the picture, data-stage-1 on its overlay): first the overlay
+// (e.g. the words "Sound", "Light" and "Frequency" on the napkin), then the rest of the picture fades in around it
+document.querySelectorAll('figure[data-stage]').forEach((f) => {
+  const base = f.querySelector('img:not(.stage-1)'), over = f.querySelector('img.stage-1');
+  const [at, dur] = f.dataset.stage.split(',').map(Number);
+  if (base && base.animate) base.animate([{ opacity: 0 }, { opacity: 1 }], { duration: dur, delay: at, easing: 'ease-in-out', fill: 'backwards' });
+  if (over && over.animate) { const [a1, d1] = over.dataset.stage1.split(',').map(Number); over.animate([{ opacity: 0 }, { opacity: 1 }], { duration: d1, delay: a1, easing: 'ease-in-out', fill: 'backwards' }); }
+});

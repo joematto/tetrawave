@@ -534,7 +534,9 @@ NO_FADE = {'TETRA', 'P2'}
 NEW_PAGES = {'GOLD'}
 
 # Extra space (px) between a page's lowest item and the Previous / Next blocks, on top of the usual 40px
-LATE_PICTURES = {'SKETCH': '10000,2000'}   # page: 'start ms, fade ms' after the page opens
+LATE_PICTURES = {'SKETCH': '7000,2000'}   # page: 'start ms, fade ms' after the page opens
+# a picture shown in two stages: (page, picture, overlay with its first part, overlay 'start,fade' ms, rest of the picture 'start,fade' ms)
+STAGED = [('SKETCH', 'images/SKETCH/SKETCH-13_knapkin-energy-sketch-only.jpg', 'images/SKETCH/SKETCH-13b_knapkin-words.png', '0,2000', '3000,2000')]   # the napkin: "Sound", "Light" and "Frequency" first
 CANVAS_PAD = {'MODEL': 100, 'POST': 1000}
 FADE_OUT = {'COIL': {'NT:mw8fl61pbibu': '1500,7200'}}   # the line 'Words from No-where !!??': stays 1.5 s, fades 7.2 s
 # Sub-heading standard (set 5 Nov 2026 from Part II, Section 1): the top of a sub-heading's capitals sits 37px (3/8 inch)
@@ -600,6 +602,10 @@ for part, pages in OUTLINE[1:]:
                 body = re.sub(r'<div class="canvas" style="height:(\d+)px">', lambda m: f'<div class="canvas" data-pad="{CANVAS_PAD[key]}" style="height:{int(m.group(1)) + 40 + CANVAS_PAD[key]}px">', body, count=1)
             for eid, ms in FADE_OUT.get(key, {}).items():   # shown as the page opens, then fades away (js/site.js)
                 body = body.replace(f'data-eid="{eid}"', f'data-eid="{eid}" data-fadeout="{ms}"', 1)
+            for pg, pic, over, first, rest in STAGED:
+                if pg != key: continue
+                body = re.sub(rf'(<figure class="el el-I"[^>]*data-file="{re.escape(pic)}")(>)(<img [^>]*>)',
+                              lambda m: f'{m.group(1)} data-stage="{rest}"{m.group(2)}{m.group(3)}<img class="stage-1" src="{over}" alt="" data-stage-1="{first}" decoding="async" style="left:0;top:0;width:100%;height:100%;object-fit:cover">', body, count=1)
             if key in LATE_PICTURES:   # every picture but the first (top-left) fades in later, all together (js/site.js reads data-late)
                 figs = [(float(m.group(2)), float(m.group(3)), m.group(1)) for m in re.finditer(r'<figure class="el el-I" data-eid="([^"]*)"[^>]*data-y="([-\d.]+)"[^>]*style="left:([-\d.]+)px', body)]
                 for _, _, eid in sorted(figs)[1:]:

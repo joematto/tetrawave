@@ -369,3 +369,4 @@ html.scrolled .pager-top a { background: rgba(6, 7, 12, .72); -webkit-backdrop-f
 /* StarCoil: "Star" and "Coil" in the poem title closer together, matching the columns below */
 [data-poem="title"] .txt { word-spacing: -4px; }
 .tw-editing .canvas [data-late] { opacity: 1 !important; }   /* late pictures show fully while editing */
+.tw-editing .canvas [data-stage] img { opacity: 1 !important; }   /* two-stage pictures show fully while editing */
