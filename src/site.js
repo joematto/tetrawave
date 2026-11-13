@@ -465,7 +465,7 @@ function wordBurst(IN, HOLD, OUT) {
     const showSub = () => { if (sub && sub.animate) sub.animate([{ opacity: 0 }, { opacity: 1 }], { duration: SUB_IN, delay: ROLL_END + DIM_AFTER + DIM_FOR, easing: 'ease-out', fill: 'backwards' }); };
     // the right-hand column rolls down in the same white as the left, then slowly turns to its own grey (over 4 s, from
     // 9.5 s after the roll-down, i.e. 16 s), arriving just as it starts to fade to half strength
-    const GREY_AFTER = 9500, GREY_FOR = DIM_AFTER - GREY_AFTER;
+    const GREY_AFTER = 8500, GREY_FOR = DIM_AFTER - GREY_AFTER;   // starts greying 1 s sooner than before (was 9.5 s); still grey by 13.5 s
     const whiteToGrey = () => { const r = part('R'); if (!r) return; const rp0 = r.querySelector('p'), rGrey = rp0 ? getComputedStyle(rp0).color : '#d2d2d2'; r.querySelectorAll('p').forEach((p) => {
       if (!p.animate) return;
       const grey = getComputedStyle(p).color;
