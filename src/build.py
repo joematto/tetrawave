@@ -578,11 +578,9 @@ for part, pages in OUTLINE[1:]:
         if key == 'SKETCH':  # page heading reads just "Inception" (Contents keeps the section's full name)
             body = re.sub(r'(<span class="k">SKETCH</span>)[^<]*</h1>', r'\1Inception</h1>', body, count=1)
         if key == 'P2':     # title nudged 3px right; 1 pt smaller (29 pt), its line kept the same height so nothing below moves
-            body = body.replace('<h1 class="page-title">', '<h1 class="page-title" style="position:relative;left:3px;font-size:clamp(26px,4.4vw,38.67px);line-height:calc(1.15 * clamp(26px,4.4vw,40px))">', 1)
+            body = body.replace('<h1 class="page-title">', '<h1 class="page-title" style="position:relative;left:3px">', 1)   # (now the same size as every page title)
         if key == 'PRE':    # page heading on two lines: "An Art Portfolio", then "For Architecture Schools" at half the size (Contents keeps the full name)
             body = re.sub(r'(<span class="k">PRE</span>)[^<]*</h1>', r'\1An Art Portfolio<span class="h1-sub">For Architecture Schools</span></h1>', body, count=1)
-        if key == 'PRE':    # 28 pt (37.33px) so the long title fits inside the page margins; its line kept the same height so nothing below moves
-            body = body.replace('<h1 class="page-title">', '<h1 class="page-title" style="font-size:clamp(24.3px,4.1vw,37.33px);line-height:calc(1.15 * clamp(26px,4.4vw,40px))">', 1)
         if key == 'GOLD':   # the Phi symbol under the title
             body = body.replace('PHI is an Artifact</h1>', 'PHI is an Artifact<span class="phi-sym" aria-label="Phi">&#934;</span></h1>', 1)
         if key == 'COIL':   # page heading reads "First Download Transmission" (Contents keeps the section's full name)

@@ -64,7 +64,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 
 /* Reading column */
 .page { max-width: 980px; margin: 0 auto; padding: 40px max(16px, env(safe-area-inset-right)) 32px max(16px, env(safe-area-inset-left)); }
-.page-title { font: 500 clamp(26px, 4.4vw, var(--fs-section))/1.15 var(--display); color: var(--gold); text-align: center; letter-spacing: .05em; margin: 8px 0 40px; text-wrap: balance; }
+.page-title { font: 500 clamp(26px, 4.4vw, var(--fs-section))/1.15 var(--display); color: var(--gold); text-align: center; letter-spacing: .05em; margin: 8px auto 40px; max-width: 800px; text-wrap: balance; }   /* every page title: Cinzel 30 pt, kept within the 800px margins (a longer title takes two balanced lines) */
 .page-title .k { display: block; width: max-content; margin: 0 auto 14px; font-size: 11px; }
 .page-title .t0 { display: block; font: 400 13.33px/1.2 var(--body); letter-spacing: .06em; color: var(--pale); margin-bottom: 2px; }   /* small line above a title, 10 pt Source Sans 3 */
 .page-title .t2 { display: block; font-size: .5em; margin-top: .1em; }   /* second line of a title, half size (Part I, Section 1) */
