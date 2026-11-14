@@ -537,8 +537,8 @@ NEW_PAGES = {'GOLD'}
 # Extra space (px) between a page's lowest item and the Previous / Next blocks, on top of the usual 40px
 LATE_PICTURES = {'SKETCH': '9000,2000'}   # page: 'start ms, fade ms' after the page opens
 # a picture shown in two stages: (page, picture, overlay with its first part, overlay 'start,fade' ms, rest of the picture 'start,fade' ms)
-STAGED = [('SKETCH', 'images/SKETCH/SKETCH-13_knapkin-energy-sketch-only.jpg', 'images/SKETCH/SKETCH-13b_knapkin-words.png', '0,0', '2500,2000'),
-          ('SKETCH', 'images/SKETCH/SKETCH-14_screenshot-2026-11-13-at-3-17-36-pm.jpg', 'images/SKETCH/SKETCH-14b_napkin-words.png', '0,0', '2500,2000')]   # (the napkin with your yellow highlights, which replaced the first)   # the napkin: "Sound", "Light" and "Frequency" there at once; the rest of the napkin fades in fully at 2.5-4.5 s
+STAGED = [('SKETCH', 'images/SKETCH/SKETCH-13_knapkin-energy-sketch-only.jpg', 'images/SKETCH/SKETCH-13b_knapkin-words.png', '0,0', '1250,2000'),
+          ('SKETCH', 'images/SKETCH/SKETCH-14_screenshot-2026-11-13-at-3-17-36-pm.jpg', 'images/SKETCH/SKETCH-14b_napkin-words.png', '0,0', '1250,2000')]   # (the napkin with your yellow highlights, which replaced the first)   # the napkin: "Sound", "Light" and "Frequency" there at once; the rest of the napkin fades in fully at 1.25-3.25 s
 CANVAS_PAD = {'MODEL': 100, 'POST': 1000}
 FADE_OUT = {'COIL': {'NT:mw8fl61pbibu': '1500,7200'}}   # the line 'Words from No-where !!??': stays 1.5 s, fades 7.2 s
 # Sub-heading standard (set 5 Nov 2026 from Part II, Section 1): the top of a sub-heading's capitals sits 37px (3/8 inch)
