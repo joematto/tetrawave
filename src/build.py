@@ -28,6 +28,7 @@ OUTLINE = [
         ('MODEL', '3D Exploration Models', '3d-exploration-models.html'),
         ('BUILD', 'Tetrawave Build Sequence', 'tetrawave-build-sequence.html'),
         ('TILT', '“TOT” Tilt Angle & Cylindrical Analysis', 'tilt-angle-analysis.html'),
+        ('DRAW2D', '2D Analytical Drawings', '2d-analytical-drawings.html'),
         ('GOLD', 'PHI is an Artifact', 'the-golden-section-is-an-artifact.html'),
         ('GRID', '11:11', '11-11-grid.html'),
         ('CAD', '3D Exploration CAD Models', '3d-exploration-cad-models.html'),
@@ -532,7 +533,7 @@ def coil_text(it, inner, a):
 NO_FADE = {'TETRA', 'P2'}
 # items that are there as the page opens and then fade out: 'fade' or 'stay,fade' in milliseconds
 # Pages made here (not on the Wix site): they start as an empty page, ready for pictures and text added with the Edit tool
-NEW_PAGES = {'GOLD'}
+NEW_PAGES = {'GOLD', 'DRAW2D'}
 
 # Extra space (px) between a page's lowest item and the Previous / Next blocks, on top of the usual 40px
 LATE_PICTURES = {'SKETCH': '7000,2000'}   # page: 'start ms, fade ms' after the page opens
