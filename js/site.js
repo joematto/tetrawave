@@ -162,7 +162,7 @@ if (homeVid) {
 
 // Home: the soundtrack ("White Winds") starts 0.85 s after the Spinor starts turning, 1 s into the track, fades up from very soft to 50% over 2 s,
 // holds, and fades down over the last 2.5 s before the drums (6.6-9.1 s), ending as the Spinor stops; the drums are left out and the quieter
-// sounds after them (the water lapping against a boat, from 28 s of the track) start 1 s before the wind ends, fade up over 10 s and play on to the end of the track. Browsers only allow sound once the visitor has
+// sounds after them (the water lapping against a boat, from 28 s of the track) start 2 s before the wind ends, fade up over 10 s and play on to the end of the track. Browsers only allow sound once the visitor has
 // interacted with the page, so if starting at once is refused the opening screen asks for a click. Using the Sound button cancels
 // the automatic volume changes (full volume, repeating, as before).
 let galaxyHasStopped = false;
@@ -175,8 +175,8 @@ if (homeVid && snd) {
   const SKIP = 1, FADE_IN = 2.0, PEAK = 0.5, IN_FROM = 0.0158;   // fade-in: from about 1.6% up to 50% over 2 s
   // The wind (1-9.1 s of the track) fades up over 2 s and down over 2.5 s (PEAK in between); at its end the
   // drums (9.1-27 s) are left out: the quieter sounds that follow them (the water lapping against a boat, from 28 s) start
-  // 1 s before the wind has finished fading, fading up over 10 s, and play on to the end of the track.
-  const WIND_END = 9.08, FADE_OUT = 2.5, WATER_AT = 28.0, WATER_LEAD = 1.0, WATER_IN = 10.0;   // the water starts 1 s before the wind ends (overlapping its last whisper) and fades up over 10 s
+  // 2 s before the wind has finished fading, fading up over 10 s, and play on to the end of the track.
+  const WIND_END = 9.08, FADE_OUT = 2.5, WATER_AT = 28.0, WATER_LEAD = 2.0, WATER_IN = 10.0;   // the water starts 2 s before the wind ends (overlapping its fade-out) and fades up over 10 s
   let water = null, crossed = false;   // a second copy of the track, started at the water
   const loadWater = () => {
     if (water) return;
@@ -195,7 +195,7 @@ if (homeVid && snd) {
     if (!auto) { snd.volume = 1; return; }
     if (snd.paused) return;
     const t = snd.currentTime;
-    if (t >= WIND_END - WATER_LEAD && !crossed) {   // the water comes in 1 s before the wind has quite faded away (skipping the drums)
+    if (t >= WIND_END - WATER_LEAD && !crossed) {   // the water comes in 2 s before the wind has faded away (skipping the drums)
       loadWater(); crossed = true;
       try { water.volume = IN_FROM; } catch (e) {} const p = water.play(); if (p && p.catch) p.catch(() => {}); requestAnimationFrame(waterFade);
     }
