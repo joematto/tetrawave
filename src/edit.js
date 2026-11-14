@@ -6,7 +6,7 @@
 //  · Corner handles resize a picture keeping its shape; hold Shift to re-proportion it freely.
 //    Side handles re-proportion it (the picture is cropped to fill its new frame). Text boxes have side
 //    handles only, to change their width.
-//  · Arrow keys nudge the selected item 1px (Shift = 10px). Cmd/Ctrl+Z undoes. Esc deselects.
+//  · Arrow keys nudge the selected item 1px (Shift = 10px). Cmd/Ctrl+Z undoes; Option+Cmd+Z (or Shift+Cmd+Z) redoes. Esc deselects.
 //  · Double-click a text box to type in it. A bar at the top sets the font, size, colour, bold / italic /
 //    underline, alignment and line spacing of the selected words (or of the paragraph the cursor is in).
 //    Click outside the box (or press Esc) to finish.
@@ -335,7 +335,7 @@
   // snapping to the page centre and other items' edges: on unless switched off (remembered in this browser)
   let snapOn = true; try { snapOn = localStorage.getItem('tw-snap') !== 'off'; } catch (e) { /* storage unavailable */ }
   const snapLabel = () => 'Snap: ' + (snapOn ? 'On' : 'Off');   // several: 'Select several' button is on   // sel: the item clicked; sels: everything selected
-  const undo = [];
+  const undo = [], redo = [];   // redo: steps taken back with Undo, until something new is changed
   const groupOf = (e) => e.dataset.group ? els.filter((x) => x.dataset.group === e.dataset.group && x.style.display !== 'none') : [e];
 
   const scale = () => canvas.getBoundingClientRect().width / 980 || 1;
@@ -349,6 +349,7 @@
     panel.querySelector('[data-a=save]').textContent = 'Save' + (n ? ' (' + n + ')' : '');
     panel.querySelector('[data-a=save]').disabled = !n;
     panel.querySelector('[data-a=undo]').disabled = !undo.length;
+    panel.querySelector('[data-a=redo]').disabled = !redo.length;
     panel.querySelector('[data-a=reset]').disabled = !(all[KEY] && Object.keys(all[KEY]).length);
     const t = panel.querySelector('.e-sel');
     panel.querySelector('[data-a=group]').disabled = !(sels.length > 1 && !(sels[0].dataset.group && sels.every((x) => x.dataset.group === sels[0].dataset.group)));
@@ -409,7 +410,7 @@
       const r = entry(e, v);
       if (same({ ...r, html: r.html !== undefined ? r.html : o.html }, o)) { if (all[KEY]) delete all[KEY][id]; } else page()[id] = r;
     }
-    undo.push({ many: steps });
+    undo.push({ many: steps }); redo.length = 0;
     if (all[KEY] && !Object.keys(all[KEY]).length) delete all[KEY];
     save(all); label();
   }
@@ -479,7 +480,7 @@
   }
   function commit(e, v, prev) {
     const id = e.dataset.eid, o = orig.get(id);
-    undo.push({ id, prev: prev ? { ...prev } : null });
+    undo.push({ id, prev: prev ? { ...prev } : null }); redo.length = 0;
     const r = entry(e, v);
     if (same({ ...r, html: r.html !== undefined ? r.html : o.html }, o)) { if (all[KEY]) delete all[KEY][id]; } else page()[id] = r;
     if (all[KEY] && !Object.keys(all[KEY]).length) delete all[KEY];
@@ -675,7 +676,7 @@
   function onKey(ev) {
     if (!on) return;
     if (editing) { if (ev.key === 'Escape') { ev.preventDefault(); endText(); } return; }
-    if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === 'z') { ev.preventDefault(); doUndo(); return; }
+    if ((ev.metaKey || ev.ctrlKey) && ev.code === 'KeyZ') { ev.preventDefault(); (ev.altKey || ev.shiftKey) ? doRedo() : doUndo(); return; }   // Cmd+Z undo; Option+Cmd+Z (or Shift+Cmd+Z) redo
     if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === 'g') { ev.preventDefault(); ev.shiftKey ? ungroupSel() : groupSel(); return; }
     if ((ev.metaKey || ev.ctrlKey) && sel && (ev.code === 'BracketRight' || ev.code === 'BracketLeft')) {
       ev.preventDefault(); const up = ev.code === 'BracketRight';
@@ -695,17 +696,39 @@
     commitMany(sels.map((e) => { const st = stateOf(e), v = { ...st, x: st.x + ddx, y: st.y + ddy }; apply(e, v); return [e, v, st]; }));
     relayout(); place();
   }
-  function doUndo() {
-    const u = undo.pop(); if (!u) return;
-    for (const step of (u.many || [u])) {
-      const e = byId.get(step.id), o = orig.get(step.id), v = step.prev || (o.isNew ? { ...cur(e), hide: true } : { ...o, g: o.g });
-      apply(e, v);
-      const r = entry(e, v);
-      if (same({ ...r, html: r.html !== undefined ? r.html : o.html }, o)) { if (all[KEY]) delete all[KEY][step.id]; } else page()[step.id] = r;
-    }
+  // put an item into a given state, and store (or forget) that state as an edit
+  function restoreTo(id, v) {
+    const e = byId.get(id), o = orig.get(id); if (!e || !o) return;
+    apply(e, v);
+    const r = entry(e, v);
+    if (same({ ...r, html: r.html !== undefined ? r.html : o.html }, o)) { if (all[KEY]) delete all[KEY][id]; } else page()[id] = r;
+  }
+  function afterStep() {
     if (sel) { const k = sel; select(null); select(k); }
     if (all[KEY] && !Object.keys(all[KEY]).length) delete all[KEY];
     save(all); relayout(); place(); label();
+  }
+  function doUndo() {   // Cmd+Z: step back one change (remembering it, so Option+Cmd+Z can bring it back)
+    const u = undo.pop(); if (!u) return panelTip('Nothing to undo.');
+    const back = [];
+    for (const step of (u.many || [u])) {
+      const e = byId.get(step.id), o = orig.get(step.id); if (!e || !o) continue;
+      back.push({ id: step.id, prev: stateOf(e) });
+      restoreTo(step.id, step.prev || (o.isNew ? { ...cur(e), hide: true } : { ...o, g: o.g }));
+    }
+    redo.push({ many: back });
+    afterStep(); panelTip('Undone. Option+Cmd+Z redoes it.');
+  }
+  function doRedo() {   // Option+Cmd+Z: bring back the change last undone
+    const r = redo.pop(); if (!r) return panelTip('Nothing to redo.');
+    const back = [];
+    for (const step of r.many) {
+      const e = byId.get(step.id); if (!e) continue;
+      back.push({ id: step.id, prev: stateOf(e) });
+      restoreTo(step.id, step.prev);
+    }
+    undo.push({ many: back });
+    afterStep(); panelTip('Redone. Cmd+Z undoes it again.');
   }
   function resetPage() {
     if (!all[KEY]) return;
@@ -715,7 +738,7 @@
       else if (e) apply(e, o);
     }
     if (sel && !sel.isConnected) sel = null;
-    delete all[KEY]; save(all); undo.length = 0; relayout(); place(); label();
+    delete all[KEY]; save(all); undo.length = 0; redo.length = 0; relayout(); place(); label();
   }
   async function download() {
     all = load();
@@ -910,13 +933,13 @@
       <p class="e-tip">${TIP}</p>
       <div class="e-row"><button type="button" data-a="snap" title="Snapping to the page centre and to other items' edges (hold Option while dragging to skip it once)">${snapLabel()}</button><button type="button" data-a="several" title="While on, each click adds or removes an item (same as Shift-click)">Select several</button><button type="button" data-a="group" title="Group the selected items (Cmd+G)">Group</button><button type="button" data-a="ungroup" title="Ungroup (Cmd+Shift+G)">Ungroup</button>
       <button type="button" data-a="front" title="Bring to front, in front of everything (Cmd+Shift+])">To front</button><button type="button" data-a="back" title="Send to back, behind everything (Cmd+Shift+[)">To back</button><button type="button" data-a="forward" title="Forward one step, past the next overlapping item (Cmd+])">Forward</button><button type="button" data-a="backward" title="Back one step, behind the next overlapping item (Cmd+[)">Backward</button>
-      <button type="button" data-a="undo">Undo</button><button type="button" data-a="reset">Reset page</button>
+      <button type="button" data-a="undo" title="Undo the last change (Cmd+Z)">Undo</button><button type="button" data-a="redo" title="Redo the change last undone (Option+Cmd+Z)">Redo</button><button type="button" data-a="reset">Reset page</button>
       <button type="button" data-a="save">Save</button><button type="button" data-a="close">Done</button></div>`;
     document.body.appendChild(panel);
     panel.querySelector('[data-a=snap]').classList.toggle('off', !snapOn);
     panel.addEventListener('click', (e) => {
       const a = e.target.closest('button'); if (!a) return;
-      ({ snap: () => { snapOn = !snapOn; try { localStorage.setItem('tw-snap', snapOn ? 'on' : 'off'); } catch (err) { /* storage unavailable */ } a.textContent = snapLabel(); a.classList.toggle('off', !snapOn); panelTip(snapOn ? 'Snapping is on: items line up with the page centre and other items. Hold Option while dragging to skip it once.' : 'Snapping is off: items move freely, to the half pixel. Arrow keys nudge 1px (Shift 10px).'); }, several: () => { several = !several; a.classList.toggle('on', several); a.textContent = several ? 'Select several: ON' : 'Select several'; panelTip(several ? 'Click items to add or remove them from the selection. Click the button again to finish.' : TIP); }, group: groupSel, ungroup: ungroupSel, front: () => layer('front'), back: () => layer('back'), forward: () => layer('forward'), backward: () => layer('backward'), undo: doUndo, reset: resetPage, save: download, close: hide })[a.dataset.a]();
+      ({ snap: () => { snapOn = !snapOn; try { localStorage.setItem('tw-snap', snapOn ? 'on' : 'off'); } catch (err) { /* storage unavailable */ } a.textContent = snapLabel(); a.classList.toggle('off', !snapOn); panelTip(snapOn ? 'Snapping is on: items line up with the page centre and other items. Hold Option while dragging to skip it once.' : 'Snapping is off: items move freely, to the half pixel. Arrow keys nudge 1px (Shift 10px).'); }, several: () => { several = !several; a.classList.toggle('on', several); a.textContent = several ? 'Select several: ON' : 'Select several'; panelTip(several ? 'Click items to add or remove them from the selection. Click the button again to finish.' : TIP); }, group: groupSel, ungroup: ungroupSel, front: () => layer('front'), back: () => layer('back'), forward: () => layer('forward'), backward: () => layer('backward'), undo: doUndo, redo: doRedo, reset: resetPage, save: download, close: hide })[a.dataset.a]();
     });
     if (innerWidth < 700) panel.querySelector('.e-tip').textContent = 'Widen the window to edit (the page stacks on phones).';
     addEventListener('pointerdown', onDown, true); addEventListener('keydown', onKey); addEventListener('click', blockClick, true); addEventListener('dblclick', onDbl, true);
