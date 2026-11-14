@@ -535,7 +535,7 @@ NO_FADE = {'TETRA', 'P2'}
 NEW_PAGES = {'GOLD'}
 
 # Extra space (px) between a page's lowest item and the Previous / Next blocks, on top of the usual 40px
-LATE_PICTURES = {'SKETCH': '6125,2000'}   # page: 'start ms, fade ms' after the page opens
+LATE_PICTURES = {'SKETCH': '4688,2000'}   # page: 'start ms, fade ms' after the page opens
 # a picture shown in two stages: (page, picture, overlay with its first part, overlay 'start,fade' ms, rest of the picture 'start,fade' ms)
 STAGED = [('SKETCH', 'images/SKETCH/SKETCH-13_knapkin-energy-sketch-only.jpg', 'images/SKETCH/SKETCH-13b_knapkin-words.png', '0,0', '1250,2000'),
           ('SKETCH', 'images/SKETCH/SKETCH-14_screenshot-2026-11-13-at-3-17-36-pm.jpg', 'images/SKETCH/SKETCH-14b_napkin-words.png', '0,0', '1250,2000')]   # (the napkin with your yellow highlights, which replaced the first)   # the napkin: "Sound", "Light" and "Frequency" there at once; the rest of the napkin fades in fully at 1.25-3.25 s
