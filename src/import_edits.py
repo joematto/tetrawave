@@ -77,7 +77,8 @@ def main(src):
                     added.append(path)
                 e.pop('data', None); e.pop('pdf', None)
             old = page.get(eid, {})
-            keep = {k: old[k] for k in ('new', 'path', 'pw', 'ph', 'name') if k in old and k not in e}
+            # html: a save leaves out text that is unchanged from the built page, so the text already built in is kept
+            keep = {k: old[k] for k in ('new', 'path', 'pw', 'ph', 'name', 'html') if k in old and k not in e}
             page[eid] = {**keep, **e}
         if not page:
             edits.pop(key)
