@@ -193,3 +193,8 @@ images/PRE/PRE-33_orb-over-head-1.jpg
 images/PRE/PRE-34_screenshot-2026-11-12-at-5-15-12-pm.jpg
 images/PRE/PRE-35_screenshot-2026-11-12-at-5-15-24-pm.jpg
 images/PRE/PRE-36_screenshot-2026-11-12-at-4-58-39-pm.jpg
+images/PRE/PRE-37_woodbury-yoga-center.png
+images/SKETCH/SKETCH-14_screenshot-2026-11-13-at-3-17-36-pm.jpg
+images/TETRA/TETRA-19_audio-tape-package-4.png
+images/TETRA/TETRA-20_screenshot-2026-11-13-at-5-29-00-pm.jpg
+images/TETRA/TETRA-21_ubid-computer-loops-crease-removed.jpg
